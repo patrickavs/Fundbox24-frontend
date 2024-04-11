@@ -1,12 +1,8 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {WebView} from 'react-native-webview';
 
 function App(): React.JSX.Element {
-  return (
-    <SafeAreaView>
-      <WebView />
-    </SafeAreaView>
-  );
+  return <WebView source={{uri: 'https://reactnative.dev/'}} />;
 }
 
 export default App;
