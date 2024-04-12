@@ -11,7 +11,6 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
-import com.rnfs.RNFSPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -21,9 +20,6 @@ class MainApplication : Application(), ReactApplication {
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               // add(MyReactNativePackage())
-
-              add(MainReactPackage())
-              add(RNFSPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
