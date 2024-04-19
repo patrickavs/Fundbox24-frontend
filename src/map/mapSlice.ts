@@ -6,7 +6,7 @@ import {RootState} from '../redux/store.ts';
 
 const initialState: MapState = {
   position: constants.initialMapPosition,
-  radius: constants.minRadius,
+  radius: (constants.maxRadius - constants.minRadius) / 2,
 };
 
 const mapSlice = createSlice({

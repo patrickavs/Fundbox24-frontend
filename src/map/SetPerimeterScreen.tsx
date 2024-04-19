@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, {Circle, LatLng} from 'react-native-maps';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, Text, View} from 'react-native';
 import {Slider} from '@miblanchard/react-native-slider';
 import {useAppDispatch, useAppSelector} from '../redux/hooks.ts';
 import constants from '../constants.ts';
@@ -10,6 +10,7 @@ import {
   selectPosition,
   selectRadius,
 } from './mapSlice.ts';
+import styles from './styles.ts';
 
 const numberFormat = Intl.NumberFormat('de-DE', {maximumFractionDigits: 1});
 
@@ -65,27 +66,5 @@ function SetPerimeterScreen(): React.JSX.Element {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  diameterLabel: {
-    textAlign: 'center',
-  },
-  diameterText: {
-    textAlign: 'center',
-    fontSize: 20,
-  },
-  absoluteFill: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  controls: {
-    marginTop: 'auto',
-    padding: 30,
-    backgroundColor: 'white',
-    alignItems: 'stretch',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 20,
-  },
-});
 
 export default SetPerimeterScreen;
