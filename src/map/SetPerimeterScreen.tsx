@@ -2,6 +2,7 @@ import React from 'react';
 import MapView, {LatLng} from 'react-native-maps';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {Circle} from 'react-native-maps';
+import {Slider} from '@miblanchard/react-native-slider';
 
 function SetPerimeterScreen(): React.JSX.Element {
   const hofUniversityPosition: LatLng = {
@@ -26,7 +27,7 @@ function SetPerimeterScreen(): React.JSX.Element {
         />
       </MapView>
       <View style={styles.controls}>
-        <Text>Hier kommt der Slider hin</Text>
+        <Slider />
         <Button title="Gegenstand melden" />
       </View>
     </View>
