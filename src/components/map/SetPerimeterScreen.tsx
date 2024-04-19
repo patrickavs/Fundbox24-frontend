@@ -2,8 +2,8 @@ import React from 'react';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import {Button, Text, View} from 'react-native';
 import {Slider} from '@miblanchard/react-native-slider';
-import {useAppDispatch, useAppSelector} from '../redux/hooks.ts';
-import constants from '../constants.ts';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks.ts';
+import constants from '../../constants.ts';
 import {
   changePosition,
   changeRadius,

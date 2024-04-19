@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit';
-import mapReducer from '../map/mapSlice.ts';
+import mapReducer from '../components/map/mapSlice.ts';
 
 const store = configureStore({
   reducer: {
