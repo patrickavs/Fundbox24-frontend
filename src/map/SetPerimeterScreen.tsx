@@ -4,13 +4,18 @@ import {Button, StyleSheet, Text, View} from 'react-native';
 import {Slider} from '@miblanchard/react-native-slider';
 import {useAppDispatch, useAppSelector} from '../redux/hooks.ts';
 import constants from '../constants.ts';
-import {changePosition, changeRadius} from '../redux/slices/mapSlice.ts';
+import {
+  changePosition,
+  changeRadius,
+  selectPosition,
+  selectRadius,
+} from '../redux/slices/mapSlice.ts';
 
 const numberFormat = Intl.NumberFormat('de-DE', {maximumFractionDigits: 1});
 
 function SetPerimeterScreen(): React.JSX.Element {
-  const position = useAppSelector(state => state.map.position);
-  const radius = useAppSelector(state => state.map.radius);
+  const position = useAppSelector(selectPosition);
+  const radius = useAppSelector(selectRadius);
 
   const dispatch = useAppDispatch();
 
