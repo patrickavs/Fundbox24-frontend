@@ -9,7 +9,7 @@ import {
   changeRadius,
   selectPosition,
   selectRadius,
-} from '../redux/slices/mapSlice.ts';
+} from './mapSlice.ts';
 
 const numberFormat = Intl.NumberFormat('de-DE', {maximumFractionDigits: 1});
 
