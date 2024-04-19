@@ -2,40 +2,40 @@ import React from 'react';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {Slider} from '@miblanchard/react-native-slider';
-
-const minRadius: number = 300;
-const maxRadius: number = 3000;
-
-const initialPosition: LatLng = {
-  latitude: 50.3254386,
-  longitude: 11.9384522,
-};
+import {useAppDispatch, useAppSelector} from '../redux/hooks.ts';
+import constants from '../constants.ts';
+import {changePosition, changeRadius} from '../redux/slices/mapSlice.ts';
 
 const numberFormat = Intl.NumberFormat('de-DE', {maximumFractionDigits: 1});
 
 function SetPerimeterScreen(): React.JSX.Element {
-  const [position, setPosition] = React.useState<LatLng>(initialPosition);
-  const [radius, setRadius] = React.useState<number>(minRadius);
+  const position = useAppSelector(state => state.map.position);
+  const radius = useAppSelector(state => state.map.radius);
 
-  function changeRadius(sliderValue: number) {
-    const newRadius = minRadius + sliderValue * (maxRadius - minRadius);
-    setRadius(newRadius);
-  }
+  const dispatch = useAppDispatch();
 
   function getFormattedDiameter(): string {
     const radiusInKM = radius / 1000;
     return `${numberFormat.format(radiusInKM)} km`;
   }
 
-  function changePosition(newPosition: LatLng) {
-    setPosition(newPosition);
+  function onChangeRadius(sliderValue: number) {
+    const newRadius =
+      constants.minRadius +
+      sliderValue * (constants.maxRadius - constants.minRadius);
+
+    dispatch(changeRadius(newRadius));
+  }
+
+  function onChangePosition(newPosition: LatLng) {
+    dispatch(changePosition(newPosition));
   }
 
   return (
     // TODO: tap to change position of perimeter
     <View style={styles.absoluteFill}>
       <MapView
-        onPress={event => changePosition(event.nativeEvent.coordinate)}
+        onPress={event => onChangePosition(event.nativeEvent.coordinate)}
         style={styles.absoluteFill}
         initialRegion={{
           ...position,
@@ -54,7 +54,7 @@ function SetPerimeterScreen(): React.JSX.Element {
           <Text style={styles.diameterText}>{getFormattedDiameter()}</Text>
           <Text style={styles.diameterLabel}>Umkreis</Text>
         </View>
-        <Slider value={0.5} onValueChange={value => changeRadius(value[0])} />
+        <Slider value={0.5} onValueChange={value => onChangeRadius(value[0])} />
         <Button title="Gegenstand melden" />
       </View>
     </View>
