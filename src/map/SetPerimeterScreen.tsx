@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, {LatLng} from 'react-native-maps';
-import {StyleSheet} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import {Circle} from 'react-native-maps';
 
 function SetPerimeterScreen(): React.JSX.Element {
@@ -10,26 +10,41 @@ function SetPerimeterScreen(): React.JSX.Element {
   };
 
   return (
-    <MapView
-      style={styles.map}
-      initialRegion={{
-        ...hofUniversityPosition,
-        latitudeDelta: 0.03,
-        longitudeDelta: 0.03,
-      }}>
-      <Circle
-        center={hofUniversityPosition}
-        radius={700}
-        fillColor="rgba(245, 39, 145, 0.3)"
-        strokeWidth={0}
-      />
-    </MapView>
+    <View style={styles.absoluteFill}>
+      <MapView
+        style={styles.absoluteFill}
+        initialRegion={{
+          ...hofUniversityPosition,
+          latitudeDelta: 0.03,
+          longitudeDelta: 0.03,
+        }}>
+        <Circle
+          center={hofUniversityPosition}
+          radius={700}
+          fillColor="rgba(245, 39, 145, 0.3)"
+          strokeWidth={0}
+        />
+      </MapView>
+      <View style={styles.controls}>
+        <Text>Hier kommt der Slider hin</Text>
+        <Button title="Gegenstand melden" />
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  map: {
+  absoluteFill: {
     ...StyleSheet.absoluteFillObject,
+  },
+  controls: {
+    marginTop: 'auto',
+    padding: 20,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 20,
   },
 });
 
