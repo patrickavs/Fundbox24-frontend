@@ -1,9 +1,8 @@
+import MapView, {Circle, LatLng} from 'react-native-maps';
 import React from 'react';
-import MapView, {LatLng} from 'react-native-maps';
 import {StyleSheet} from 'react-native';
-import {Circle} from 'react-native-maps';
 
-function App(): React.JSX.Element {
+function MapComponent(): React.JSX.Element {
   const hofUniversityPosition: LatLng = {
     latitude: 50.3254386,
     longitude: 11.9384522,
@@ -33,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default MapComponent;
