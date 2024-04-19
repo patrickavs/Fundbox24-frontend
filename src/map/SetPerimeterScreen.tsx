@@ -7,6 +7,8 @@ import {Slider} from '@miblanchard/react-native-slider';
 const minRadius: number = 300;
 const maxRadius: number = 3000;
 
+const numberFormat = Intl.NumberFormat('de-DE', {maximumFractionDigits: 1});
+
 function SetPerimeterScreen(): React.JSX.Element {
   const [radius, setRadius] = React.useState<number>(minRadius);
 
@@ -21,7 +23,8 @@ function SetPerimeterScreen(): React.JSX.Element {
   }
 
   function getFormattedDiameter(): string {
-    return `${radius} m`;
+    const radiusInKM = radius / 1000;
+    return `${numberFormat.format(radiusInKM)} km`;
   }
 
   return (
@@ -42,7 +45,10 @@ function SetPerimeterScreen(): React.JSX.Element {
         />
       </MapView>
       <View style={styles.controls}>
-        <Text style={styles.diameterText}>{getFormattedDiameter()}</Text>
+        <View>
+          <Text style={styles.diameterText}>{getFormattedDiameter()}</Text>
+          <Text style={styles.diameterLabel}>Umkreis</Text>
+        </View>
         <Slider value={0.5} onValueChange={value => changeRadius(value[0])} />
         <Button title="Gegenstand melden" />
       </View>
@@ -51,8 +57,12 @@ function SetPerimeterScreen(): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  diameterLabel: {
+    textAlign: 'center',
+  },
   diameterText: {
     textAlign: 'center',
+    fontSize: 20,
   },
   absoluteFill: {
     ...StyleSheet.absoluteFillObject,
