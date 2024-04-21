@@ -17,6 +17,7 @@ export default function InputField({
         borderBottomWidth: 1,
         paddingBottom: 8,
         marginBottom: 25,
+        paddingHorizontal: inputType === 'password' ? 5 : 0,
       }}>
       {icon}
       {inputType === 'password' ? (

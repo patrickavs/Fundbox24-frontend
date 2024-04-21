@@ -12,13 +12,17 @@ import {useNavigation} from '@react-navigation/native';
 
 function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation();
+
+  const handleRegisterPress = () => {
+    navigation.navigate('Register');
+  };
   return (
     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
       <View style={{paddingHorizontal: 25}}>
         <View style={{alignItems: 'center'}}>
           <Image
-            source={require('../../assets/images/login.jpg')}
-            style={{width: 250, height: 200, bottom: 60, borderRadius: 25}}
+            source={require('../../assets/images/login.png')}
+            style={{width: 330, height: 250, bottom: 60, borderRadius: 10}}
           />
         </View>
 
@@ -47,7 +51,7 @@ function LoginScreen(): React.JSX.Element {
         />
 
         <InputField
-          label={'Password'}
+          label={'Passwort'}
           icon={
             <Ionicons
               name="ios-lock-closed-outline"
@@ -57,7 +61,7 @@ function LoginScreen(): React.JSX.Element {
             />
           }
           inputType="password"
-          fieldButtonLabel={'Forgot?'}
+          fieldButtonLabel={'Vergessen?'}
           fieldButtonFunction={() => {}}
         />
 
@@ -69,9 +73,12 @@ function LoginScreen(): React.JSX.Element {
             justifyContent: 'center',
             marginBottom: 30,
           }}>
-          <Text>Doesn't have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('StartScreen')}>
-            <Text style={{color: '#AD40FF', fontWeight: '700'}}> Register</Text>
+          <Text>Noch kein Account bei uns?</Text>
+          <TouchableOpacity onPress={handleRegisterPress}>
+            <Text style={{color: '#AD40FF', fontWeight: '700'}}>
+              {' '}
+              Registriere dich hier
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
