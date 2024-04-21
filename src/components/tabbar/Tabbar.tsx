@@ -2,12 +2,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import StartScreen from '../home/StartScreen.tsx';
-import LostReportScreen from '../lost/LostReportScreen.tsx';
-import AddReportScreen from '../add/AddReportScreen.tsx';
-import FoundReportScreen from '../found/FoundReportScreen.tsx';
-import ProfileScreen from '../profile/ProfileScreen.tsx';
-import {Text} from 'react-native';
+import StartScreen from '../../pages/home/StartScreen.tsx';
+import LostReportScreen from '../../pages/lost/LostReportScreen.tsx';
+import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
+import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
+import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
+import LoginScreen from '../auth/LoginScreen.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,9 +19,9 @@ const getTabBarOptions = route => ({
   tabBarStyle: {backgroundColor: 'lightgray'},
 });
 
-function Tabs() {
+function Tabbar() {
   const screens = [
-    {name: 'Start', component: StartScreen},
+    {name: 'Start', component: LoginScreen},
     {name: 'Verloren', component: LostReportScreen},
     {name: 'Plus', component: AddReportScreen},
     {name: 'Gefunden', component: FoundReportScreen},
@@ -86,4 +86,4 @@ function Tabs() {
   );
 }
 
-export default Tabs;
+export default Tabbar;
