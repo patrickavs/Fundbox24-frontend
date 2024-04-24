@@ -4,7 +4,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import StartScreen from '../home/StartScreen.tsx';
 import LostReportScreen from '../lost/LostReportScreen.tsx';
-import AddReportScreen from '../add/AddReportScreen.tsx';
 import FoundReportScreen from '../found/FoundReportScreen.tsx';
 import ProfileScreen from '../profile/ProfileScreen.tsx';
 import SetPerimeterScreen from '../map/SetPerimeterScreen.tsx';
@@ -12,11 +11,13 @@ import SetPerimeterScreen from '../map/SetPerimeterScreen.tsx';
 const Tab = createBottomTabNavigator();
 
 // defining tab bar options
+// TODO: Typ definieren, Tim mag kein "any"!
 const getTabBarOptions = route => ({
   tabBarActiveTintColor: 'tomato',
   tabBarInactiveTintColor: 'black',
   tabBarHideOnKeyboard: true,
   tabBarStyle: {backgroundColor: 'lightgray'},
+  // TODO: AddReportScreen wieder hinzufügen
 });
 
 function Tabs() {
