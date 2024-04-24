@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, {Circle, LatLng} from 'react-native-maps';
-import {Button, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {Slider} from '@miblanchard/react-native-slider';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks.ts';
 import constants from '../../constants.ts';
@@ -39,7 +39,7 @@ function SetPerimeterScreen(): React.JSX.Element {
 
   return (
     // TODO: tap to change position of perimeter
-    <View style={styles.absoluteFill}>
+    <View style={[styles.absoluteFill, styles.marginToTabBar]}>
       <MapView
         onPress={event => onChangePosition(event.nativeEvent.coordinate)}
         style={styles.absoluteFill}
@@ -61,7 +61,6 @@ function SetPerimeterScreen(): React.JSX.Element {
           <Text style={styles.diameterLabel}>Umkreis</Text>
         </View>
         <Slider value={0.5} onValueChange={value => onChangeRadius(value[0])} />
-        <Button title="Gegenstand melden" />
       </View>
     </View>
   );

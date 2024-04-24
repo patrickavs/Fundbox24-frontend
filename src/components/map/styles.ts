@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 20,
   },
+  marginToTabBar: {
+    marginBottom: 50,
+  },
 });
 
 export default styles;

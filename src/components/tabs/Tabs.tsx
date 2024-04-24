@@ -7,7 +7,7 @@ import LostReportScreen from '../lost/LostReportScreen.tsx';
 import AddReportScreen from '../add/AddReportScreen.tsx';
 import FoundReportScreen from '../found/FoundReportScreen.tsx';
 import ProfileScreen from '../profile/ProfileScreen.tsx';
-import {Text} from 'react-native';
+import SetPerimeterScreen from '../map/SetPerimeterScreen.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +23,7 @@ function Tabs() {
   const screens = [
     {name: 'Start', component: StartScreen},
     {name: 'Verloren', component: LostReportScreen},
-    {name: 'Plus', component: AddReportScreen},
+    {name: 'Plus', component: SetPerimeterScreen},
     {name: 'Gefunden', component: FoundReportScreen},
     {name: 'Profil', component: ProfileScreen},
   ];
