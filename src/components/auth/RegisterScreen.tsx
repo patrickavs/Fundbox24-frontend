@@ -15,7 +15,7 @@ import InputField from '../InputField';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import '../../assets/images/login.jpg';
+import '../../assets/images/login.png';
 import CustomButton from '../CustomButton';
 import {useNavigation} from '@react-navigation/native';
 

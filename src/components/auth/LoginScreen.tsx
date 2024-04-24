@@ -4,7 +4,7 @@ import {SafeAreaView, View, Text, TouchableOpacity, Image} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import '../../assets/images/login.jpg';
+import '../../assets/images/login.png';
 
 import CustomButton from '../CustomButton.tsx';
 import InputField from '../InputField.tsx';
