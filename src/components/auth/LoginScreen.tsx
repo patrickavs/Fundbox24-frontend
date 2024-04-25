@@ -48,6 +48,8 @@ function LoginScreen(): React.JSX.Element {
             />
           }
           keyboardType="email-address"
+          fieldButtonLabel={'E-Mail'}
+          inputType={'email-address'}
         />
 
         <InputField
@@ -61,6 +63,7 @@ function LoginScreen(): React.JSX.Element {
             />
           }
           inputType="password"
+          keyboardType={'visible-password'}
           fieldButtonLabel={'Vergessen?'}
           fieldButtonFunction={() => {}}
         />
@@ -73,7 +76,7 @@ function LoginScreen(): React.JSX.Element {
             justifyContent: 'center',
             marginBottom: 30,
           }}>
-          <Text>Noch kein Account bei uns?</Text>
+          <Text>Noch keinen Account bei uns?</Text>
           <TouchableOpacity onPress={handleRegisterPress}>
             <Text style={{color: '#AD40FF', fontWeight: '700'}}>
               {' '}

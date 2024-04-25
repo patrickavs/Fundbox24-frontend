@@ -11,7 +11,7 @@ import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 const Tab = createBottomTabNavigator();
 
 // defining tab bar options
-const getTabBarOptions = route => ({
+const getTabBarOptions = () => ({
   tabBarActiveTintColor: 'tomato',
   tabBarInactiveTintColor: 'black',
   tabBarHideOnKeyboard: true,
@@ -52,7 +52,7 @@ function Tabbar() {
         name="Plus"
         component={AddReportScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({focused, color}) => (
             <Ionicons
               name={focused ? 'add' : 'add-outline'}
               size={40}

@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  KeyboardTypeOptions,
+} from 'react-native';
 
 export default function InputField({
   label,
@@ -8,6 +14,13 @@ export default function InputField({
   keyboardType,
   fieldButtonLabel,
   fieldButtonFunction,
+}: {
+  label: string;
+  icon: any;
+  inputType: string;
+  keyboardType: KeyboardTypeOptions | undefined;
+  fieldButtonLabel: string;
+  fieldButtonFunction?: () => void;
 }) {
   return (
     <View
