@@ -48,7 +48,6 @@ function LoginScreen(): React.JSX.Element {
             />
           }
           keyboardType="email-address"
-          fieldButtonLabel={'E-Mail'}
           inputType={'email-address'}
         />
 
@@ -64,7 +63,6 @@ function LoginScreen(): React.JSX.Element {
           }
           inputType="password"
           keyboardType={'visible-password'}
-          fieldButtonLabel={'Vergessen?'}
           fieldButtonFunction={() => {}}
         />
 
