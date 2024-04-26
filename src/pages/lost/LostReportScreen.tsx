@@ -1,8 +1,12 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {SafeAreaView, Text} from 'react-native';
 
 function LostReportScreen(): React.JSX.Element {
-  return <Text>Lost</Text>;
+  return (
+    <SafeAreaView>
+      <Text>Verlorenes in deiner Umgebung</Text>
+    </SafeAreaView>
+  );
 }
 
 export default LostReportScreen;
