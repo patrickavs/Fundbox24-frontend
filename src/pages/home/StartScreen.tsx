@@ -1,13 +1,15 @@
 import React from 'react';
-import { ScrollView, SectionList, StyleSheet, Text, View } from 'react-native';
+import { SectionList, Text, View } from 'react-native';
 import { useUser } from '../../hooks/useUser';
 import { useLostReport } from '../../hooks/useLostReports';
+import { useChat } from '../../hooks/useChat';
 
 function StartScreen(): React.JSX.Element {
   const { isPending: isPendingUser, user } = useUser();
   const { isPending: isPendingLostReport, lostReport } = useLostReport();
+  const { isPending: isPendingChat, chats } = useChat();
 
-  const isPending = isPendingUser || isPendingLostReport;
+  const isPending = isPendingUser || isPendingLostReport || isPendingChat;
 
   if (!isPending && !user) {
     return <View><Text>Du bist nicht angemeldet</Text></View>
@@ -18,9 +20,11 @@ function StartScreen(): React.JSX.Element {
       {isPending && <Text>Es lädt...</Text>}
       {!isPending && <>
         <Text>Willkommen, {user?.username}</Text>
+        {/* TODO: List lostreports here */}
         <SectionList sections={[]} horizontal>
 
         </SectionList>
+        {/* TODO: List all open chats */}
         <SectionList sections={[]}>
 
         </SectionList>
