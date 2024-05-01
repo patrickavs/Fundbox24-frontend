@@ -17,9 +17,9 @@ export default function InputField({
 }: {
   label: string;
   icon: any;
-  inputType: string;
-  keyboardType: KeyboardTypeOptions | undefined;
-  fieldButtonLabel: string;
+  inputType?: string;
+  keyboardType?: KeyboardTypeOptions | undefined;
+  fieldButtonLabel?: string;
   fieldButtonFunction?: () => void;
 }) {
   return (
