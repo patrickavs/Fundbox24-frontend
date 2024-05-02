@@ -1,39 +1,47 @@
-import { User } from "../types/user";
+import { FoundReport } from "../types/report-found";
 import { useTransition, useEffect, useContext, useState, createContext } from "react";
 
-type UserContextType = {
+type FoundReportsContextType = {
     isPending: boolean;
-    user: User | null;
+    foundReports: Array<FoundReport>;
 }
 
-const UserContext = createContext<UserContextType>({ isPending: true, user: null });
+const FoundReportsContext = createContext<FoundReportsContextType>({ isPending: true, foundReports: [] });
 
-export function useUser() {
-    return useContext(UserContext);
+export function useFoundReports() {
+    return useContext(FoundReportsContext);
 }
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
+export function FoundReportProvider({ children }: { children: React.ReactNode }) {
+    const [report, setReports] = useState<Array<FoundReport>>([]);
     const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
         startTransition(() => {
             // TODO: fetch userdata
             // TODO: fetch data
-            const userData = {
+            const reportData: FoundReport = {
                 id: '1',
-                email: 'wal@test.de',
-                firstName: 'Blauerwal',
-                lastName: '24',
-                username: 'blauerwal24'
-            }
-            setUser(userData)
+                object: 'Schlüssel',
+                description: 'Ein kleiner Schlüssel',
+                status: 'lost',
+                placeOfDelivery: 'Im Fundbüro abgegeben',
+                timeOfDiscovery: new Date(),
+                placeOfDiscovery: "In der Nähe des Eingangs",
+                category: {
+                    id: '1',
+                    value: 'key',
+                    title: 'Schlüssel',
+                    requiresAction: false
+                },
+            };
+            setReports([reportData])
         })
     });
 
     return (
-        <UserContext.Provider value={{ isPending, user: user }}>
+        <FoundReportsContext.Provider value={{ isPending, foundReports: report }}>
             {children}
-        </UserContext.Provider>
+        </FoundReportsContext.Provider>
     )
 }

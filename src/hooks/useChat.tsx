@@ -66,6 +66,7 @@ const sampleChatData: Array<Chat> = [
     {
         id: "1",
         title: "Chat 1",
+        isOpen: true,
         updatedAt: new Date(),
         createdAt: new Date(),
         messages: [
@@ -92,6 +93,7 @@ const sampleChatData: Array<Chat> = [
     {
         id: "2",
         title: "Chat 2",
+        isOpen: true,
         updatedAt: new Date(),
         createdAt: new Date(),
         messages: [],

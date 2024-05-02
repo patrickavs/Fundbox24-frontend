@@ -1,5 +1,5 @@
 import { Category } from "./category";
-export type ReportFound = {
+export type FoundReport = {
     id: string;
     object: string;
     description: string;

@@ -1,19 +1,19 @@
 import { LostReport } from "../types/report-lost";
 import { useTransition, useEffect, useContext, useState, createContext } from "react";
 
-type LostReportContextType = {
+type LostReportsContextType = {
     isPending: boolean;
-    lostReport: LostReport | null;
+    lostReports: Array<LostReport>;
 }
 
-const LostReportContext = createContext<LostReportContextType>({ isPending: true, lostReport: null });
+const LostReportsContext = createContext<LostReportsContextType>({ isPending: true, lostReports: [] });
 
-export function useLostReport() {
-    return useContext(LostReportContext);
+export function useLostReports() {
+    return useContext(LostReportsContext);
 }
 
 export function LostReportProvider({ children }: { children: React.ReactNode }) {
-    const [report, setReport] = useState<LostReport | null>(null);
+    const [report, setReports] = useState<Array<LostReport>>([]);
     const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
@@ -34,13 +34,13 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
                     requiresAction: false
                 },
             };
-            setReport(reportData)
+            setReports([reportData])
         })
     });
 
     return (
-        <LostReportContext.Provider value={{ isPending, lostReport: report }}>
+        <LostReportsContext.Provider value={{ isPending, lostReports: report }}>
             {children}
-        </LostReportContext.Provider>
+        </LostReportsContext.Provider>
     )
 }
