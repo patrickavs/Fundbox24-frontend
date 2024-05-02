@@ -36,22 +36,24 @@ function FoundReportScreen(): React.JSX.Element {
         <DropDown title="Sortierung" selections={[""]} />
         <DropDown title="Filter" selections={[""]} />
       </View>
-      {
-        foundReports.map((report, idx) => {
-          // Jedes Mal, wenn der Index gerade ist, wird zusätzlich ein Tipp mit gerendert
-          if (idx % 2 === 0) {
+      <View>
+        {
+          foundReports.map((report, idx) => {
+            // Jedes Mal, wenn der Index gerade ist, wird zusätzlich ein Tipp mit gerendert
+            if (idx % 2 === 0) {
+              return (
+                <View key={idx}>
+                  <ListItem report={report} />
+                  <Text>Wusstest du schon, dass...</Text>
+                </View>
+              );
+            }
             return (
-              <View key={idx}>
-                <ListItem report={report} />
-                <Text>Wusstest du schon, dass...</Text>
-              </View>
+              <ListItem key={idx} report={report} />
             );
-          }
-          return (
-            <ListItem key={idx} report={report} />
-          );
-        })
-      }
+          })
+        }
+      </View>
     </ScrollView>
   );
 }
