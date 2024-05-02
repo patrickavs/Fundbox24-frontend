@@ -2,6 +2,7 @@ import React from 'react';
 import {Avatar, ListItem} from 'react-native-elements';
 import {StyleSheet} from 'react-native';
 import isUrl from 'is-url';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export type ChatItemProps = {
   name: string;
@@ -13,24 +14,26 @@ export type ChatItemProps = {
 
 function ChatListItem({
   name,
-  avatarUri,
+  avatarUri = '',
   lastMessage,
   timestamp,
-  onPress,
+  onPress = () => {},
 }: ChatItemProps) {
-  const isValidAvatarUri = isUrl(avatarUri || '');
+  const isValidAvatarUri = isUrl(avatarUri);
   return (
     <ListItem key={name} onPress={onPress} containerStyle={styles.listItem}>
-      {isValidAvatarUri ? (
-        <Avatar rounded source={{uri: avatarUri}} size={'medium'} />
+      {!isValidAvatarUri ? (
+        <Ionicons
+          name={'person-circle-outline'}
+          size={50}
+          style={{color: 'black'}}
+        />
       ) : (
         <Avatar
           rounded
-          icon={{
-            name: 'person-outline',
-            type: 'material',
-            size: 26,
-          }}
+          title={name}
+          source={{uri: avatarUri}}
+          size={'medium'}
         />
       )}
       <ListItem.Content>
@@ -55,7 +58,6 @@ const styles = StyleSheet.create({
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
     backgroundColor: '#fff',
     marginTop: 15,
     borderRadius: 10,
