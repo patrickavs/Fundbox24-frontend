@@ -7,6 +7,8 @@ import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
 import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 import AuthAlert from '../auth/alerts/AuthAlert.tsx';
+import AuthStack from '../auth/AuthStack.tsx';
+import ChatList from '../chat/ChatList.tsx';
 
 const Tab = createBottomTabNavigator();
 
