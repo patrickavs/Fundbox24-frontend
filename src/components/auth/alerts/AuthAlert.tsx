@@ -1,19 +1,30 @@
 import React from 'react';
-import {Text, View, StyleSheet, TextInput} from 'react-native';
-import Header from '../../Header.tsx';
+import {Text, View, StyleSheet, TextInput, Button} from 'react-native';
+import CustomHeader from '../../CustomHeader.tsx';
 import CustomButton from '../../CustomButton.tsx';
+import InputField from '../../InputField.tsx';
 
 function AuthAlert(
   headerTitle: string = 'HeaderTitle',
   text: string = 'Whats up',
   buttonTitle: string = 'Click me',
-  textField?: boolean,
-): React.JSX.Element {
+  textField: boolean,
+) {
   return (
     <View style={styles.container}>
-      <Header title={headerTitle} />
-      <Text>{text}</Text>
-      <TextInput style={{opacity: textField ? 1 : 0}} />
+      <CustomHeader title={headerTitle} />
+      {text}
+      {textField ? (
+        <InputField
+          label={''}
+          icon={undefined}
+          inputType={'text'}
+          keyboardType={'default'}
+          fieldButtonLabel={''}
+        />
+      ) : (
+        <></>
+      )}
       <CustomButton label={buttonTitle} onPress={() => {}} />
     </View>
   );

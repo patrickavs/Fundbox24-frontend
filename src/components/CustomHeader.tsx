@@ -2,7 +2,11 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {MyTheme} from '../constants/theme.ts';
 
-function Header({title = 'dajsdhajds'}: {title: string}): React.JSX.Element {
+function CustomHeader({
+  title = 'dajsdhajds',
+}: {
+  title: string;
+}): React.JSX.Element {
   return (
     <>
       <View style={styles.container}>
@@ -28,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Header;
+export default CustomHeader;
