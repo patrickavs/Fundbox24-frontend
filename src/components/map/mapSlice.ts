@@ -1,12 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import MapState from './mapState.ts';
-import constants from '../../constants.ts';
+import mapConstants from '../../constants/map.ts';
 import {LatLng} from 'react-native-maps';
 import {RootState} from '../../redux/store.ts';
 
 const initialState: MapState = {
-  position: constants.initialMapPosition,
-  radius: (constants.maxRadius - constants.minRadius) / 2,
+  position: mapConstants.initialMapPosition,
+  radius: (mapConstants.maxRadius - mapConstants.minRadius) / 2,
 };
 
 const mapSlice = createSlice({

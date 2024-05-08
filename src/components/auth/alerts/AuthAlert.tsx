@@ -1,21 +1,28 @@
 import React from 'react';
-import {Button, TextInput, Text} from 'react-native';
+import {Text, View, StyleSheet, TextInput} from 'react-native';
+import Header from '../../Header.tsx';
+import CustomButton from '../../CustomButton.tsx';
 
-// TODO: change to real header
 function AuthAlert(
-  header: any,
-  text: Text,
-  buttonTitle: string,
-  textField?: TextInput,
+  headerTitle: string = 'HeaderTitle',
+  text: string = 'Whats up',
+  buttonTitle: string = 'Click me',
+  textField?: boolean,
 ): React.JSX.Element {
   return (
-    <>
-      {header}
-      {text}
-      {textField}
-      <Button title={buttonTitle} />
-    </>
+    <View style={styles.container}>
+      <Header title={headerTitle} />
+      <Text>{text}</Text>
+      <TextInput style={{opacity: textField ? 1 : 0}} />
+      <CustomButton label={buttonTitle} onPress={() => {}} />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default AuthAlert;

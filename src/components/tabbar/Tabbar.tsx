@@ -2,12 +2,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import StartScreen from '../../pages/home/StartScreen.tsx';
 import LostReportScreen from '../../pages/lost/LostReportScreen.tsx';
 import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
 import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
-import AuthStack from '../auth/AuthStack.tsx';
+import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +23,7 @@ function Tabbar() {
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen
         name="Start"
-        component={AuthStack}
+        component={AuthAlert}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons
