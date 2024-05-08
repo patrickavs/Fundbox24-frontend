@@ -8,7 +8,6 @@ import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
-import ChatList from '../chat/ChatList.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,7 +24,7 @@ function Tabbar() {
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen
         name="Start"
-        component={AuthAlert}
+        component={AuthStack}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons

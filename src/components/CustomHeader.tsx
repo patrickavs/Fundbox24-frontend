@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     paddingBottom: 10,
+    elevation: 5,
   },
   title: {
     fontSize: 20,
