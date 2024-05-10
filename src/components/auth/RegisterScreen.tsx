@@ -12,7 +12,6 @@ import DatePicker from 'react-native-date-picker';
 
 import InputField from '../InputField';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import '../../assets/images/login.png';
@@ -56,26 +55,12 @@ function RegisterScreen() {
 
         <InputField
           label={'Name'}
-          icon={
-            <Ionicons
-              name="person-outline"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
-          }
+          icon={<Ionicons name="person-outline" size={20} color="#666" />}
         />
 
         <InputField
           label={'E-Mail'}
-          icon={
-            <MaterialIcons
-              name="alternate-email"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
-          }
+          icon={<Ionicons name="at-outline" size={20} color="#666" />}
           keyboardType="email-address"
         />
 
@@ -83,10 +68,10 @@ function RegisterScreen() {
           label={'Passwort'}
           icon={
             <Ionicons
-              name="ios-lock-closed-outline"
+              name="lock-closed-outline"
               size={20}
               color="#666"
-              style={{marginRight: 5}}
+              style={{marginLeft: -5}}
             />
           }
           inputType="password"
@@ -96,10 +81,10 @@ function RegisterScreen() {
           label={'Bestätige dein Passwort'}
           icon={
             <Ionicons
-              name="ios-lock-closed-outline"
+              name="lock-closed-outline"
               size={20}
               color="#666"
-              style={{marginRight: 5}}
+              style={{marginLeft: -5}}
             />
           }
           inputType="password"
@@ -117,10 +102,10 @@ function RegisterScreen() {
             name="calendar-outline"
             size={20}
             color="#666"
-            style={{marginRight: 5}}
+            style={{marginLeft: 2}}
           />
           <TouchableOpacity onPress={() => setOpen(true)}>
-            <Text style={{color: '#666', marginLeft: 5, marginTop: 5}}>
+            <Text style={{color: '#666', marginLeft: 5, marginTop: 4}}>
               {dobLabel}
             </Text>
           </TouchableOpacity>

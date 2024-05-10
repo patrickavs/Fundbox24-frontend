@@ -1,4 +1,4 @@
-const constants = {
+const mapConstants = {
   minRadius: 300,
   maxRadius: 3000,
   initialMapPosition: {
@@ -7,4 +7,4 @@ const constants = {
   },
 };
 
-export default constants;
+export default mapConstants;
