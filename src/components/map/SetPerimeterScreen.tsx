@@ -3,7 +3,7 @@ import MapView, {Circle, LatLng} from 'react-native-maps';
 import {Text, View} from 'react-native';
 import {Slider} from '@miblanchard/react-native-slider';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks.ts';
-import constants from '../../constants.ts';
+import mapConstants from '../../constants/map.ts';
 import {
   changePosition,
   changeRadius,
@@ -27,8 +27,8 @@ function SetPerimeterScreen(): React.JSX.Element {
 
   function onChangeRadius(sliderValue: number) {
     const newRadius =
-      constants.minRadius +
-      sliderValue * (constants.maxRadius - constants.minRadius);
+      mapConstants.minRadius +
+      sliderValue * (mapConstants.maxRadius - mapConstants.minRadius);
 
     dispatch(changeRadius(newRadius));
   }

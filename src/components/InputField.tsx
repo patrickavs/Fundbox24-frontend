@@ -7,7 +7,7 @@ import {
   KeyboardTypeOptions,
 } from 'react-native';
 
-export default function InputField({
+function InputField({
   label,
   icon,
   inputType,
@@ -17,9 +17,9 @@ export default function InputField({
 }: {
   label: string;
   icon: any;
-  inputType: string;
-  keyboardType: KeyboardTypeOptions | undefined;
-  fieldButtonLabel: string;
+  inputType?: string;
+  keyboardType?: KeyboardTypeOptions | undefined;
+  fieldButtonLabel?: string;
   fieldButtonFunction?: () => void;
 }) {
   return (
@@ -55,3 +55,5 @@ export default function InputField({
     </View>
   );
 }
+
+export default InputField;

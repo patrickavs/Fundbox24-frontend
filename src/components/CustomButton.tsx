@@ -15,6 +15,7 @@ export default function CustomButton({
       style={{
         backgroundColor: AuthTheme.colors.primary,
         padding: 20,
+        paddingHorizontal: 50,
         borderRadius: 10,
         marginBottom: 30,
       }}>
