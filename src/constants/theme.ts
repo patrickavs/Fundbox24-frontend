@@ -1,14 +1,9 @@
 import {DefaultTheme} from '@react-navigation/native';
 
-export const Theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-  },
-  fonts: {
-    inter: 'Inter',
-  },
+const baseFont = {
+  interRegular: require('../assets/fonts/inter/Inter-Regular.ttf'),
 };
+
 export const AuthTheme = {
   ...DefaultTheme,
   colors: {
@@ -16,12 +11,13 @@ export const AuthTheme = {
     text: '#000000',
     headline: '#547892',
     primaryBackground: '#FFFFFF',
-    secondaryBackground: '#3082BF',
-    accentSecondary: '#DFF1FF',
-    accentPrimary: '#EBF0F2',
+    secondaryBackground: '#3082BF', // Button
+    accentPrimary: '#EBF0F2', // Eingabefelder
+    accentSecondary: '#DFF1FF', // Header
   },
   fonts: {
-    regular: 'Regular, 14px',
+    regular: baseFont.interRegular,
+    fontSize: 15,
   },
 };
 
@@ -30,11 +26,7 @@ export const PopUpTheme = {
   colors: {
     ...DefaultTheme.colors,
     text: '#000000',
-    headline: '#547892',
-    primaryBackground: '#FFFFFF',
-    secondaryBackground: '#3082BF',
-    accentSecondary: '#DFF1FF',
-    accentPrimary: '#EBF0F2',
+    background: '#FFFFFF',
   },
 };
 
