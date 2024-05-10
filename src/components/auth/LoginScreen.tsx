@@ -1,7 +1,6 @@
 import React from 'react';
 import {SafeAreaView, View, Text, TouchableOpacity, Image} from 'react-native';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import '../../assets/images/login.png';
@@ -39,14 +38,7 @@ function LoginScreen(): React.JSX.Element {
 
         <InputField
           label={'E-Mail'}
-          icon={
-            <MaterialIcons
-              name="alternate-email"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
-          }
+          icon={<Ionicons name="at-outline" size={20} color="#666" />}
           keyboardType="email-address"
           inputType={'email-address'}
         />
@@ -55,10 +47,10 @@ function LoginScreen(): React.JSX.Element {
           label={'Passwort'}
           icon={
             <Ionicons
-              name="ios-lock-closed-outline"
+              name="lock-closed-outline"
               size={20}
               color="#666"
-              style={{marginRight: 5}}
+              style={{marginLeft: -5}}
             />
           }
           inputType="password"
