@@ -49,6 +49,7 @@ function CustomDropdown() {
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={item => {
+          // @ts-ignore
           setValue(item.value);
           setIsFocus(false);
         }}

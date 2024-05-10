@@ -13,6 +13,8 @@ function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation();
 
   const handleRegisterPress = () => {
+    // TODO: Define screen names!
+    // @ts-ignore
     navigation.navigate('Register');
   };
   return (
