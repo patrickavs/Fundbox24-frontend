@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import CustomHeader from '../../CustomHeader.tsx';
 import CustomButton from '../../CustomButton.tsx';
-import {MyTheme} from '../../../constants/theme.ts';
+import {AuthTheme, PopUpTheme} from '../../../constants/theme.ts';
 
 function AuthAlert({
   headerTitle = 'Vielen Dank!',
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 16,
-    backgroundColor: MyTheme.colors.background,
+    backgroundColor: AuthTheme.colors.accentPrimary,
     paddingHorizontal: 15,
     paddingVertical: 15,
     borderRadius: 10,

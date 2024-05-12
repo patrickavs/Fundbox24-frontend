@@ -1,6 +1,6 @@
 import {Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {MyTheme} from '../constants/theme.ts';
+import {AuthTheme} from '../constants/theme.ts';
 
 export default function CustomButton({
   label,
@@ -13,7 +13,7 @@ export default function CustomButton({
     <TouchableOpacity
       onPress={onPress}
       style={{
-        backgroundColor: MyTheme.colors.primary,
+        backgroundColor: AuthTheme.colors.secondaryBackground,
         padding: 20,
         paddingHorizontal: 50,
         borderRadius: 10,
