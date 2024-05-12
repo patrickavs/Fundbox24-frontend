@@ -13,7 +13,7 @@ export default function CustomButton({
     <TouchableOpacity
       onPress={onPress}
       style={{
-        backgroundColor: AuthTheme.colors.primary,
+        backgroundColor: AuthTheme.colors.secondaryBackground,
         padding: 20,
         paddingHorizontal: 50,
         borderRadius: 10,
