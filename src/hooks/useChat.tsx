@@ -9,62 +9,86 @@ import {
   useCallback,
 } from 'react';
 import {CHAT_URL, MESSAGE_URL} from '../routes';
+import {FetchType, fetchAdapter} from '../mockups/fetching.ts';
 
 type ChatContextType = {
   chats: Array<Chat>;
   setChats: React.Dispatch<React.SetStateAction<Array<Chat>>>;
+  error?: string;
+  setError: React.Dispatch<React.SetStateAction<string | undefined>>;
   startTransition: React.TransitionStartFunction;
   isPending: boolean;
-  addChat: (userToken: string, contactedUser: string) => void;
-  addMessage: (userToken: string, chatId: string, message: Message) => void;
+  createChat: (
+    userToken: string,
+    contactedUser: string,
+    message: NewMessage,
+  ) => void;
+  addMessage: (userToken: string, chatId: string, message: NewMessage) => void;
   removeChat: (userToken: string, chatId: string) => void;
 };
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
+
+// Warning: Fetcher should be in injected in higher level component
+const fetch: FetchType = fetchAdapter;
 
 export const useChat = (userToken: string) => {
   const {
     startTransition,
     isPending,
     setChats,
+    error,
+    setError,
     chats,
-    addChat,
+    createChat,
     removeChat,
     addMessage,
   } = useContext(ChatContext);
 
   useEffect(() => {
     startTransition(() => {
-      fetch(CHAT_URL)
-        .then(response => setChats(sampleChatData))
-        .catch(e => console.error(e));
+      fetch({method: 'get', url: CHAT_URL}).then(response => {
+        if (response.success) {
+          setChats(response.data);
+        } else {
+          setError(response.error);
+        }
+      });
     });
   }, []);
 
-  return {isPending, chats, addChat, removeChat, addMessage}; // Der returned wichtige Daten und Funktionen
+  return {isPending, error, chats, createChat, removeChat, addMessage}; // Der returned wichtige Daten und Funktionen
 };
 
 export function ChatProvider({children}: {children: React.ReactNode}) {
   const [chats, setChats] = useState<Array<Chat>>([]);
+  const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
 
-  const addChat = useCallback(
-    async (userToken: string, contactedUser: string) => {
-      startTransition( () => {
-        fetch(CHAT_URL, {
-          method: 'POST',
-          body: contactedUser,
+  const createChat = useCallback(
+    async (
+      userToken: string,
+      contactedUser: string,
+      initialMessage: NewMessage,
+    ) => {
+      startTransition(() => {
+        fetch({
+          method: 'post',
+          url: CHAT_URL,
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${userToken}`,
           },
-        }).then((response: Response) => {
-          if (!response.ok) {
-            // TODO: Set error
-            return;
+          data: {
+            contactedUser,
+            initialMessage,
+          },
+        }).then(response => {
+          if (response.success) {
+            setChats(prev => [...prev, response.data as Chat]);
+          } else {
+            setError(response.error);
           }
-          const data = response.json();
-          setChats(data);
         });
       });
     },
@@ -74,10 +98,24 @@ export function ChatProvider({children}: {children: React.ReactNode}) {
   const addMessage = useCallback(
     async () => (userToken: string, chatId: string, message: NewMessage) => {
       startTransition(() => {
-        fetch(MESSAGE_URL(chatId), {
-          method: 'POST',
-        }).then((response: Response) => {
-          setChats(sampleChatData);
+        fetch({
+          method: 'post',
+          url: MESSAGE_URL(chatId),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userToken}`,
+          },
+          data: message,
+        }).then(response => {
+          if (response.success) {
+            chats
+              .filter(chat => chat.id === chatId)[0]
+              ?.messages.push(response.data);
+            // Force reload
+            setChats(prev => [...prev]);
+          } else {
+            setError(response.error);
+          }
         });
       });
     },
@@ -85,19 +123,36 @@ export function ChatProvider({children}: {children: React.ReactNode}) {
   );
 
   const removeChat = useCallback(async (userToken: string, chatId: string) => {
-    fetch(`${CHAT_URL}/${chatId}`, {method: 'DELETE'}).then(
-      (response: Response) => {},
-    );
+    startTransition(() => {
+      fetch({
+        method: 'delete',
+        url: CHAT_URL,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+        .then(response => {
+          if (response.success) {
+            setChats(prev => prev.filter(chat => chat.id === chatId));
+          } else {
+            setError(response.error);
+          }
+        })
+        .catch(error => setError(JSON.stringify(error)));
+    });
   }, []);
 
   return (
     <ChatContext.Provider
       value={{
+        error,
+        setError,
         chats,
         setChats,
         startTransition,
         isPending,
-        addChat,
+        createChat,
         addMessage,
         removeChat,
       }}>
