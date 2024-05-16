@@ -1,17 +1,16 @@
-/**
- * @format
- */
-
-import 'react-native';
-import React from 'react';
-import App from '../App';
+import renderer from 'react-test-renderer';
+import App from '../src/App';
 
 // Note: import explicitly to use the types shipped with jest.
-import {it} from '@jest/globals';
+import {expect,it} from '@jest/globals';
+import {render} from '@testing-library/react-native';
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+it('renders App correctly', () => {
+  render(<App />);
+});
 
-it('renders correctly', () => {
-  renderer.create(<App />);
+it('renderer App has 2 child', () => {
+  const tree = renderer.create(<App />).toJSON();
+  //console.log(JSON.stringify(tree));
+  expect(tree.children.length).toBe(2);
 });

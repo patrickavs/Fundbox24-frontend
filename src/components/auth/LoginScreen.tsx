@@ -49,13 +49,14 @@ function LoginScreen(): React.JSX.Element {
           }
           keyboardType="email-address"
           inputType={'email-address'}
+          fieldButtonLabel={''}
         />
 
         <InputField
           label={'Passwort'}
           icon={
-            <Ionicons
-              name="ios-lock-closed-outline"
+            <MaterialIcons
+              name="lock-outline"
               size={20}
               color="#666"
               style={{marginRight: 5}}
@@ -64,6 +65,7 @@ function LoginScreen(): React.JSX.Element {
           inputType="password"
           keyboardType={'visible-password'}
           fieldButtonFunction={() => {}}
+          fieldButtonLabel={''}
         />
 
         <CustomButton label={'Login'} onPress={() => {}} />
