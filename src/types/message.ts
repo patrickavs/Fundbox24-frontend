@@ -7,4 +7,7 @@ export type Message = {
   chatId: string;
 };
 
-export type NewMessage = Omit<Message, 'id' | 'createdAt'>;
+export type NewMessage = Omit<
+  Message,
+  'id' | 'createdAt' | 'userId' | 'chatId'
+>;
