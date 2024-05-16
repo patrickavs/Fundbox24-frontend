@@ -4,6 +4,8 @@ import {Button, ScrollView, Text, TextInput, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import {LostReport} from '../../types/report-lost';
 import CustomDropdown from '../../components/CustomDropdown.tsx';
+import CustomHeader from '../../components/CustomHeader.tsx';
+import {FoundReportTheme} from '../../constants/theme.ts';
 
 function ListItem({report}: {report: LostReport}): React.JSX.Element {
   return (
@@ -23,6 +25,10 @@ function LostReportScreen(): React.JSX.Element {
 
   return (
     <ScrollView>
+      <CustomHeader
+        backgroundColor={FoundReportTheme.colors.button1}
+        title={'Fundanzeigen'}
+      />
       <Text>Suchanzeigen</Text>
       <TextInput />
       <View>

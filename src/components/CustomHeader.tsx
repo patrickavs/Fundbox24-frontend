@@ -4,12 +4,14 @@ import {AuthTheme} from '../constants/theme.ts';
 
 function CustomHeader({
   title = 'dajsdhajds',
+  backgroundColor = AuthTheme.colors.accentSecondary,
 }: {
   title: string;
+  backgroundColor?: string;
 }): React.JSX.Element {
   return (
     <>
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor}]}>
         <Text style={styles.title}>{title}</Text>
       </View>
     </>
@@ -18,7 +20,6 @@ function CustomHeader({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: AuthTheme.colors.accentSecondary,
     borderBottomEndRadius: 30,
     borderBottomStartRadius: 30,
     height: 100,
