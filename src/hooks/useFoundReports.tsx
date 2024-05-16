@@ -28,27 +28,36 @@ const FoundReportsContext = createContext<FoundReportsContextType>(
 );
 
 export function useFoundReports() {
-  const context = useContext(FoundReportsContext);
+  const {
+    isPending,
+    startTransition,
+    createFoundReport,
+    setFoundReports,
+    setError,
+    foundReports,
+    error,
+    editFoundReport,
+  } = useContext(FoundReportsContext);
 
   // Only loads data when the hook is called the first time
   useEffect(() => {
-    context.startTransition(() => {
+    startTransition(() => {
       fetch({
         method: 'GET',
         url: FOUNDREPORT_URL(),
       })
         .then(response => {
           if (response.success) {
-            context.setFoundReports(response.data);
+            setFoundReports(response.data);
           } else {
-            context.setError(response.error);
+            setError(response.error);
           }
         })
-        .catch(error => context.setError(JSON.stringify(error)));
+        .catch(error => setError(JSON.stringify(error)));
     });
-  }, []);
+  }, [startTransition, setFoundReports, setError]);
 
-  return useContext(FoundReportsContext);
+  return {isPending, error, foundReports, createFoundReport, editFoundReport};
 }
 
 export function FoundReportProvider({children}: {children: React.ReactNode}) {
