@@ -1,20 +1,27 @@
 import React from 'react';
 
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, ImageSourcePropType, StyleSheet, Text, View} from 'react-native';
 import {LostReport} from '../../types/report-lost.ts';
-import {LostReportTheme} from '../../constants/theme.ts';
+import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
+import {FoundReport} from '../../types/report-found.ts';
 
 type ReportCardProps = {
-  report: LostReport;
+  report: LostReport | FoundReport;
+  backgroundColor: string;
+  image: ImageSourcePropType;
 };
 
 export default function ReportCard(props: ReportCardProps) {
   return (
     <View key={props.report.id} style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={require('../../assets/images/winter_hat.png')} />
+        <Image source={props.image} />
       </View>
-      <View style={styles.textContainer}>
+      <View
+        style={[
+          styles.textContainer,
+          {backgroundColor: props.backgroundColor},
+        ]}>
         <Text numberOfLines={1}>{props.report.object}</Text>
         {/*TODO: replace placeOfDiscoery with city*/}
         <Text numberOfLines={1}>{props.report.placeOfDiscovery}</Text>
@@ -41,9 +48,14 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     padding: 20,
   },
+  lostReportBackgroundColor: {
+    backgroundColor: LostReportTheme.colors.secondaryAccent,
+  },
+  foundReportBackgroundColor: {
+    backgroundColor: FoundReportTheme.colors.button1,
+  },
   textContainer: {
     borderRadius: 8,
-    backgroundColor: LostReportTheme.colors.secondaryAccent,
     padding: 5,
   },
 });

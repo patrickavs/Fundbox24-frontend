@@ -52,7 +52,14 @@ function LostReportScreen(): React.JSX.Element {
         <FlatList
           style={styles.list}
           data={lostReports}
-          renderItem={({item}) => <ReportCard key={item.id} report={item} />}
+          renderItem={({item}) => (
+            <ReportCard
+              key={item.id}
+              report={item}
+              image={require('../../assets/images/winter_hat.png')}
+              backgroundColor={LostReportTheme.colors.secondaryAccent}
+            />
+          )}
           keyExtractor={item => item.id}
           numColumns={2}
           scrollEnabled={false}
