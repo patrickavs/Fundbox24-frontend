@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {LostReportTheme} from '../../constants/theme.ts';
@@ -65,11 +65,12 @@ const styles = StyleSheet.create({
   report: {},
   subtitle: {
     color: 'black',
-    marginVertical: 20,
+    marginTop: 40,
+    marginBottom: 20,
     fontSize: 17,
   },
   scrollContainer: {
-    margin: 20,
+    padding: 20,
   },
   dropdownContainer: {
     marginTop: 20,
