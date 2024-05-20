@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Dropdown as ReactNativeDropdown} from 'react-native-element-dropdown';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-function Dropdown() {
+type DropdownProps = {
+  style?: any;
+  placeholder?: string;
+};
+
+function Dropdown(props: DropdownProps) {
   const data = [
     {label: 'Item 1', value: '1'},
     {label: 'Item 2', value: '2'},
@@ -18,20 +22,8 @@ function Dropdown() {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[styles.label, isFocus && {color: 'blue'}]}>
-          Dropdown label
-        </Text>
-      );
-    }
-    return null;
-  };
-
   return (
     <View style={styles.container}>
-      {renderLabel()}
       <ReactNativeDropdown
         style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
         placeholderStyle={styles.placeholderStyle}
@@ -40,22 +32,16 @@ function Dropdown() {
         iconStyle={styles.iconStyle}
         data={data}
         search
-        maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? 'Select item' : '...'}
-        searchPlaceholder="Search..."
+        placeholder={props.placeholder}
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={item => {
-          // @ts-ignore
           setValue(item.value);
           setIsFocus(false);
         }}
-        renderLeftIcon={() => (
-          <MaterialIcons name="alternate-email" size={20} color="#666" />
-        )}
       />
     </View>
   );
@@ -65,7 +51,7 @@ export default Dropdown;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    flex: 1,
     padding: 16,
   },
   dropdown: {
@@ -89,6 +75,7 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    color: 'gray',
   },
   selectedTextStyle: {
     fontSize: 16,

@@ -39,8 +39,8 @@ function LostReportScreen(): React.JSX.Element {
       />
 
       <View style={styles.dropdowns}>
-        <Dropdown />
-        <Dropdown />
+        <Dropdown placeholder="Sortieren" />
+        <Dropdown placeholder="Filtern" />
       </View>
       <View>
         {lostReports.map((report, idx) => {
