@@ -1,25 +1,12 @@
 import React from 'react';
 
-import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
-import {LostReport} from '../../types/report-lost';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {LostReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
-
-function ListItem({report}: {report: LostReport}): React.JSX.Element {
-  return (
-    <View>
-      <Text>{report.object}</Text>
-      <Text>{report.description}</Text>
-      <Text>{report.status}</Text>
-      <Text>{report.placeOfDiscovery}</Text>
-      <Text>{report.category.title}</Text>
-      <Button title="Details" onPress={() => {}} />
-    </View>
-  );
-}
+import ReportCard from './ReportCard.tsx';
 
 function LostReportScreen(): React.JSX.Element {
   const {lostReports} = useLostReports();
@@ -60,19 +47,10 @@ function LostReportScreen(): React.JSX.Element {
           />
         </View>
 
-        <Text>Gesucht in deinem Umkreis</Text>
-        <View>
-          {lostReports.map((report, idx) => {
-            // Problem, aktuell wird kein key verwendet
-            if (idx % 2 === 0) {
-              return (
-                <>
-                  <ListItem report={report} />
-                  <Text>Wusstest du schon, dass...</Text>
-                </>
-              );
-            }
-            return <ListItem key={report.id} report={report} />;
+        <Text style={styles.subtitle}>Gesucht in deinem Umkreis</Text>
+        <View style={styles.reportList}>
+          {lostReports.map(report => {
+            return <ReportCard key={report.id} report={report} />;
           })}
         </View>
       </ScrollView>
@@ -83,6 +61,13 @@ function LostReportScreen(): React.JSX.Element {
 export default LostReportScreen;
 
 const styles = StyleSheet.create({
+  reportList: {},
+  report: {},
+  subtitle: {
+    color: 'black',
+    marginVertical: 20,
+    fontSize: 17,
+  },
   scrollContainer: {
     margin: 20,
   },
