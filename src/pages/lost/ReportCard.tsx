@@ -10,16 +10,17 @@ type ReportCardProps = {
 
 export default function ReportCard(props: ReportCardProps) {
   return (
-    <View key={props.report.id}>
+    <View key={props.report.id} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={require('../../assets/images/winter_hat.png')} />
       </View>
       <View style={styles.textContainer}>
-        <Text>{props.report.object}</Text>
+        <Text numberOfLines={1}>{props.report.object}</Text>
         {/*TODO: replace placeOfDiscoery with city*/}
-        <Text>{props.report.placeOfDiscovery}</Text>
-        <Text>
-          {'Zuletzt gesehen am ' + props.report.timeOfDiscovery.toDateString()}
+        <Text numberOfLines={1}>{props.report.placeOfDiscovery}</Text>
+        <Text>Zuletzt gesehen am</Text>
+        <Text numberOfLines={1}>
+          {props.report.timeOfDiscovery.toDateString()}
         </Text>
       </View>
     </View>
@@ -27,7 +28,14 @@ export default function ReportCard(props: ReportCardProps) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
   imageContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 8,
     borderColor: 'lightgray',
     borderWidth: 3,

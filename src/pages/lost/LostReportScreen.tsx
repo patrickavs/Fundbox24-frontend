@@ -1,12 +1,13 @@
 import React from 'react';
 
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {LostReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import ReportCard from './ReportCard.tsx';
+import {defaultSerializeQueryArgs} from '@reduxjs/toolkit/query';
 
 function LostReportScreen(): React.JSX.Element {
   const {lostReports} = useLostReports();
@@ -48,11 +49,14 @@ function LostReportScreen(): React.JSX.Element {
         </View>
 
         <Text style={styles.subtitle}>Gesucht in deinem Umkreis</Text>
-        <View style={styles.reportList}>
-          {lostReports.map(report => {
-            return <ReportCard key={report.id} report={report} />;
-          })}
-        </View>
+
+        <FlatList
+          data={lostReports}
+          renderItem={({item}) => <ReportCard key={item.id} report={item} />}
+          keyExtractor={item => item.id}
+          numColumns={2}
+          scrollEnabled={false}
+        />
       </ScrollView>
     </View>
   );
@@ -61,8 +65,6 @@ function LostReportScreen(): React.JSX.Element {
 export default LostReportScreen;
 
 const styles = StyleSheet.create({
-  reportList: {},
-  report: {},
   subtitle: {
     color: 'black',
     marginTop: 40,
