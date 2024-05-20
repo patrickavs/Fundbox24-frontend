@@ -72,6 +72,20 @@ const lostReports: LostReport[] = [
       requiresAction: false,
     },
   },
+  {
+    id: 'g',
+    object: 'Handy',
+    description: 'Ein schwarzes iPhone 12 mit einer blauen Hülle',
+    status: 'lost',
+    timeOfDiscovery: new Date(),
+    placeOfDiscovery: 'Auf dem Sitz im Bus Linie 42',
+    category: {
+      id: '7',
+      value: 'phone',
+      title: 'Handy',
+      requiresAction: true,
+    },
+  },
 ];
 
 export default lostReports;
