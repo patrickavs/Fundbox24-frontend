@@ -2,34 +2,38 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Dropdown as ReactNativeDropdown} from 'react-native-element-dropdown';
 
+type DropdownItem = {
+  label: string;
+  value: string;
+};
+
 type DropdownProps = {
   style?: any;
   placeholder?: string;
-  items: {label: string; value: string}[];
+  items: DropdownItem[];
+  onChange: (item: DropdownItem) => void;
 };
 
 function Dropdown(props: DropdownProps) {
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState<string | null>(null);
   const [isFocus, setIsFocus] = useState(false);
 
   return (
     <View style={styles.container}>
       <ReactNativeDropdown
-        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        style={[styles.dropdown, isFocus ? styles.focus : null]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
         data={props.items}
         search
         labelField="label"
         valueField="value"
         placeholder={props.placeholder}
         value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
         onChange={item => {
           setValue(item.value);
+          props.onChange(item);
           setIsFocus(false);
         }}
       />
@@ -42,40 +46,26 @@ export default Dropdown;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+  },
+  focus: {
+    borderColor: 'black',
+    borderWidth: 1,
   },
   dropdown: {
-    height: 50,
+    height: 65,
     borderColor: 'gray',
     borderWidth: 0.5,
     borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  label: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
+    padding: 10,
   },
   placeholderStyle: {
     fontSize: 16,
     color: 'gray',
   },
   selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
+    fontSize: 15,
   },
   inputSearchStyle: {
-    height: 40,
     fontSize: 16,
   },
 });

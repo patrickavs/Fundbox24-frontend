@@ -46,6 +46,9 @@ function LostReportScreen(): React.JSX.Element {
             {label: 'Zuletzt gesehen', value: 'last seen'},
             {label: 'Entfernung', value: 'distance'},
           ]}
+          onChange={item => {
+            console.log('Benutzer hat sortiert nach: ' + item.value);
+          }}
         />
         <Dropdown
           placeholder="Filtern"
@@ -53,6 +56,9 @@ function LostReportScreen(): React.JSX.Element {
             {label: 'Nur mein Heimatumkreis', value: 'in my region'},
             {label: 'Nur heute', value: 'only today'},
           ]}
+          onChange={item => {
+            console.log('Benutzer hat gefiltert nach: ' + item.value);
+          }}
         />
       </View>
       <View>
