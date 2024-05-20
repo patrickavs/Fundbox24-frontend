@@ -1,22 +1,12 @@
 import React from 'react';
 
-import {
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import {LostReport} from '../../types/report-lost';
 import CustomDropdown from '../../components/CustomDropdown.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
-import {
-  AuthTheme,
-  FoundReportTheme,
-  LostReportTheme,
-} from '../../constants/theme.ts';
+import {AuthTheme, LostReportTheme} from '../../constants/theme.ts';
+import SearchBar from '../../components/SearchBar.tsx';
 
 function ListItem({report}: {report: LostReport}): React.JSX.Element {
   return (
@@ -40,7 +30,8 @@ function LostReportScreen(): React.JSX.Element {
         backgroundColor={LostReportTheme.colors.secondaryAccent}
         title={'Suchanzeigen'}
       />
-      <TextInput style={styles.textInput} />
+
+      <SearchBar style={styles.searchBar} />
 
       <View style={styles.dropdowns}>
         <CustomDropdown />
@@ -67,6 +58,9 @@ function LostReportScreen(): React.JSX.Element {
 export default LostReportScreen;
 
 const styles = StyleSheet.create({
+  searchBar: {
+    margin: 30,
+  },
   dropdowns: {
     display: 'flex',
     flexDirection: 'row',
