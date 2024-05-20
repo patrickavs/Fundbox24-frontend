@@ -7,7 +7,6 @@ import {LostReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import ReportCard from './ReportCard.tsx';
-import {defaultSerializeQueryArgs} from '@reduxjs/toolkit/query';
 
 function LostReportScreen(): React.JSX.Element {
   const {lostReports} = useLostReports();
@@ -51,6 +50,7 @@ function LostReportScreen(): React.JSX.Element {
         <Text style={styles.subtitle}>Gesucht in deinem Umkreis</Text>
 
         <FlatList
+          style={styles.list}
           data={lostReports}
           renderItem={({item}) => <ReportCard key={item.id} report={item} />}
           keyExtractor={item => item.id}
@@ -65,6 +65,9 @@ function LostReportScreen(): React.JSX.Element {
 export default LostReportScreen;
 
 const styles = StyleSheet.create({
+  list: {
+    marginBottom: 200,
+  },
   subtitle: {
     color: 'black',
     marginTop: 40,
