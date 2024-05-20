@@ -4,7 +4,7 @@ import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import {LostReport} from '../../types/report-lost';
 import CustomHeader from '../../components/CustomHeader.tsx';
-import {AuthTheme, LostReportTheme} from '../../constants/theme.ts';
+import {LostReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 
@@ -88,15 +88,5 @@ const styles = StyleSheet.create({
   dropdowns: {
     display: 'flex',
     flexDirection: 'row',
-  },
-  textInput: {
-    fontSize: 16,
-    backgroundColor: AuthTheme.colors.accentPrimary,
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    borderRadius: 10,
-    elevation: 4,
-    marginHorizontal: 15,
-    marginVertical: 15,
   },
 });
