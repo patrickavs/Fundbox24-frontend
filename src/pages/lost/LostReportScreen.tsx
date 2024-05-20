@@ -3,10 +3,10 @@ import React from 'react';
 import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import {LostReport} from '../../types/report-lost';
-import CustomDropdown from '../../components/CustomDropdown.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {AuthTheme, LostReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
+import Dropdown from '../../components/Dropdown.tsx';
 
 function ListItem({report}: {report: LostReport}): React.JSX.Element {
   return (
@@ -34,8 +34,8 @@ function LostReportScreen(): React.JSX.Element {
       <SearchBar style={styles.searchBar} />
 
       <View style={styles.dropdowns}>
-        <CustomDropdown />
-        <CustomDropdown />
+        <Dropdown />
+        <Dropdown />
       </View>
       <View>
         {lostReports.map((report, idx) => {

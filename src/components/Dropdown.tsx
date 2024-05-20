@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
+import {Dropdown as ReactNativeDropdown} from 'react-native-element-dropdown';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-function CustomDropdown() {
+function Dropdown() {
   const data = [
     {label: 'Item 1', value: '1'},
     {label: 'Item 2', value: '2'},
@@ -32,7 +32,7 @@ function CustomDropdown() {
   return (
     <View style={styles.container}>
       {renderLabel()}
-      <Dropdown
+      <ReactNativeDropdown
         style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
@@ -61,7 +61,7 @@ function CustomDropdown() {
   );
 }
 
-export default CustomDropdown;
+export default Dropdown;
 
 const styles = StyleSheet.create({
   container: {
