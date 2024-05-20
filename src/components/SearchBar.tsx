@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     backgroundColor: AuthTheme.colors.accentPrimary,
     paddingHorizontal: 20,
     paddingVertical: 5,
-    borderRadius: 10,
-    elevation: 4,
+    borderRadius: 8,
+    borderColor: 'lightgray',
+    borderWidth: 3,
   },
 });
