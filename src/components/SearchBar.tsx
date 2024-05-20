@@ -5,13 +5,14 @@ import {AuthTheme} from '../constants/theme.ts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 type SearchBarProps = {
+  onChangeText?: (text: string) => void;
   style?: any;
 };
 
 export default function SearchBar(props: SearchBarProps) {
   return (
     <View style={[props.style, styles.container]}>
-      <TextInput style={styles.textInput} />
+      <TextInput style={styles.textInput} onChangeText={props.onChangeText} />
       <Icon name="search" size={20} />
     </View>
   );

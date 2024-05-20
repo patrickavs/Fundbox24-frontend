@@ -31,7 +31,12 @@ function LostReportScreen(): React.JSX.Element {
         title={'Suchanzeigen'}
       />
 
-      <SearchBar style={styles.searchBar} />
+      <SearchBar
+        style={styles.searchBar}
+        onChangeText={text => {
+          console.log('Benutzer sucht nach: ' + text);
+        }}
+      />
 
       <View style={styles.dropdowns}>
         <Dropdown />
