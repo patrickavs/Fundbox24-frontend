@@ -5,20 +5,10 @@ import {Dropdown as ReactNativeDropdown} from 'react-native-element-dropdown';
 type DropdownProps = {
   style?: any;
   placeholder?: string;
+  items: {label: string; value: string}[];
 };
 
 function Dropdown(props: DropdownProps) {
-  const data = [
-    {label: 'Item 1', value: '1'},
-    {label: 'Item 2', value: '2'},
-    {label: 'Item 3', value: '3'},
-    {label: 'Item 4', value: '4'},
-    {label: 'Item 5', value: '5'},
-    {label: 'Item 6', value: '6'},
-    {label: 'Item 7', value: '7'},
-    {label: 'Item 8', value: '8'},
-  ];
-
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -30,7 +20,7 @@ function Dropdown(props: DropdownProps) {
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={data}
+        data={props.items}
         search
         labelField="label"
         valueField="value"

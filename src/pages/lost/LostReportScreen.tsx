@@ -39,8 +39,21 @@ function LostReportScreen(): React.JSX.Element {
       />
 
       <View style={styles.dropdowns}>
-        <Dropdown placeholder="Sortieren" />
-        <Dropdown placeholder="Filtern" />
+        <Dropdown
+          placeholder="Sortieren"
+          items={[
+            {label: 'Alphabetisch', value: 'alphabetical'},
+            {label: 'Zuletzt gesehen', value: 'last seen'},
+            {label: 'Entfernung', value: 'distance'},
+          ]}
+        />
+        <Dropdown
+          placeholder="Filtern"
+          items={[
+            {label: 'Nur mein Heimatumkreis', value: 'in my region'},
+            {label: 'Nur heute', value: 'only today'},
+          ]}
+        />
       </View>
       <View>
         {lostReports.map((report, idx) => {
