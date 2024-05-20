@@ -84,6 +84,7 @@ function Tabbar() {
         name="Gefunden"
         component={FoundReportScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons
               name={focused ? 'bag-check' : 'bag-check-outline'}
