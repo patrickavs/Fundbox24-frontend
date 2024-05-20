@@ -6,6 +6,7 @@ import {
   useState,
   createContext,
 } from 'react';
+import foundReports from '../assets/dummyData/foundReports.ts';
 
 type FoundReportsContextType = {
   isPending: boolean;
@@ -14,7 +15,7 @@ type FoundReportsContextType = {
 
 const FoundReportsContext = createContext<FoundReportsContextType>({
   isPending: true,
-  foundReports: [],
+  foundReports,
 });
 
 export function useFoundReports() {
