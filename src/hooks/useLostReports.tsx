@@ -6,6 +6,7 @@ import {
   useState,
   createContext,
 } from 'react';
+import lostReports from '../assets/dummyData/lostReports.ts';
 
 type LostReportsContextType = {
   isPending: boolean;
@@ -14,7 +15,9 @@ type LostReportsContextType = {
 
 const LostReportsContext = createContext<LostReportsContextType>({
   isPending: true,
-  lostReports: [],
+
+  // TODO: dummy data, replace with real data from backend
+  lostReports,
 });
 
 export function useLostReports() {
