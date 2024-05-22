@@ -1,4 +1,4 @@
-import {FoundReport, NewFoundReport} from '../types/report-found';
+import { FoundReport, NewFoundReport } from '../types/report-found';
 import React, {
   useTransition,
   useEffect,
@@ -7,8 +7,9 @@ import React, {
   createContext,
   useCallback,
 } from 'react';
-import {fetchAdapter, FetchType} from '../mockups/fetching.ts';
-import {FOUNDREPORT_URL} from '../routes';
+import foundReports from '../assets/dummyData/foundReports.ts';
+import { fetchAdapter, FetchType } from '../mockups/fetching.ts';
+import { FOUNDREPORT_URL } from '../routes';
 
 const fetch: FetchType = fetchAdapter;
 
@@ -57,10 +58,10 @@ export function useFoundReports() {
     });
   }, [startTransition, setFoundReports, setError]);
 
-  return {isPending, error, foundReports, createFoundReport, editFoundReport};
+  return { isPending, error, foundReports, createFoundReport, editFoundReport };
 }
 
-export function FoundReportProvider({children}: {children: React.ReactNode}) {
+export function FoundReportProvider({ children }: { children: React.ReactNode }) {
   const [foundReports, setFoundReports] = useState<Array<FoundReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -102,7 +103,7 @@ export function FoundReportProvider({children}: {children: React.ReactNode}) {
         .then(response => {
           if (response.success) {
             setFoundReports(prev => [
-              ...prev.filter(({id}) => id !== report.id),
+              ...prev.filter(({ id }) => id !== report.id),
               response.data as FoundReport,
             ]);
           } else {

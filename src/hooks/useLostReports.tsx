@@ -1,4 +1,4 @@
-import {LostReport, NewLostReport} from '../types/report-lost.ts';
+import { LostReport, NewLostReport } from '../types/report-lost.ts';
 import React, {
   useTransition,
   useEffect,
@@ -7,10 +7,11 @@ import React, {
   createContext,
   useCallback,
 } from 'react';
-import {fetchAdapter, FetchType} from '../mockups/fetching.ts';
-import {LOSTREPORT_URL} from '../routes';
+import { fetchAdapter, FetchType } from '../mockups/fetching.ts';
+import { LOSTREPORT_URL } from '../routes';
 
 const fetch: FetchType = fetchAdapter;
+import lostReports from '../assets/dummyData/lostReports.ts';
 
 type LostReportContextType = {
   isPending: boolean;
@@ -57,10 +58,10 @@ export function useLostReports() {
     });
   }, [startTransition, setLostReports, setError]);
 
-  return {isPending, lostReports, error, createLostReport, editLostReport};
+  return { isPending, lostReports, error, createLostReport, editLostReport };
 }
 
-export function FoundReportProvider({children}: {children: React.ReactNode}) {
+export function FoundReportProvider({ children }: { children: React.ReactNode }) {
   const [lostReports, setLostReports] = useState<Array<LostReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -102,7 +103,7 @@ export function FoundReportProvider({children}: {children: React.ReactNode}) {
         .then(response => {
           if (response.success) {
             setLostReports(prev => [
-              ...prev.filter(({id}) => id !== report.id),
+              ...prev.filter(({ id }) => id !== report.id),
               response.data as LostReport,
             ]);
           } else {
