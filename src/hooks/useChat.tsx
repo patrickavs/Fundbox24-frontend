@@ -6,64 +6,156 @@ import {
   useState,
   useTransition,
   useEffect,
+  useCallback,
 } from 'react';
+import {CHAT_URL, MESSAGE_URL} from '../routes';
+import {FetchType, fetchAdapter} from '../mockups/fetching.ts';
 
 type ChatContextType = {
   chats: Array<Chat>;
+  setChats: React.Dispatch<React.SetStateAction<Array<Chat>>>;
+  error?: string;
+  setError: React.Dispatch<React.SetStateAction<string | undefined>>;
+  startTransition: React.TransitionStartFunction;
   isPending: boolean;
-  addChat: (contactedUser: string) => void;
-  addMessage: (chatId: string, message: Message) => void;
-  removeChat: (chatId: string) => void;
+  createChat: (
+    userToken: string,
+    contactedUser: string,
+    message: NewMessage,
+  ) => void;
+  addMessage: (userToken: string, chatId: string, message: NewMessage) => void;
+  removeChat: (userToken: string, chatId: string) => void;
 };
 
-const ChatContext = createContext<ChatContextType>({
-  chats: [],
-  isPending: false,
-  addChat: () => {},
-  addMessage: () => {},
-  removeChat: () => {},
-});
+const ChatContext = createContext<ChatContextType>({} as ChatContextType);
 
-export const useChat = () => {
-  return useContext(ChatContext);
+// Warning: Fetcher should be in injected in higher level component
+const fetch: FetchType = fetchAdapter;
+
+export const useChat = (userToken: string) => {
+  const {
+    startTransition,
+    isPending,
+    setChats,
+    error,
+    setError,
+    chats,
+    createChat,
+    removeChat,
+    addMessage,
+  } = useContext(ChatContext);
+
+  useEffect(() => {
+    startTransition(() => {
+      fetch({method: 'get', url: CHAT_URL}).then(response => {
+        if (response.success) {
+          setChats(response.data);
+        } else {
+          setError(response.error);
+        }
+      });
+    });
+  }, []);
+
+  return {isPending, error, chats, createChat, removeChat, addMessage}; // Der returned wichtige Daten und Funktionen
 };
 
 export function ChatProvider({children}: {children: React.ReactNode}) {
   const [chats, setChats] = useState<Array<Chat>>([]);
+  const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
 
-  useEffect(() => {
+  const createChat = useCallback(
+    async (
+      userToken: string,
+      contactedUser: string,
+      initialMessage: NewMessage,
+    ) => {
+      startTransition(() => {
+        fetch({
+          method: 'post',
+          url: CHAT_URL,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userToken}`,
+          },
+          data: {
+            contactedUser,
+            initialMessage,
+          },
+        }).then(response => {
+          if (response.success) {
+            setChats(prev => [...prev, response.data as Chat]);
+          } else {
+            setError(response.error);
+          }
+        });
+      });
+    },
+    [],
+  );
+
+  const addMessage = useCallback(
+    async () => (userToken: string, chatId: string, message: NewMessage) => {
+      startTransition(() => {
+        fetch({
+          method: 'post',
+          url: MESSAGE_URL(chatId),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userToken}`,
+          },
+          data: message,
+        }).then(response => {
+          if (response.success) {
+            chats
+              .filter(chat => chat.id === chatId)[0]
+              ?.messages.push(response.data);
+            // Force reload
+            setChats(prev => [...prev]);
+          } else {
+            setError(response.error);
+          }
+        });
+      });
+    },
+    [],
+  );
+
+  const removeChat = useCallback(async (userToken: string, chatId: string) => {
     startTransition(() => {
-      // TODO: Change to fetch call
-      // TODO: Use an userId here
-      setChats(sampleChatData);
+      fetch({
+        method: 'delete',
+        url: CHAT_URL,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+        .then(response => {
+          if (response.success) {
+            setChats(prev => prev.filter(chat => chat.id === chatId));
+          } else {
+            setError(response.error);
+          }
+        })
+        .catch(error => setError(JSON.stringify(error)));
     });
   }, []);
 
-  // TODO: useCallback or useMemo to prevent unnecessary rerenders
-  const addChat = (contactedUser: string) => {
-    startTransition(() => {
-      // TODO: Fetch call to api
-      // setChats([...chats, ]);
-    });
-  };
-
-  const addMessage = (chatId: string, message: NewMessage) => {
-    startTransition(() => {
-      // TODO: Fetch call to api
-    });
-  };
-
-  const removeChat = (chatId: string) => {
-    startTransition(() => {
-      // TODO: Fetch call to api
-      setChats(chats.filter(chat => chat.id !== chatId));
-    });
-  };
-
   return (
     <ChatContext.Provider
-      value={{chats, isPending, addChat, addMessage, removeChat}}>
+      value={{
+        error,
+        setError,
+        chats,
+        setChats,
+        startTransition,
+        isPending,
+        createChat,
+        addMessage,
+        removeChat,
+      }}>
       {children}
     </ChatContext.Provider>
   );
