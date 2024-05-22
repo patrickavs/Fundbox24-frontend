@@ -2,23 +2,17 @@ import React from 'react';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import {Text, View} from 'react-native';
 import {Slider} from '@miblanchard/react-native-slider';
-import {useAppDispatch, useAppSelector} from '../../redux/hooks.ts';
-import constants from '../../constants.ts';
-import {
-  changePosition,
-  changeRadius,
-  selectPosition,
-  selectRadius,
-} from './mapSlice.ts';
+import mapConstants from '../../constants/map.ts';
 import styles from './styles.ts';
 
 const numberFormat = Intl.NumberFormat('de-DE', {maximumFractionDigits: 1});
 
-function SetPerimeterScreen(): React.JSX.Element {
-  const position = useAppSelector(selectPosition);
-  const radius = useAppSelector(selectRadius);
+export default function SetPerimeterScreen(): React.JSX.Element {
+  const [position, setPosition] = React.useState<LatLng>(
+    mapConstants.initialMapPosition,
+  );
 
-  const dispatch = useAppDispatch();
+  const [radius, setRadius] = React.useState<number>(mapConstants.minRadius);
 
   function getFormattedDiameter(): string {
     const radiusInKM = radius / 1000;
@@ -27,14 +21,14 @@ function SetPerimeterScreen(): React.JSX.Element {
 
   function onChangeRadius(sliderValue: number) {
     const newRadius =
-      constants.minRadius +
-      sliderValue * (constants.maxRadius - constants.minRadius);
+      mapConstants.minRadius +
+      sliderValue * (mapConstants.maxRadius - mapConstants.minRadius);
 
-    dispatch(changeRadius(newRadius));
+    setRadius(newRadius);
   }
 
   function onChangePosition(newPosition: LatLng) {
-    dispatch(changePosition(newPosition));
+    setPosition(newPosition);
   }
 
   return (
@@ -65,5 +59,3 @@ function SetPerimeterScreen(): React.JSX.Element {
     </View>
   );
 }
-
-export default SetPerimeterScreen;

@@ -2,11 +2,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import StartScreen from '../../pages/home/StartScreen.tsx';
 import LostReportScreen from '../../pages/lost/LostReportScreen.tsx';
 import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
 import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
+import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
 
 const Tab = createBottomTabNavigator();
@@ -19,12 +19,16 @@ const getTabBarOptions = () => ({
   tabBarStyle: {backgroundColor: 'lightgray'},
 });
 
+const AuthAlertView = () => {
+  return <AuthAlert textField={true} />;
+};
+
 function Tabbar() {
   return (
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen
         name="Start"
-        component={AuthStack}
+        component={AuthAlertView}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons
@@ -40,6 +44,7 @@ function Tabbar() {
         name="Verloren"
         component={LostReportScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons
               name={focused ? 'bag-remove' : 'bag-remove-outline'}
@@ -79,6 +84,7 @@ function Tabbar() {
         name="Gefunden"
         component={FoundReportScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons
               name={focused ? 'bag-check' : 'bag-check-outline'}

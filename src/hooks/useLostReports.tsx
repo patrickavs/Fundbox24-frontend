@@ -1,55 +1,133 @@
-import {LostReport} from '../types/report-lost';
-import {
+import { LostReport, NewLostReport } from '../types/report-lost.ts';
+import React, {
   useTransition,
   useEffect,
   useContext,
   useState,
   createContext,
+  useCallback,
 } from 'react';
+import { fetchAdapter, FetchType } from '../mockups/fetching.ts';
+import { LOSTREPORT_URL } from '../routes';
 
-type LostReportsContextType = {
+const fetch: FetchType = fetchAdapter;
+import lostReports from '../assets/dummyData/lostReports.ts';
+
+type LostReportContextType = {
   isPending: boolean;
   lostReports: Array<LostReport>;
+  setLostReports: React.Dispatch<React.SetStateAction<Array<LostReport>>>;
+  error: string | null;
+  setError: React.Dispatch<React.SetStateAction<string | null>>;
+  createLostReport: (userToken: string, report: NewLostReport) => void;
+  editLostReport: (userToken: string, report: LostReport) => void;
+  startTransition: React.TransitionStartFunction;
 };
 
-const LostReportsContext = createContext<LostReportsContextType>({
-  isPending: true,
-  lostReports: [],
-});
+const LostReportContext = createContext<LostReportContextType>(
+  {} as LostReportContextType,
+);
 
 export function useLostReports() {
-  return useContext(LostReportsContext);
-}
+  const {
+    isPending,
+    startTransition,
+    lostReports,
+    setLostReports,
+    setError,
+    createLostReport,
+    editLostReport,
+    error,
+  } = useContext(LostReportContext);
 
-export function LostReportProvider({children}: {children: React.ReactNode}) {
-  const [report, setReports] = useState<Array<LostReport>>([]);
-  const [isPending, startTransition] = useTransition();
-
+  // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      // TODO: fetch userdata
-      // TODO: fetch data
-      const reportData: LostReport = {
-        id: '1',
-        object: 'Schlüssel',
-        description: 'Ein kleiner Schlüssel',
-        status: 'lost',
-        timeOfDiscovery: new Date(),
-        placeOfDiscovery: 'In der Nähe des Eingangs',
-        category: {
-          id: '1',
-          value: 'key',
-          title: 'Schlüssel',
-          requiresAction: false,
-        },
-      };
-      setReports([reportData]);
+      fetch({
+        method: 'GET',
+        url: LOSTREPORT_URL(),
+      })
+        .then(response => {
+          if (response.success) {
+            setLostReports(response.data);
+          } else {
+            setError(response.error);
+          }
+        })
+        .catch(error => setError(JSON.stringify(error)));
     });
-  });
+  }, [startTransition, setLostReports, setError]);
+
+  return { isPending, lostReports, error, createLostReport, editLostReport };
+}
+
+export function FoundReportProvider({ children }: { children: React.ReactNode }) {
+  const [lostReports, setLostReports] = useState<Array<LostReport>>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  const createFoundReport = useCallback(
+    (userToken: string, report: NewLostReport) => {
+      fetch({
+        method: 'POST',
+        url: LOSTREPORT_URL(),
+        data: report,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+        .then(response => {
+          if (response.success) {
+            setLostReports(prev => [...prev, response.data as LostReport]);
+          } else {
+            setError(response.data);
+          }
+        })
+        .catch(error => setError(JSON.stringify(error)));
+    },
+    [],
+  );
+
+  const editFoundReport = useCallback(
+    (userToken: string, report: LostReport) => {
+      fetch({
+        method: 'POST',
+        url: LOSTREPORT_URL(),
+        data: report,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+        .then(response => {
+          if (response.success) {
+            setLostReports(prev => [
+              ...prev.filter(({ id }) => id !== report.id),
+              response.data as LostReport,
+            ]);
+          } else {
+            setError(response.data);
+          }
+        })
+        .catch(error => setError(JSON.stringify(error)));
+    },
+    [],
+  );
 
   return (
-    <LostReportsContext.Provider value={{isPending, lostReports: report}}>
+    <LostReportContext.Provider
+      value={{
+        isPending,
+        lostReports,
+        setLostReports: setLostReports,
+        error,
+        setError,
+        startTransition,
+        createLostReport: createFoundReport,
+        editLostReport: editFoundReport,
+      }}>
       {children}
-    </LostReportsContext.Provider>
+    </LostReportContext.Provider>
   );
 }

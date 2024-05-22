@@ -1,7 +1,6 @@
 import React from 'react';
 import {SafeAreaView, View, Text, TouchableOpacity, Image} from 'react-native';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import '../../assets/images/login.png';
@@ -14,6 +13,8 @@ function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation();
 
   const handleRegisterPress = () => {
+    // TODO: Define screen names!
+    // @ts-ignore
     navigation.navigate('Register');
   };
   return (
@@ -39,14 +40,7 @@ function LoginScreen(): React.JSX.Element {
 
         <InputField
           label={'E-Mail'}
-          icon={
-            <MaterialIcons
-              name="alternate-email"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
-          }
+          icon={<Ionicons name="at-outline" size={20} color="#666" />}
           keyboardType="email-address"
           inputType={'email-address'}
           fieldButtonLabel={''}
@@ -59,7 +53,7 @@ function LoginScreen(): React.JSX.Element {
               name="lock-outline"
               size={20}
               color="#666"
-              style={{marginRight: 5}}
+              style={{marginLeft: -5}}
             />
           }
           inputType="password"
