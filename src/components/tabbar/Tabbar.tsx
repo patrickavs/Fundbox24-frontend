@@ -19,12 +19,16 @@ const getTabBarOptions = () => ({
   tabBarStyle: {backgroundColor: 'lightgray'},
 });
 
+const AuthAlertView = () => {
+  return <AuthAlert textField={true} />;
+};
+
 function Tabbar() {
   return (
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen
         name="Start"
-        component={AuthStack}
+        component={AuthAlertView}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons

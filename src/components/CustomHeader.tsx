@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {MyTheme} from '../constants/theme.ts';
+import {AuthTheme} from '../constants/theme.ts';
 
 function CustomHeader({
   title = 'dajsdhajds',
@@ -18,7 +18,7 @@ function CustomHeader({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: MyTheme.colors.secondary,
+    backgroundColor: AuthTheme.colors.accentSecondary,
     borderBottomEndRadius: 30,
     borderBottomStartRadius: 30,
     height: 100,

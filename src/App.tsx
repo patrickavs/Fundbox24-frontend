@@ -7,7 +7,7 @@ import { ChatProvider } from './hooks/useChat.tsx';
 import { UserProvider } from './hooks/useUser.tsx';
 import { LostReportProvider } from './hooks/useLostReports.tsx';
 import { FoundReportProvider } from './hooks/useFoundReports.tsx';
-import { MyTheme } from './constants/theme.ts';
+import { AuthTheme } from './constants/theme.ts';
 
 function App(): React.JSX.Element {
   return (
@@ -16,7 +16,7 @@ function App(): React.JSX.Element {
         <LostReportProvider>
           <FoundReportProvider>
             <ChatProvider>
-              <NavigationContainer theme={MyTheme}>
+              <NavigationContainer theme={AuthTheme}>
                 <Tabbar />
               </NavigationContainer>
             </ChatProvider>
