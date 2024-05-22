@@ -15,7 +15,6 @@ function App(): React.JSX.Element {
   ]);
 
   return (
-    <Provider store={store}>
       <UserProvider>
         <LostReportProvider>
           <FoundReportProvider>
@@ -27,7 +26,6 @@ function App(): React.JSX.Element {
           </FoundReportProvider>
         </LostReportProvider>
       </UserProvider>
-    </Provider>
   );
 }
 
