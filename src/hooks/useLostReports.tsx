@@ -61,7 +61,7 @@ export function useLostReports() {
   return { isPending, lostReports, error, createLostReport, editLostReport };
 }
 
-export function FoundReportProvider({ children }: { children: React.ReactNode }) {
+export function LostReportProvider({ children }: { children: React.ReactNode }) {
   const [lostReports, setLostReports] = useState<Array<LostReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
