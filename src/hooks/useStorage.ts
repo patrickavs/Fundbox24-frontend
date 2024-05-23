@@ -1,19 +1,15 @@
-import storage from "../lib/storage.ts";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect} from 'react';
 
 export default function useStorage<T>(key: string, initalValue: T) {
-    const [value, setValue] = useState<T>(initalValue);
+  const [value, setValue] = useState<T>(() => {
+    const item = localStorage.getItem(key);
+    const obj: T = JSON.parse(item) || initalValue;
+    return obj;
+  });
 
-    useEffect(() => {
-        storage
-            .load({key: key})
-            .then(setValue)
-            .catch(() => setValue(initalValue));
-    }, []);
+  useEffect(() => {
+    localStorage.setItem(key, value);
+  }, [key, value]);
 
-    useEffect(() => {
-        storage.save({key: key, data: value});
-    }, [key, value]);
-
-    return [value, setValue] as [T, React.Dispatch<React.SetStateAction<T>>];
+  return [value, setValue] as [T, React.Dispatch<React.SetStateAction<T>>];
 }
