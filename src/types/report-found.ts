@@ -2,7 +2,7 @@ import {Category} from './category';
 
 export type FoundReport = {
   id: string;
-  object: string;
+  title: string;
   description: string;
   status: 'found' | 'lost';
   timeOfDiscovery: Date;

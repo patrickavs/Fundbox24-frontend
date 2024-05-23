@@ -22,12 +22,12 @@ export default function ReportCard(props: ReportCardProps) {
           styles.textContainer,
           {backgroundColor: props.backgroundColor},
         ]}>
-        <Text numberOfLines={1}>{props.report.object}</Text>
+        <Text numberOfLines={1}>{props.report.title}</Text>
         {/*TODO: replace placeOfDiscoery with city*/}
         <Text numberOfLines={1}>{props.report.placeOfDiscovery}</Text>
         <Text>Zuletzt gesehen am</Text>
         <Text numberOfLines={1}>
-          {props.report.timeOfDiscovery.toDateString()}
+          {new Date(props.report.timeOfDiscovery).toDateString()}
         </Text>
       </View>
     </View>
