@@ -1,4 +1,4 @@
-import { LostReport, NewLostReport } from '../types/report-lost.ts';
+import {LostReport, NewLostReport} from '../types/report-lost.ts';
 import React, {
   useTransition,
   useEffect,
@@ -7,11 +7,7 @@ import React, {
   createContext,
   useCallback,
 } from 'react';
-import { fetchAdapter, FetchType } from '../mockups/fetching.ts';
-import { LOSTREPORT_URL } from '../routes';
-
-const fetch: FetchType = fetchAdapter;
-import lostReports from '../assets/dummyData/lostReports.ts';
+import {LOSTREPORT_URL} from '../routes';
 
 type LostReportContextType = {
   isPending: boolean;
@@ -43,45 +39,43 @@ export function useLostReports() {
   // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      fetch({
-        method: 'GET',
-        url: LOSTREPORT_URL(),
-      })
-        .then(response => {
-          if (response.success) {
-            setLostReports(response.data);
+      fetch(LOSTREPORT_URL(), {method: 'GET'})
+        .then(async response => {
+          const data = await response.json();
+          if (response.status === 200) {
+            setLostReports(data);
           } else {
-            setError(response.error);
+            setError(data);
           }
         })
         .catch(error => setError(JSON.stringify(error)));
     });
   }, [startTransition, setLostReports, setError]);
 
-  return { isPending, lostReports, error, createLostReport, editLostReport };
+  return {isPending, lostReports, error, createLostReport, editLostReport};
 }
 
-export function LostReportProvider({ children }: { children: React.ReactNode }) {
+export function LostReportProvider({children}: {children: React.ReactNode}) {
   const [lostReports, setLostReports] = useState<Array<LostReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const createFoundReport = useCallback(
     (userToken: string, report: NewLostReport) => {
-      fetch({
+      fetch(LOSTREPORT_URL(), {
         method: 'POST',
-        url: LOSTREPORT_URL(),
-        data: report,
+        body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userToken}`,
         },
       })
-        .then(response => {
-          if (response.success) {
-            setLostReports(prev => [...prev, response.data as LostReport]);
+        .then(async response => {
+          const data = await response.json();
+          if (response.status === 201) {
+            setLostReports(prev => [...prev, data as LostReport]);
           } else {
-            setError(response.data);
+            setError(data);
           }
         })
         .catch(error => setError(JSON.stringify(error)));
@@ -91,23 +85,23 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
 
   const editFoundReport = useCallback(
     (userToken: string, report: LostReport) => {
-      fetch({
-        method: 'POST',
-        url: LOSTREPORT_URL(),
-        data: report,
+      fetch(LOSTREPORT_URL(), {
+        method: 'PUT',
+        body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userToken}`,
         },
       })
-        .then(response => {
-          if (response.success) {
+        .then(async response => {
+          const data = await response.json();
+          if (response.status === 200) {
             setLostReports(prev => [
-              ...prev.filter(({ id }) => id !== report.id),
-              response.data as LostReport,
+              ...prev.filter(({id}) => id !== report.id),
+              data as LostReport,
             ]);
           } else {
-            setError(response.data);
+            setError(data);
           }
         })
         .catch(error => setError(JSON.stringify(error)));
