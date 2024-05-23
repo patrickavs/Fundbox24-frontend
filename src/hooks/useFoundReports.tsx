@@ -1,4 +1,4 @@
-import { FoundReport, NewFoundReport } from '../types/report-found';
+import {FoundReport, NewFoundReport} from '../types/report-found';
 import React, {
   useTransition,
   useEffect,
@@ -8,10 +8,7 @@ import React, {
   useCallback,
 } from 'react';
 import foundReports from '../assets/dummyData/foundReports.ts';
-import { fetchAdapter, FetchType } from '../mockups/fetching.ts';
-import { FOUNDREPORT_URL } from '../routes';
-
-const fetch: FetchType = fetchAdapter;
+import {FOUNDREPORT_URL} from '../routes';
 
 type FoundReportsContextType = {
   isPending: boolean;
@@ -43,45 +40,43 @@ export function useFoundReports() {
   // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      fetch({
-        method: 'GET',
-        url: FOUNDREPORT_URL(),
-      })
-        .then(response => {
-          if (response.success) {
-            setFoundReports(response.data);
+      fetch(FOUNDREPORT_URL(), {method: 'GET'})
+        .then(async response => {
+          const data = await response.json();
+          if (response.status === 200) {
+            setFoundReports(data);
           } else {
-            setError(response.error);
+            setError(data);
           }
         })
         .catch(error => setError(JSON.stringify(error)));
     });
   }, [startTransition, setFoundReports, setError]);
 
-  return { isPending, error, foundReports, createFoundReport, editFoundReport };
+  return {isPending, error, foundReports, createFoundReport, editFoundReport};
 }
 
-export function FoundReportProvider({ children }: { children: React.ReactNode }) {
+export function FoundReportProvider({children}: {children: React.ReactNode}) {
   const [foundReports, setFoundReports] = useState<Array<FoundReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const createFoundReport = useCallback(
     (userToken: string, report: NewFoundReport) => {
-      fetch({
+      fetch(FOUNDREPORT_URL(), {
         method: 'POST',
-        url: FOUNDREPORT_URL(),
-        data: report,
+        body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userToken}`,
         },
       })
-        .then(response => {
-          if (response.success) {
-            setFoundReports(prev => [...prev, response.data as FoundReport]);
+        .then(async response => {
+          const data = await response.json();
+          if (response.status === 201) {
+            setFoundReports(prev => [...prev, data as FoundReport]);
           } else {
-            setError(response.data);
+            setError(data);
           }
         })
         .catch(error => setError(JSON.stringify(error)));
@@ -91,23 +86,23 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
 
   const editFoundReport = useCallback(
     (userToken: string, report: FoundReport) => {
-      fetch({
-        method: 'POST',
-        url: FOUNDREPORT_URL(),
-        data: report,
+      fetch(FOUNDREPORT_URL(report.id), {
+        method: 'PUT',
+        body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userToken}`,
         },
       })
-        .then(response => {
-          if (response.success) {
+        .then(async response => {
+          const data = await response.json();
+          if (response.status === 200) {
             setFoundReports(prev => [
-              ...prev.filter(({ id }) => id !== report.id),
-              response.data as FoundReport,
+              ...prev.filter(({id}) => id !== report.id),
+              data as FoundReport,
             ]);
           } else {
-            setError(response.data);
+            setError(data);
           }
         })
         .catch(error => setError(JSON.stringify(error)));
