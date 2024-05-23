@@ -1,19 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import storage from '../lib/storage.ts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function useStorage<T>(key: string, initalValue: T) {
   const [value, setValue] = useState<T>(initalValue);
 
   useEffect(() => {
-    storage.load<T>({key}).then(value => {
-      if (value !== null) {
-        setValue(value);
+    AsyncStorage.getItem(key).then(value => {
+      if (value) {
+        setValue(JSON.parse(value));
       }
     });
   }, [key]);
 
   useEffect(() => {
-    storage.save({key, data: value});
+    AsyncStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
 
   return [value, setValue] as [T, React.Dispatch<React.SetStateAction<T>>];
