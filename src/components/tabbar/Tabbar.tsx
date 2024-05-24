@@ -105,6 +105,7 @@ function Tabbar() {
               color={color}
             />
           ),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>
