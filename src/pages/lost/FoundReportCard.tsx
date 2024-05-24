@@ -27,7 +27,7 @@ export default function FoundReportCard(props: ReportCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1 / 2,
     padding: 10,
   },
   imageContainer: {
