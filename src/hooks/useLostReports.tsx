@@ -1,17 +1,13 @@
 import {LostReport, NewLostReport} from '../types/report-lost.ts';
 import React, {
-  useTransition,
-  useEffect,
-  useContext,
-  useState,
   createContext,
   useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
 } from 'react';
-import {fetchAdapter, FetchType} from '../mockups/fetching.ts';
 import {ALL_LOST_REPORTS_URL, LOSTREPORT_URL} from '../routes';
-
-const fetch: FetchType = fetchAdapter;
-import lostReports from '../assets/dummyData/lostReports.ts';
 
 type LostReportContextType = {
   isPending: boolean;
@@ -43,18 +39,18 @@ export function useLostReports() {
   // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      fetch({
-        method: 'GET',
-        url: ALL_LOST_REPORTS_URL,
-      })
-        .then(response => {
-          if (response.success) {
-            setLostReports(response.data);
+      fetch(ALL_LOST_REPORTS_URL, {method: 'GET'})
+        .then(async response => {
+          const data = await response.json();
+          if (response.status === 200) {
+            setLostReports(data);
           } else {
-            setError(response.error);
+            setError(data);
           }
         })
-        .catch(error => setError(JSON.stringify(error)));
+        .catch(error => {
+          console.log(error);
+        });
     });
   }, [startTransition, setLostReports, setError]);
 

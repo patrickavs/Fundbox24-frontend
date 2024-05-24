@@ -1,13 +1,12 @@
 import {FoundReport, NewFoundReport} from '../types/report-found';
 import React, {
-  useTransition,
-  useEffect,
-  useContext,
-  useState,
   createContext,
   useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
 } from 'react';
-import foundReports from '../assets/dummyData/foundReports.ts';
 import {ALL_FOUND_REPORTS_URL, FOUNDREPORT_URL} from '../routes';
 
 type FoundReportsContextType = {
@@ -40,8 +39,6 @@ export function useFoundReports() {
   // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      console.log(ALL_FOUND_REPORTS_URL);
-
       fetch(ALL_FOUND_REPORTS_URL, {method: 'GET'})
         .then(async response => {
           const data = await response.json();
