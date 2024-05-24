@@ -10,8 +10,6 @@ import ReportCard from '../lost/ReportCard.tsx';
 function FoundReportScreen(): React.JSX.Element {
   const {foundReports} = useFoundReports();
 
-  console.log(foundReports);
-
   return (
     <View>
       <CustomHeader
