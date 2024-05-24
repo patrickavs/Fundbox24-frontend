@@ -5,7 +5,7 @@ import CustomHeader from '../../components/CustomHeader.tsx';
 import {FoundReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
-import ReportCard from '../lost/ReportCard.tsx';
+import FoundReportCard from '../lost/FoundReportCard.tsx';
 
 function FoundReportScreen(): React.JSX.Element {
   const {foundReports} = useFoundReports();
@@ -52,11 +52,10 @@ function FoundReportScreen(): React.JSX.Element {
           style={styles.list}
           data={foundReports}
           renderItem={({item}) => (
-            <ReportCard
+            <FoundReportCard
               key={item.id}
               report={item}
               image={require('../../assets/images/wallet.png')}
-              backgroundColor={FoundReportTheme.colors.button1}
             />
           )}
           keyExtractor={item => item.id}

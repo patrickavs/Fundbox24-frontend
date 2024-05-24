@@ -6,7 +6,7 @@ import CustomHeader from '../../components/CustomHeader.tsx';
 import {LostReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
-import ReportCard from './ReportCard.tsx';
+import LostReportCard from './LostReportCard.tsx';
 
 function LostReportScreen(): React.JSX.Element {
   const {lostReports} = useLostReports();
@@ -53,11 +53,10 @@ function LostReportScreen(): React.JSX.Element {
           style={styles.list}
           data={lostReports}
           renderItem={({item}) => (
-            <ReportCard
+            <LostReportCard
               key={item.id}
               report={item}
               image={require('../../assets/images/winter_hat.png')}
-              backgroundColor={LostReportTheme.colors.secondaryAccent}
             />
           )}
           keyExtractor={item => item.id}

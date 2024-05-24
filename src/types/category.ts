@@ -1,6 +1,5 @@
 export type Category = {
-    id: string;
-    value: string;
-    title: string;
-    requiresAction: boolean;
+  id: string;
+  name: string;
+  value: string;
 };
