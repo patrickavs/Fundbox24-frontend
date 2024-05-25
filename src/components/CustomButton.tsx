@@ -4,17 +4,18 @@ import {AuthTheme} from '../constants/theme.ts';
 
 export default function CustomButton({
   label,
-  onPress,
+  onPress, color,
 }: {
   label: string;
   onPress: () => void;
+  color?: string;
 }) {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={{
-        backgroundColor: AuthTheme.colors.secondaryBackground,
-        padding: 20,
+        backgroundColor: color || AuthTheme.colors.secondaryBackground,
+        padding: 15,
         paddingHorizontal: 50,
         borderRadius: 10,
         marginBottom: 30,

@@ -7,7 +7,7 @@ import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
 import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 import AuthAlert from '../auth/alerts/AuthAlert.tsx';
-import AuthStack from '../auth/AuthStack.tsx';
+import FoundReportNavStack from '../../pages/found/FoundReportNavStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -82,7 +82,7 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Gefunden"
-        component={FoundReportScreen}
+        component={FoundReportNavStack}
         options={{
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
