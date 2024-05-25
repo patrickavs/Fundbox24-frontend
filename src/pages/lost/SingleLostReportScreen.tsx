@@ -7,6 +7,7 @@ import CustomButton from '../../components/CustomButton';
 import moment from 'moment';
 import SpacerVertical from '../found/SpacerVertical';
 import {useLostReports} from '../../hooks/useLostReports';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 
 function SingleLostReportScreen( {navigation} ): React.JSX.Element {
@@ -60,8 +61,13 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                         strokeWidth={0}/>
                 </MapView>
                 <SpacerVertical size={20}/>
-                <View style={styles.button}>
-                    <CustomButton label="Suchenden kontaktieren" onPress={() => navigation.goBack()} />
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.button}>
+                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" onPress={() => navigation.goBack()} />
+                    </View>
+                    <View style={styles.button}>
+                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" onPress={() => navigation.goBack()} />
+                    </View>
                 </View>
                 <SpacerVertical size={20}/>
             </ScrollView>
@@ -72,8 +78,14 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
 export default SingleLostReportScreen;
 
 const styles = StyleSheet.create({
+    buttonsContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+    },
     button: {
-        width: '80%',
+        width: '40%',
         height: 100,
         alignSelf: 'center',
     },
@@ -95,6 +107,11 @@ const styles = StyleSheet.create({
         padding: 20,
         height: 300,
         backgroundColor: 'white',
+        elevation: 4,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
     },
     image: {
         height: '50%',

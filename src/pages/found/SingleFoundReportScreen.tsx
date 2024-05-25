@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useFoundReports} from '../../hooks/useFoundReports';
 import {FoundReportTheme} from '../../constants/theme';
@@ -60,8 +60,13 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
                         strokeWidth={0}/>
                 </MapView>
                 <SpacerVertical size={20}/>
-                <View style={styles.button}>
-                    <CustomButton color={FoundReportTheme.colors.button2} label="Finder kontaktieren" onPress={() => navigation.goBack()} />
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.button}>
+                        <CustomButton color={FoundReportTheme.colors.button2} label="Frage stellen" onPress={() => navigation.goBack()} />
+                    </View>
+                    <View style={styles.button}>
+                        <CustomButton color={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={() => navigation.goBack()} />
+                    </View>
                 </View>
                 <SpacerVertical size={20}/>
             </ScrollView>
@@ -72,8 +77,14 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
 export default SingleFoundReportScreen;
 
 const styles = StyleSheet.create({
+    buttonsContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+    },
     button: {
-        width: '80%',
+        width: '40%',
         height: 100,
         alignSelf: 'center',
     },
@@ -95,6 +106,11 @@ const styles = StyleSheet.create({
         padding: 20,
         height: 300,
         backgroundColor: 'white',
+        elevation: 4,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
     },
     image: {
         height: '50%',
