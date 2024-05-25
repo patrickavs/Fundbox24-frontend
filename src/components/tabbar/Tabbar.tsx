@@ -6,6 +6,7 @@ import LostReportScreen from '../../pages/lost/LostReportScreen.tsx';
 import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
 import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
+import FoundReportNavStack from '../../pages/found/FoundReportNavStack';
 //import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
 import NewReport from '../NewReport.tsx';
@@ -94,7 +95,7 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Gefunden"
-        component={FoundReportScreen}
+        component={FoundReportNavStack}
         options={{
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => (

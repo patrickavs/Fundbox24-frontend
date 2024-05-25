@@ -47,7 +47,7 @@ function LostReportScreen(): React.JSX.Element {
           />
         </View>
 
-        <Text style={styles.subtitle}>Gesucht in deinem Umkreis</Text>
+        <Text style={styles.text}>Gesucht in deinem Umkreis</Text>
 
         <FlatList
           style={styles.list}
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   list: {
     marginBottom: 200,
   },
-  subtitle: {
+  text: {
     color: 'black',
     marginTop: 40,
     marginBottom: 20,
