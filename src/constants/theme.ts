@@ -109,6 +109,7 @@ export const LostReportTheme = {
     secondaryBackground: '#87B9DD',
     primaryAccent: '#F2F2F2',
     secondaryAccent: '#DFF1FF',
+    button: '#3082BF',
   },
   fonts: commonFonts,
 };

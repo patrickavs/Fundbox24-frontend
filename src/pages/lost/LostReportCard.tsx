@@ -2,7 +2,8 @@ import React from 'react';
 
 import {Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {LostReport} from '../../types/report-lost.ts';
-import {LostReportTheme} from '../../constants/theme.ts';
+import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
+import moment from 'moment';
 
 type ReportCardProps = {
   report: LostReport;
@@ -18,10 +19,9 @@ export default function LostReportCard(props: ReportCardProps) {
           <Image source={props.image} />
         </View>
         <View style={styles.textContainer}>
-          <Text numberOfLines={1}>{props.report.title}</Text>
-          <Text numberOfLines={1}>{props.report.description}</Text>
-          <Text>Zuletzt gesehen am</Text>
-          <Text numberOfLines={1}>{props.report.lastSeenDate}</Text>
+          <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
+          <Text style={styles.text} numberOfLines={1}>{props.report.description}</Text>
+          <Text style={styles.text} numberOfLines={1}>{moment(props.report.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
         </View>
         </TouchableOpacity>
     </View>
@@ -49,8 +49,19 @@ const styles = StyleSheet.create({
     backgroundColor: LostReportTheme.colors.primaryBackground,
   },
   textContainer: {
-    borderRadius: 8,
-    padding: 5,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    padding: 10,
     backgroundColor: LostReportTheme.colors.secondaryAccent,
+  },
+  title: {
+    color: FoundReportTheme.colors.text,
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  text: {
+    paddingTop: 5,
+    color: FoundReportTheme.colors.text,
+    fontSize: 15,
   },
 });

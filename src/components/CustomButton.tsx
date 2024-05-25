@@ -1,4 +1,4 @@
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {AuthTheme} from '../constants/theme';
 
@@ -16,6 +16,7 @@ export default function CustomButton({
   disabled?: boolean;
 }) {
   return (
+
     <TouchableOpacity
       disabled={disabled}
       onPress={onPress}
@@ -23,9 +24,10 @@ export default function CustomButton({
         backgroundColor:
           backgroundColor || AuthTheme.colors.secondaryBackground,
         padding: 15,
-        paddingHorizontal: 50,
+        paddingHorizontal: 20,
         borderRadius: 10,
         marginBottom: 30,
+        minWidth: 140,
       }}>
       <Text
         style={{
