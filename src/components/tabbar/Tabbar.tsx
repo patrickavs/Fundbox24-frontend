@@ -7,6 +7,7 @@ import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
 import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 import FoundReportNavStack from '../../pages/found/FoundReportNavStack';
+import LostReportNavStack from '../../pages/lost/LostReportNavStack';
 //import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
 import NewReport from '../NewReport.tsx';
@@ -33,7 +34,6 @@ const NewReportView = () => {
 function Tabbar() {
   const {isLoggedIn} = useUser();
 
-  if (!isLoggedIn) {
     return <AuthStack />;
   }
 
@@ -55,7 +55,7 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Verloren"
-        component={LostReportScreen}
+        component={LostReportNavStack}
         options={{
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => (

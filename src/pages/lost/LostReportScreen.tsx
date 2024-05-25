@@ -8,7 +8,7 @@ import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import LostReportCard from './LostReportCard.tsx';
 
-function LostReportScreen(): React.JSX.Element {
+function LostReportScreen( {navigation} ): React.JSX.Element {
   const {lostReports} = useLostReports();
 
   return (
@@ -56,6 +56,7 @@ function LostReportScreen(): React.JSX.Element {
             <LostReportCard
               key={item.id}
               report={item}
+              onPress={(id) => navigation.navigate('SingleLostReportScreen', {id: id})}
               image={require('../../assets/images/winter_hat.png')}
             />
           )}

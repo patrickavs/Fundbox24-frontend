@@ -1,26 +1,29 @@
 import React from 'react';
 
-import {Image, ImageSourcePropType, StyleSheet, Text, View} from 'react-native';
+import {Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {LostReport} from '../../types/report-lost.ts';
-import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
+import {LostReportTheme} from '../../constants/theme.ts';
 
 type ReportCardProps = {
   report: LostReport;
   image: ImageSourcePropType;
+  onPress: (id: string) => void;
 };
 
 export default function LostReportCard(props: ReportCardProps) {
   return (
     <View key={props.report.id} style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image source={props.image} />
-      </View>
-      <View style={styles.textContainer}>
-        <Text numberOfLines={1}>{props.report.title}</Text>
-        <Text numberOfLines={1}>{props.report.description}</Text>
-        <Text>Zuletzt gesehen am</Text>
-        <Text numberOfLines={1}>{props.report.lastSeenDate}</Text>
-      </View>
+      <TouchableOpacity onPress={() => props.onPress(props.report.id)}>
+        <View style={styles.imageContainer}>
+          <Image source={props.image} />
+        </View>
+        <View style={styles.textContainer}>
+          <Text numberOfLines={1}>{props.report.title}</Text>
+          <Text numberOfLines={1}>{props.report.description}</Text>
+          <Text>Zuletzt gesehen am</Text>
+          <Text numberOfLines={1}>{props.report.lastSeenDate}</Text>
+        </View>
+        </TouchableOpacity>
     </View>
   );
 }
@@ -43,7 +46,7 @@ const styles = StyleSheet.create({
     backgroundColor: LostReportTheme.colors.secondaryAccent,
   },
   foundReportBackgroundColor: {
-    backgroundColor: FoundReportTheme.colors.button1,
+    backgroundColor: LostReportTheme.colors.primaryBackground,
   },
   textContainer: {
     borderRadius: 8,
