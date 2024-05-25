@@ -8,6 +8,7 @@ import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import FoundReportNavStack from '../../pages/found/FoundReportNavStack';
+import LostReportNavStack from '../../pages/lost/LostReportNavStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +43,7 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Verloren"
-        component={LostReportScreen}
+        component={LostReportNavStack}
         options={{
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => (

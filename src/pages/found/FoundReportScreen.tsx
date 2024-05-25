@@ -47,7 +47,6 @@ function FoundReportScreen({navigation}): React.JSX.Element {
         </View>
 
         <Text style={styles.text}>Gefunden in deinem Umkreis</Text>
-          <Button title={'Einzelne Anzeige'} onPress={() => {navigation.navigate('SingleFoundReportScreen');}} />
 
         <FlatList
           style={styles.list}
