@@ -14,6 +14,7 @@ import {useLostReports} from '../hooks/useLostReports.tsx';
 import {useFoundReports} from '../hooks/useFoundReports.tsx';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import CustomButton from './CustomButton.tsx';
 
 function NewReport({reportType}: {reportType: string}) {
   const {lostReports} = useLostReports();
@@ -130,27 +131,38 @@ function NewReport({reportType}: {reportType: string}) {
           )}
           <View style={styles.buttonContainer}>
             {reportType === 'lost' ? (
-              <View style={{gap: 20}}>
-                <Button
-                  title={'Letzte bekannte Position angeben'}
+              <>
+                <CustomButton
+                  label={'Letzte bekannte Position angeben'}
                   onPress={() => console.log('pressed button!')}
+                  backgroundColor={LostReportTheme.colors.secondaryBackground}
+                  fontSize={14}
                 />
-                <Button
-                  title={'Suchanzeige speichern'}
+                <CustomButton
+                  label={'Suchanzeige speichern'}
                   onPress={() => console.log('pressed button! 2')}
+                  backgroundColor={LostReportTheme.colors.secondaryBackground}
+                  fontSize={14}
                 />
-              </View>
+              </>
             ) : (
               <View style={{gap: 20}}>
                 <View
-                  style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
-                  <Button
-                    title={'Fundort angeben'}
+                  style={{
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}>
+                  <CustomButton
+                    label={'Fundort angeben'}
                     onPress={() => console.log('pressed button!')}
+                    backgroundColor={FoundReportTheme.colors.button1}
+                    fontSize={14}
                   />
-                  <Button
-                    title={'Abholort angeben'}
+                  <CustomButton
+                    label={'Abholort angeben'}
                     onPress={() => console.log('pressed button 2!')}
+                    backgroundColor={FoundReportTheme.colors.button1}
+                    fontSize={14}
                   />
                 </View>
 
@@ -159,9 +171,11 @@ function NewReport({reportType}: {reportType: string}) {
                   Abhol- und Fundort können im Chat mit einem anfragenden Nutzer
                   freigegeben werden.
                 </Text>
-                <Button
-                  title={'Fundanzeige erstellen'}
+                <CustomButton
+                  label={'Fundanzeige erstellen'}
                   onPress={() => console.log('pressed button! 3')}
+                  backgroundColor={FoundReportTheme.colors.button1}
+                  fontSize={14}
                 />
               </View>
             )}
