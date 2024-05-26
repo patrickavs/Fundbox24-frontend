@@ -25,7 +25,7 @@ const AuthAlertView = () => {
 };
 
 const NewReportView = () => {
-  return <NewReport reportType={'lost'} />;
+  return <NewReport reportType={'found'} />;
 };
 
 function Tabbar() {

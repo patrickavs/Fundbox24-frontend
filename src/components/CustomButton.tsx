@@ -6,14 +6,17 @@ export default function CustomButton({
   onPress,
   backgroundColor,
   fontSize,
+  disabled = false,
 }: {
   label: string;
   onPress: () => void;
   backgroundColor: string;
   fontSize: number;
+  disabled?: boolean;
 }) {
   return (
     <TouchableOpacity
+      disabled={disabled}
       onPress={onPress}
       style={{
         backgroundColor: backgroundColor,

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Button,
   Image,
   ScrollView,
   StyleSheet,
@@ -15,6 +14,8 @@ import {useFoundReports} from '../hooks/useFoundReports.tsx';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import CustomButton from './CustomButton.tsx';
+import {NewLostReport} from '../types/report-lost.ts';
+import {NewFoundReport} from '../types/report-found.ts';
 
 function NewReport({reportType}: {reportType: string}) {
   const {lostReports} = useLostReports();
@@ -26,28 +27,34 @@ function NewReport({reportType}: {reportType: string}) {
   const [reportDescription, setReportDescription] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [report, setReport] = useState<NewLostReport | NewFoundReport>();
 
   useEffect(() => {
     const validateDate = (text: string) => {
       const trimmedText = text.trim();
       const dateParts = trimmedText.split('.');
       if (dateParts.length !== 3) {
-        setError('Date must be in DD.MM.YYYY format');
+        setError('Das Datum muss im\nDD.MM.YYYY Format sein');
         return;
       }
 
       const [day, month, year] = dateParts.map(Number);
       const dateObject = new Date(year, month - 1, day);
 
+      if (year.toString().length !== 4) {
+        setError('Invalides Datum');
+        return;
+      }
+
       if (
         dateObject.getFullYear() === year &&
         dateObject.getMonth() === month - 1 &&
         dateObject.getDate() === day
       ) {
-        setError('');
+        setError(null);
         setDate(text);
       } else {
-        setError('Invalid date');
+        setError('Invalides Datum');
       }
     };
     validateDate(date);
@@ -134,40 +141,46 @@ function NewReport({reportType}: {reportType: string}) {
           {reportType === 'lost' ? (
             <View
               style={{
-                flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                gap: 15,
               }}>
-              {reportType === 'lost' ? (
-                <Text style={{paddingTop: 5}}>Gefunden am:</Text>
-              ) : (
-                <Text style={{paddingTop: 5}}>Zuletzt gesehen am:</Text>
-              )}
-              <View style={{}}>
+              <Text style={{fontSize: 16}}>Zuletzt gesehen am:</Text>
+              <View style={{gap: 5}}>
                 <TextInput
                   style={styles.textInputStyle}
                   placeholder={'DD.MM.YYYY'}
                   onChangeText={(text: string) => setDate(text)}
                   value={date}
                 />
-                {error ? <Text style={{color: 'red'}}>{error}</Text> : null}
+                {error ? (
+                  <Text style={{color: 'red', textAlign: 'center'}}>
+                    {error}
+                  </Text>
+                ) : null}
               </View>
             </View>
           ) : (
             <View
               style={{
+                flexDirection: 'row',
                 alignItems: 'center',
-                gap: 15,
+                justifyContent: 'space-between',
+                position: 'static',
               }}>
-              {reportType === 'lost' ? (
-                <Text style={{paddingTop: 5}}>Gefunden am:</Text>
-              ) : (
-                <Text style={{paddingTop: 5}}>Zuletzt gesehen am:</Text>
-              )}
-              <TextInput
-                style={styles.textInputStyle}
-                placeholder={'DD.MM.YYYY'}
-              />
+              <Text style={{fontSize: 16}}>Gefunden am:</Text>
+              <View style={{gap: 5}}>
+                <TextInput
+                  style={styles.textInputStyle}
+                  placeholder={'DD.MM.YYYY'}
+                  onChangeText={(text: string) => setDate(text)}
+                  value={date}
+                />
+                {error ? (
+                  <Text style={{color: 'red', textAlign: 'center'}}>
+                    {error}
+                  </Text>
+                ) : null}
+              </View>
             </View>
           )}
           <View style={styles.buttonContainer}>
@@ -181,7 +194,8 @@ function NewReport({reportType}: {reportType: string}) {
                 />
                 <CustomButton
                   label={'Suchanzeige speichern'}
-                  onPress={() => console.log('pressed button! 2')}
+                  disabled={error !== null}
+                  onPress={() => console.log('pressed button 2!')}
                   backgroundColor={LostReportTheme.colors.secondaryBackground}
                   fontSize={14}
                 />
@@ -206,7 +220,6 @@ function NewReport({reportType}: {reportType: string}) {
                     fontSize={14}
                   />
                 </View>
-
                 <Text style={{textAlign: 'center'}}>
                   Nur der Umkreis des Fundortes ist in der Anzeige sichtbar.
                   Abhol- und Fundort können im Chat mit einem anfragenden Nutzer
@@ -214,6 +227,7 @@ function NewReport({reportType}: {reportType: string}) {
                 </Text>
                 <CustomButton
                   label={'Fundanzeige erstellen'}
+                  disabled={error !== null}
                   onPress={() => console.log('pressed button! 3')}
                   backgroundColor={FoundReportTheme.colors.button1}
                   fontSize={14}
