@@ -4,13 +4,15 @@ import {
   useEffect,
   useContext,
   useState,
-  createContext, useCallback,
+  createContext,
+  useCallback,
+  ReactNode,
 } from 'react';
 
 type UserContextType = {
   isPending: boolean;
   user: User | null;
-  editUser: (u: Partial<User>) => Promise<void>
+  editUser: (u: Partial<User>) => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -19,7 +21,7 @@ export function useUser() {
   return useContext(UserContext);
 }
 
-export function UserProvider({children}: {children: React.ReactNode}) {
+export function UserProvider({children}: {children: ReactNode}) {
   const [user, setUser] = useState<User | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -38,20 +40,20 @@ export function UserProvider({children}: {children: React.ReactNode}) {
     });
   }, []);
 
-    const editUser = useCallback(async (updatedUser: Partial<User>) => {
-      startTransition(() => {
-        // TODO: send to backend and save updated user
-        setUser((prevUserInformation) => {
-          if(prevUserInformation === null) {
-            return null;
-          }
-            return {
-                ...prevUserInformation,
-                ...updatedUser
-            }
-        })
-      })
-    }, [])
+  const editUser = useCallback(async (updatedUser: Partial<User>) => {
+    startTransition(() => {
+      // TODO: send to backend and save updated user
+      setUser(prevUserInformation => {
+        if (prevUserInformation === null) {
+          return null;
+        }
+        return {
+          ...prevUserInformation,
+          ...updatedUser,
+        };
+      });
+    });
+  }, []);
 
   return (
     <UserContext.Provider value={{isPending, user: user, editUser}}>

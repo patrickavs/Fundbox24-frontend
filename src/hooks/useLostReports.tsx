@@ -62,22 +62,22 @@ export function LostReportProvider({children}: {children: React.ReactNode}) {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const createFoundReport = useCallback(
+  const createLostReport = useCallback(
     (userToken: string, report: NewLostReport) => {
-      fetch({
+      fetch(LOSTREPORT_URL(), {
         method: 'POST',
-        url: LOSTREPORT_URL(),
-        data: report,
+        body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userToken}`,
         },
       })
-        .then(response => {
-          if (response.success) {
-            setLostReports(prev => [...prev, response.data as LostReport]);
+        .then(async response => {
+          const data = await response.json();
+          if (response.status === 201) {
+            setLostReports(prev => [...prev, data as LostReport]);
           } else {
-            setError(response.data);
+            setError(data);
           }
         })
         .catch(error => setError(JSON.stringify(error)));
@@ -87,23 +87,23 @@ export function LostReportProvider({children}: {children: React.ReactNode}) {
 
   const editFoundReport = useCallback(
     (userToken: string, report: LostReport) => {
-      fetch({
+      fetch(LOSTREPORT_URL(), {
         method: 'POST',
-        url: LOSTREPORT_URL(),
-        data: report,
+        body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userToken}`,
         },
       })
-        .then(response => {
-          if (response.success) {
+        .then(async response => {
+          const data = await response.json();
+          if (response.ok) {
             setLostReports(prev => [
               ...prev.filter(({id}) => id !== report.id),
-              response.data as LostReport,
+              data as LostReport,
             ]);
           } else {
-            setError(response.data);
+            setError(data);
           }
         })
         .catch(error => setError(JSON.stringify(error)));
@@ -120,7 +120,7 @@ export function LostReportProvider({children}: {children: React.ReactNode}) {
         error,
         setError,
         startTransition,
-        createLostReport: createFoundReport,
+        createLostReport,
         editLostReport: editFoundReport,
       }}>
       {children}
