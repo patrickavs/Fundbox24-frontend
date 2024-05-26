@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
   Image,
@@ -22,6 +22,36 @@ function NewReport({reportType}: {reportType: string}) {
   const [reportImage, setReportImage] = useState<string>('');
   const [checkedMiddle, setCheckedMiddle] = useState<boolean>(false);
   const [checkedHigh, setCheckedHigh] = useState<boolean>(false);
+  const [reportName, setReportName] = useState<string>('');
+  const [reportDescription, setReportDescription] = useState<string>('');
+  const [date, setDate] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const validateDate = (text: string) => {
+      const trimmedText = text.trim();
+      const dateParts = trimmedText.split('.');
+      if (dateParts.length !== 3) {
+        setError('Date must be in DD.MM.YYYY format');
+        return;
+      }
+
+      const [day, month, year] = dateParts.map(Number);
+      const dateObject = new Date(year, month - 1, day);
+
+      if (
+        dateObject.getFullYear() === year &&
+        dateObject.getMonth() === month - 1 &&
+        dateObject.getDate() === day
+      ) {
+        setError('');
+        setDate(text);
+      } else {
+        setError('Invalid date');
+      }
+    };
+    validateDate(date);
+  }, [date]);
 
   return (
     <ScrollView>
@@ -89,11 +119,17 @@ function NewReport({reportType}: {reportType: string}) {
           <TextInput
             style={styles.textInputStyle}
             placeholder={'Bezeichnung des Gegenstandes'}
+            onChangeText={(text: string) => {
+              setReportName(text);
+            }}
           />
           <TextInput
             style={styles.textInputStyle}
             multiline={true}
             placeholder={'Beschreibung des Gegenstandes'}
+            onChangeText={(text: string) => {
+              setReportDescription(text);
+            }}
           />
           {reportType === 'lost' ? (
             <View
@@ -107,10 +143,15 @@ function NewReport({reportType}: {reportType: string}) {
               ) : (
                 <Text style={{paddingTop: 5}}>Zuletzt gesehen am:</Text>
               )}
-              <TextInput
-                style={styles.textInputStyle}
-                placeholder={'DD.MM.YYYY'}
-              />
+              <View style={{}}>
+                <TextInput
+                  style={styles.textInputStyle}
+                  placeholder={'DD.MM.YYYY'}
+                  onChangeText={(text: string) => setDate(text)}
+                  value={date}
+                />
+                {error ? <Text style={{color: 'red'}}>{error}</Text> : null}
+              </View>
             </View>
           ) : (
             <View

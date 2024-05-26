@@ -1,5 +1,5 @@
 export type Settings = {
-    sound: boolean;
-    vibration: boolean;
-    location: boolean;
-}
+  sound: boolean;
+  vibration: boolean;
+  location: boolean;
+};
