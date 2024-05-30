@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
+import IconButton from '../../components/IconButton.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {Switch} from 'react-native';
 import {useUser} from '../../hooks/useUser.tsx';
@@ -43,7 +44,9 @@ const ProfileStyleSheet = StyleSheet.create({
   buttonContainer: {
     display: "flex",
     flexDirection: "column",
-    gap: 10
+    gap: 8,
+    marginTop: 15,
+    marginBottom: 10
   },
   button: {
     borderRadius: 8,
@@ -79,8 +82,8 @@ function ProfileScreen(): React.JSX.Element {
           />
         </View>
         <View style={ProfileStyleSheet.buttonContainer}>
-          <Button title={'Meine Chats'} />
-          <Button title={'Meine Anzeigen'} />
+          <IconButton title={'Meine Chats'}/>
+          <IconButton title={'Meine Anzeigen'}/>
         </View>
         <Text style={ProfileStyleSheet.heading}>Benachrichtigungen</Text>
         <View style={ProfileStyleSheet.input}>
