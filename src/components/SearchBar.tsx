@@ -18,7 +18,7 @@ export default function SearchBar(props: SearchBarProps) {
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   textInput: {
     flex: 1,
   },
