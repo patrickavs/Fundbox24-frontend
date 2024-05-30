@@ -25,7 +25,10 @@ const ProfileStyleSheet = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 25,
-    marginTop: 20
+    marginTop: 20,
+    display: "flex",
+    flexDirection: "column",
+    gap: 10
   },
   heading: {
     fontSize: 16
@@ -36,6 +39,15 @@ const ProfileStyleSheet = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     paddingVertical: 5,
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10
+  },
+  button: {
+    borderRadius: 8,
+    textAlign: "left"
   }
 })
 
@@ -66,11 +78,11 @@ function ProfileScreen(): React.JSX.Element {
             editable={false}
           />
         </View>
-        <View>
+        <View style={ProfileStyleSheet.buttonContainer}>
           <Button title={'Meine Chats'} />
           <Button title={'Meine Anzeigen'} />
         </View>
-        <Text>Benachrichtigungen</Text>
+        <Text style={ProfileStyleSheet.heading}>Benachrichtigungen</Text>
         <View style={ProfileStyleSheet.input}>
           <View style={ProfileStyleSheet.switch}>
             <Text style={ProfileStyleSheet.label}>Ton</Text>
