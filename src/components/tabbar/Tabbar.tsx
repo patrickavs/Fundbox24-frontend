@@ -29,6 +29,8 @@ const NewReportView = () => {
 };
 
 function Tabbar() {
+  return <AuthStack />;
+
   return (
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen

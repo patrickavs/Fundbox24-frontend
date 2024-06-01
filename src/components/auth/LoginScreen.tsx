@@ -1,5 +1,12 @@
-import React from 'react';
-import {SafeAreaView, View, Text, TouchableOpacity, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -10,18 +17,30 @@ import InputField from '../InputField.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {AuthTheme} from '../../constants/theme.ts';
 import useStorage from '../../hooks/useStorage.ts';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation();
 
   const [_, setAuthorization] = useStorage<string>('authorization', '');
 
-  let email = '';
-  let password = '';
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   function onLogin() {
+    if (email === '' || password === '') {
+      Alert.alert('Bitte Benutzername und Passwort eingeben.');
+      return;
+    }
+
     // Basic Auth
-    const authorization = `${email}:${password}`;
+    const authorization = btoa(`${email}:${password}`);
+
+    setEmail('');
+    setPassword('');
+
+    console.log(authorization);
+
     setAuthorization(authorization);
   }
 
@@ -57,27 +76,29 @@ function LoginScreen(): React.JSX.Element {
           keyboardType="email-address"
           inputType={'email-address'}
           fieldButtonLabel={''}
+          value={email}
           onChangeText={text => {
-            email = text;
+            setEmail(text);
           }}
         />
 
         <InputField
           label={'Passwort'}
           icon={
-            <MaterialIcons
-              name="lock-outline"
+            <Icon
+              name="lock"
               size={20}
               color="#666"
-              style={{marginLeft: -5}}
+              style={{marginLeft: -5, marginRight: 8}}
             />
           }
           inputType="password"
           keyboardType={'visible-password'}
           fieldButtonFunction={() => {}}
           fieldButtonLabel={''}
+          value={password}
           onChangeText={text => {
-            password = text;
+            setPassword(text);
           }}
         />
 
