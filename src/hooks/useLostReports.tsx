@@ -1,4 +1,4 @@
-import {LostReport, NewLostReport} from '../types/report-lost.ts';
+import { LostReport, NewLostReport } from '../types/report-lost.ts';
 import React, {
   createContext,
   useCallback,
@@ -7,7 +7,7 @@ import React, {
   useState,
   useTransition,
 } from 'react';
-import {ALL_LOST_REPORTS_URL, LOSTREPORT_URL} from '../routes';
+import { ALL_LOST_REPORTS_URL, LOSTREPORT_URL } from '../routes';
 
 type LostReportContextType = {
   isPending: boolean;
@@ -25,6 +25,7 @@ const LostReportContext = createContext<LostReportContextType>(
 );
 
 export function useLostReports() {
+  const context = useContext(LostReportContext)
   const {
     isPending,
     startTransition,
@@ -34,12 +35,16 @@ export function useLostReports() {
     createLostReport,
     editLostReport,
     error,
-  } = useContext(LostReportContext);
+  } = context;
+
+  if (!context) {
+    throw new Error('useLostReports must be used within a LostReportProvider');
+  }
 
   // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      fetch(ALL_LOST_REPORTS_URL, {method: 'GET'})
+      fetch(ALL_LOST_REPORTS_URL, { method: 'GET' })
         .then(async response => {
           const data = await response.json();
           if (response.status === 200) {
@@ -54,10 +59,10 @@ export function useLostReports() {
     });
   }, [startTransition, setLostReports, setError]);
 
-  return {isPending, lostReports, error, createLostReport, editLostReport};
+  return { isPending, lostReports, error, createLostReport, editLostReport };
 }
 
-export function LostReportProvider({children}: {children: React.ReactNode}) {
+export function LostReportProvider({ children }: { children: React.ReactNode }) {
   const [lostReports, setLostReports] = useState<Array<LostReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -99,7 +104,7 @@ export function LostReportProvider({children}: {children: React.ReactNode}) {
           const data = await response.json();
           if (response.ok) {
             setLostReports(prev => [
-              ...prev.filter(({id}) => id !== report.id),
+              ...prev.filter(({ id }) => id !== report.id),
               data as LostReport,
             ]);
           } else {

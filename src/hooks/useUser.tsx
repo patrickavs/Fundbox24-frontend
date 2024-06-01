@@ -1,4 +1,4 @@
-import {User} from '../types/user';
+import { User } from '../types/user';
 import {
   useTransition,
   useEffect,
@@ -18,10 +18,14 @@ type UserContextType = {
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export function useUser() {
-  return useContext(UserContext);
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
 }
 
-export function UserProvider({children}: {children: ReactNode}) {
+export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -56,7 +60,7 @@ export function UserProvider({children}: {children: ReactNode}) {
   }, []);
 
   return (
-    <UserContext.Provider value={{isPending, user: user, editUser}}>
+    <UserContext.Provider value={{ isPending, user: user, editUser }}>
       {children}
     </UserContext.Provider>
   );
