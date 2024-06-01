@@ -9,9 +9,21 @@ import CustomButton from '../CustomButton.tsx';
 import InputField from '../InputField.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {AuthTheme} from '../../constants/theme.ts';
+import useStorage from '../../hooks/useStorage.ts';
 
 function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation();
+
+  const [_, setAuthorization] = useStorage<string>('authorization', '');
+
+  let email = '';
+  let password = '';
+
+  function onLogin() {
+    // Basic Auth
+    const authorization = `${email}:${password}`;
+    setAuthorization(authorization);
+  }
 
   const handleRegisterPress = () => {
     // TODO: Define screen names!
@@ -45,6 +57,9 @@ function LoginScreen(): React.JSX.Element {
           keyboardType="email-address"
           inputType={'email-address'}
           fieldButtonLabel={''}
+          onChangeText={text => {
+            email = text;
+          }}
         />
 
         <InputField
@@ -61,11 +76,14 @@ function LoginScreen(): React.JSX.Element {
           keyboardType={'visible-password'}
           fieldButtonFunction={() => {}}
           fieldButtonLabel={''}
+          onChangeText={text => {
+            password = text;
+          }}
         />
 
         <CustomButton
           label={'Login'}
-          onPress={() => {}}
+          onPress={onLogin}
           backgroundColor={AuthTheme.colors.secondaryBackground}
           fontSize={16}
         />
