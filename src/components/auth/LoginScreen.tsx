@@ -18,12 +18,13 @@ import {useNavigation} from '@react-navigation/native';
 import {AuthTheme} from '../../constants/theme.ts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useUser} from '../../hooks/useUser.tsx';
+import Config from 'react-native-config';
 
 function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(Config.INITIAL_EMAIL ?? '');
+  const [password, setPassword] = useState(Config.INITIAL_PASSWORD ?? '');
 
   const {login} = useUser();
 
