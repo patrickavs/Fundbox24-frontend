@@ -17,6 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import '../../assets/images/login.png';
 import CustomButton from '../CustomButton';
 import {useNavigation} from '@react-navigation/native';
+import {AuthTheme} from '../../constants/theme.ts';
 
 function RegisterScreen() {
   const navigation = useNavigation();
@@ -128,7 +129,12 @@ function RegisterScreen() {
           }}
         />
 
-        <CustomButton label={'Register'} onPress={() => {}} />
+        <CustomButton
+          label={'Register'}
+          onPress={() => {}}
+          backgroundColor={AuthTheme.colors.secondaryBackground}
+          fontSize={16}
+        />
 
         <View
           style={{

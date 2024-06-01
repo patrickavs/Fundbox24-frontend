@@ -8,6 +8,7 @@ import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
+import NewReport from '../NewReport.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,12 +24,16 @@ const AuthAlertView = () => {
   return <AuthAlert textField={true} />;
 };
 
+const NewReportView = () => {
+  return <NewReport reportType={'found'} />;
+};
+
 function Tabbar() {
   return (
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen
         name="Start"
-        component={AuthAlertView}
+        component={NewReportView}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons

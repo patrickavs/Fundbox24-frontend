@@ -43,6 +43,8 @@ function AuthAlert({
           onPress={() => {
             console.log('pressed button!');
           }}
+          backgroundColor={AuthTheme.colors.secondaryBackground}
+          fontSize={16}
         />
       </View>
       {linkTitle !== undefined ? (

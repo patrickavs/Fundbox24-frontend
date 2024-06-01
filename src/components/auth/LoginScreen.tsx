@@ -8,6 +8,7 @@ import '../../assets/images/login.png';
 import CustomButton from '../CustomButton.tsx';
 import InputField from '../InputField.tsx';
 import {useNavigation} from '@react-navigation/native';
+import {AuthTheme} from '../../constants/theme.ts';
 
 function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation();
@@ -62,7 +63,12 @@ function LoginScreen(): React.JSX.Element {
           fieldButtonLabel={''}
         />
 
-        <CustomButton label={'Login'} onPress={() => {}} />
+        <CustomButton
+          label={'Login'}
+          onPress={() => {}}
+          backgroundColor={AuthTheme.colors.secondaryBackground}
+          fontSize={16}
+        />
 
         <View
           style={{
