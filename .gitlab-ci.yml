@@ -1,0 +1,23 @@
+default:
+  tags:
+    - docker
+    - typescript
+
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - deploy
+
+build-job:       # This job runs in the build stage, which runs first.
+  stage: build
+  image: node:22-alpine3.19
+  script:
+    - echo "Compiling the code..."
+    - echo "Compile complete."
+
+ui-test-job:   # This job runs in the test stage.
+  stage: test    # It only starts when the job in the build stage completes successfully.
+  image: node:22-alpine3.19
+  script:
+    - npm i
+    - npm test
