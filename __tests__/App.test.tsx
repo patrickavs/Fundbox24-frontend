@@ -2,7 +2,7 @@ import renderer from 'react-test-renderer';
 import App from '../src/App';
 
 // Note: import explicitly to use the types shipped with jest.
-import {expect,it} from '@jest/globals';
+import {expect, it} from '@jest/globals';
 import {render} from '@testing-library/react-native';
 
 it('renders App correctly', () => {
