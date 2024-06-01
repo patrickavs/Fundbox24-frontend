@@ -1,14 +1,15 @@
 import {User} from '../types/user';
 import {
-  useTransition,
-  useEffect,
-  useContext,
-  useState,
   createContext,
-  useCallback,
   ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
 } from 'react';
 import {LOGIN_URL} from '../routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type UserContextType = {
   isPending: boolean;
@@ -30,6 +31,20 @@ export function UserProvider({children}: {children: ReactNode}) {
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
+    async function checkSavedBasicAuthCredentials() {
+      const basicAuthCredentials = await AsyncStorage.getItem(
+        'basicAuthCredentials',
+      );
+
+      if (!basicAuthCredentials) {
+        return;
+      }
+
+      return loginWithBasicAuth(basicAuthCredentials);
+    }
+
+    checkSavedBasicAuthCredentials();
+
     startTransition(() => {
       // TODO: fetch userdata
       // TODO: fetch data
@@ -45,14 +60,20 @@ export function UserProvider({children}: {children: ReactNode}) {
   }, []);
 
   async function login(email: string, password: string) {
-    const basicAuthHeader = btoa(`${email}:${password}`);
+    // Credentials as Base64
+    const basicAuthCredentials = btoa(`${email}:${password}`);
 
+    return loginWithBasicAuth(basicAuthCredentials);
+  }
+
+  async function loginWithBasicAuth(basicAuthCredentials: string) {
     const response = await fetch(LOGIN_URL, {
       method: 'POST',
-      headers: {Authorization: `Basic ${basicAuthHeader}`},
+      headers: {Authorization: `Basic ${basicAuthCredentials}`},
     });
 
     if (response.ok) {
+      await AsyncStorage.setItem('basicAuthCredentials', basicAuthCredentials);
       setIsLoggedIn(true);
       return;
     }
