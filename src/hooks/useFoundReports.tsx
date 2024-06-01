@@ -1,14 +1,13 @@
 import {FoundReport, NewFoundReport} from '../types/report-found';
 import React, {
-  useTransition,
-  useEffect,
-  useContext,
-  useState,
   createContext,
   useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
 } from 'react';
-import foundReports from '../assets/dummyData/foundReports.ts';
-import {FOUNDREPORT_URL} from '../routes';
+import {ALL_FOUND_REPORTS_URL, FOUNDREPORT_URL} from '../routes';
 
 type FoundReportsContextType = {
   isPending: boolean;
@@ -40,7 +39,7 @@ export function useFoundReports() {
   // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      fetch(FOUNDREPORT_URL(), {method: 'GET'})
+      fetch(ALL_FOUND_REPORTS_URL, {method: 'GET'})
         .then(async response => {
           const data = await response.json();
           if (response.status === 200) {
@@ -49,7 +48,9 @@ export function useFoundReports() {
             setError(data);
           }
         })
-        .catch(error => setError(JSON.stringify(error)));
+        .catch(error => {
+          console.log(error);
+        });
     });
   }, [startTransition, setFoundReports, setError]);
 

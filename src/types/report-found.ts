@@ -1,14 +1,17 @@
 import {Category} from './category';
+import {Location} from './location';
+import {Chat} from './chat.ts';
 
 export type FoundReport = {
   id: string;
-  object: string;
+  title: string;
   description: string;
-  status: 'found' | 'lost';
-  timeOfDiscovery: Date;
+  isFinished: boolean;
   category: Category;
-  placeOfDiscovery: string;
-  placeOfDelivery: string;
+  foundDate: string;
+  foundLocation: Location;
+  currentLocation: Location;
+  myChats: Chat[];
 };
 
 export type NewFoundReport = Omit<FoundReport, 'id'>;

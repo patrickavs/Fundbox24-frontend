@@ -1,34 +1,25 @@
 import React from 'react';
 
 import {Image, ImageSourcePropType, StyleSheet, Text, View} from 'react-native';
-import {LostReport} from '../../types/report-lost.ts';
 import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
 import {FoundReport} from '../../types/report-found.ts';
 
 type ReportCardProps = {
-  report: LostReport | FoundReport;
-  backgroundColor: string;
+  report: FoundReport;
   image: ImageSourcePropType;
 };
 
-export default function ReportCard(props: ReportCardProps) {
+export default function FoundReportCard(props: ReportCardProps) {
   return (
     <View key={props.report.id} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={props.image} />
       </View>
-      <View
-        style={[
-          styles.textContainer,
-          {backgroundColor: props.backgroundColor},
-        ]}>
-        <Text numberOfLines={1}>{props.report.object}</Text>
-        {/*TODO: replace placeOfDiscoery with city*/}
-        <Text numberOfLines={1}>{props.report.placeOfDiscovery}</Text>
-        <Text>Zuletzt gesehen am</Text>
-        <Text numberOfLines={1}>
-          {props.report.timeOfDiscovery.toDateString()}
-        </Text>
+      <View style={styles.textContainer}>
+        <Text numberOfLines={1}>{props.report.title}</Text>
+        <Text numberOfLines={1}>{props.report.description}</Text>
+        <Text>Gefunden am</Text>
+        <Text numberOfLines={1}>{props.report.foundDate}</Text>
       </View>
     </View>
   );
@@ -36,7 +27,7 @@ export default function ReportCard(props: ReportCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1 / 2,
     padding: 10,
   },
   imageContainer: {
@@ -57,5 +48,6 @@ const styles = StyleSheet.create({
   textContainer: {
     borderRadius: 8,
     padding: 5,
+    backgroundColor: FoundReportTheme.colors.button1,
   },
 });
