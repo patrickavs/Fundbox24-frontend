@@ -8,11 +8,14 @@ import {
   useCallback,
   ReactNode,
 } from 'react';
+import {LOGIN_URL} from '../routes';
 
 type UserContextType = {
   isPending: boolean;
   user: User | null;
   editUser: (u: Partial<User>) => Promise<void>;
+  isLoggedIn: boolean;
+  login: (email: string, password: string) => void;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -23,6 +26,7 @@ export function useUser() {
 
 export function UserProvider({children}: {children: ReactNode}) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
@@ -40,6 +44,22 @@ export function UserProvider({children}: {children: ReactNode}) {
     });
   }, []);
 
+  async function login(email: string, password: string) {
+    const basicAuthHeader = btoa(`${email}:${password}`);
+
+    const response = await fetch(LOGIN_URL, {
+      method: 'POST',
+      headers: {Authorization: `Basic ${basicAuthHeader}`},
+    });
+
+    if (response.ok) {
+      setIsLoggedIn(true);
+      return;
+    }
+
+    console.log('Login failed. Wrong credentials!');
+  }
+
   const editUser = useCallback(async (updatedUser: Partial<User>) => {
     startTransition(() => {
       // TODO: send to backend and save updated user
@@ -56,7 +76,8 @@ export function UserProvider({children}: {children: ReactNode}) {
   }, []);
 
   return (
-    <UserContext.Provider value={{isPending, user: user, editUser}}>
+    <UserContext.Provider
+      value={{isPending, user: user, editUser, isLoggedIn, login}}>
       {children}
     </UserContext.Provider>
   );

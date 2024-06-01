@@ -16,16 +16,16 @@ import CustomButton from '../CustomButton.tsx';
 import InputField from '../InputField.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {AuthTheme} from '../../constants/theme.ts';
-import useStorage from '../../hooks/useStorage.ts';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useUser} from '../../hooks/useUser.tsx';
 
 function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation();
 
-  const [_, setAuthorization] = useStorage<string>('authorization', '');
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const {login} = useUser();
 
   function onLogin() {
     if (email === '' || password === '') {
@@ -33,15 +33,10 @@ function LoginScreen(): React.JSX.Element {
       return;
     }
 
-    // Basic Auth
-    const authorization = btoa(`${email}:${password}`);
+    login(email, password);
 
     setEmail('');
     setPassword('');
-
-    console.log(authorization);
-
-    setAuthorization(authorization);
   }
 
   const handleRegisterPress = () => {
