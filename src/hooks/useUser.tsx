@@ -17,6 +17,7 @@ type UserContextType = {
   editUser: (u: Partial<User>) => Promise<void>;
   isLoggedIn: boolean;
   login: (email: string, password: string) => void;
+  logout: () => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -66,6 +67,12 @@ export function UserProvider({children}: {children: ReactNode}) {
     return loginWithBasicAuth(basicAuthCredentials);
   }
 
+  async function logout() {
+    await AsyncStorage.removeItem('basicAuthCredentials');
+    setIsLoggedIn(false);
+    setUser(null);
+  }
+
   async function loginWithBasicAuth(basicAuthCredentials: string) {
     const response = await fetch(LOGIN_URL, {
       method: 'POST',
@@ -98,7 +105,7 @@ export function UserProvider({children}: {children: ReactNode}) {
 
   return (
     <UserContext.Provider
-      value={{isPending, user: user, editUser, isLoggedIn, login}}>
+      value={{isPending, user: user, editUser, isLoggedIn, login, logout}}>
       {children}
     </UserContext.Provider>
   );
