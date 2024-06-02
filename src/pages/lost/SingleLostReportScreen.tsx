@@ -51,8 +51,8 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                     style={styles.map}
                     initialRegion={{
                         ...position,
-                        latitudeDelta: 0.02,
-                        longitudeDelta: 0.02,
+                        latitudeDelta: 0.035,
+                        longitudeDelta: 0.035,
                     }} >
                     <Circle
                         center={position}
