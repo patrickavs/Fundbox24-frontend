@@ -5,7 +5,8 @@ import CustomHeader from '../../components/CustomHeader.tsx';
 import {FoundReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
-import FoundReportCard from '../lost/FoundReportCard.tsx';
+import FoundReportCard from './FoundReportCard.tsx';
+import {category} from '../../data/categories';
 
 function FoundReportScreen({navigation}): React.JSX.Element {
   const {foundReports} = useFoundReports();
@@ -56,7 +57,7 @@ function FoundReportScreen({navigation}): React.JSX.Element {
               key={item.id}
               report={item}
               onPress={(id) => navigation.navigate('SingleFoundReportScreen', {id: id})}
-              image={require('../../assets/images/wallet.png')}
+              image={category.find((it) => it.name === item.category.name)?.image ?? category[category.length - 1].image }
             />
           )}
           keyExtractor={item => item.id}

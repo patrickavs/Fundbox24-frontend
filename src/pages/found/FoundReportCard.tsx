@@ -16,7 +16,7 @@ export default function FoundReportCard(props: ReportCardProps): React.JSX.Eleme
         <View key={props.report.id} style={styles.container}>
           <TouchableOpacity onPress={() => props.onPress(props.report.id)}>
             <View style={styles.imageContainer}>
-              <Image source={props.image} />
+              <Image style={styles.image} source={props.image} />
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.title} numberOfLines={2}>{props.report.title}</Text>
@@ -64,4 +64,8 @@ const styles = StyleSheet.create({
     color: FoundReportTheme.colors.text,
     fontSize: 15,
     },
+  image: {
+    height: 100,
+    aspectRatio: 1,
+  },
 });

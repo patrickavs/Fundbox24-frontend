@@ -16,7 +16,7 @@ export default function LostReportCard(props: ReportCardProps) {
     <View key={props.report.id} style={styles.container}>
       <TouchableOpacity onPress={() => props.onPress(props.report.id)}>
         <View style={styles.imageContainer}>
-          <Image source={props.image} />
+          <Image style={styles.image} source={props.image} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
@@ -63,5 +63,9 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     color: FoundReportTheme.colors.text,
     fontSize: 15,
+  },
+  image: {
+    height: 100,
+    aspectRatio: 1,
   },
 });

@@ -1,12 +1,13 @@
 import React from 'react';
 
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {LostReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import LostReportCard from './LostReportCard.tsx';
+import {category} from '../../data/categories';
 
 function LostReportScreen( {navigation} ): React.JSX.Element {
   const {lostReports} = useLostReports();
@@ -57,8 +58,9 @@ function LostReportScreen( {navigation} ): React.JSX.Element {
               key={item.id}
               report={item}
               onPress={(id) => navigation.navigate('SingleLostReportScreen', {id: id})}
-              image={require('../../assets/images/winter_hat.png')}
-            />
+              image={category.find((it) => it.name === item.category.name)?.image ?? category[category.length - 1].image }
+
+              />
           )}
           keyExtractor={item => item.id}
           numColumns={2}
