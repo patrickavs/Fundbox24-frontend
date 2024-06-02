@@ -7,7 +7,7 @@ import CustomButton from '../../components/CustomButton';
 import moment from 'moment';
 import SpacerVertical from '../found/SpacerVertical';
 import {useLostReports} from '../../hooks/useLostReports';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {category} from '../../data/categories';
 
 
 function SingleLostReportScreen( {navigation} ): React.JSX.Element {
@@ -32,7 +32,7 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
         <View style={styles.screenContainer}>
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={require('../../assets/images/wallet.png')} />
+                    <Image style={styles.image} source={category.find((item) => item.name === lostReports[0].category.name)?.image ?? category[category.length - 1].image } />
                 </View>
                 <View style={styles.detailsContainer}>
                     <Text style={styles.title}>{lostReports[0].title}</Text>

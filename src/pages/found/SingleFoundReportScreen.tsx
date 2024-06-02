@@ -7,6 +7,7 @@ import SpacerVertical from './SpacerVertical';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../components/CustomButton';
 import moment from 'moment';
+import {category} from '../../data/categories';
 
 
 function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
@@ -31,7 +32,7 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
         <View style={styles.screenContainer}>
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={require('../../assets/images/wallet.png')} />
+                    <Image style={styles.image} source={category.find((item) => item.name === foundReports[0].category.name)?.image ?? category[category.length - 1].image } />
                 </View>
                 <View style={styles.detailsContainer}>
                     <Text style={styles.title}>{foundReports[0].title}</Text>
@@ -62,10 +63,10 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
                 <SpacerVertical size={20}/>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton color={FoundReportTheme.colors.button2} label="Frage stellen" onPress={() => navigation.goBack()} />
+                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Frage stellen" onPress={() => navigation.goBack()} />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton color={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={() => navigation.goBack()} />
+                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={() => navigation.goBack()} />
                     </View>
                 </View>
                 <SpacerVertical size={20}/>

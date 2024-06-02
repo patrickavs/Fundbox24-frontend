@@ -10,7 +10,7 @@ const foundReports: FoundReport[] = [
     category: {
       id: '6',
       value: 'watch',
-      title: 'Armbanduhr',
+      name: 'Armbanduhr',
       requiresAction: false,
     },
     placeOfDiscovery: 'Im Fitnessstudio Umkleidekabine',
@@ -25,7 +25,7 @@ const foundReports: FoundReport[] = [
     category: {
       id: '7',
       value: 'phone',
-      title: 'Handy',
+      name: 'Handy',
       requiresAction: true,
     },
     placeOfDiscovery: 'Auf dem Sitz im Bus Linie 42',
@@ -41,7 +41,7 @@ const foundReports: FoundReport[] = [
     category: {
       id: '8',
       value: 'wallet',
-      title: 'Portemonnaie',
+      name: 'Portemonnaie',
       requiresAction: true,
     },
     placeOfDiscovery: 'Im Café an der Hauptstraße',
@@ -56,7 +56,7 @@ const foundReports: FoundReport[] = [
     category: {
       id: '9',
       value: 'glasses',
-      title: 'Brille',
+      name: 'Brille',
       requiresAction: false,
     },
     placeOfDiscovery: 'Auf dem Schreibtisch im Büro',
@@ -71,7 +71,7 @@ const foundReports: FoundReport[] = [
     category: {
       id: '10',
       value: 'laptop',
-      title: 'Laptop',
+      name: 'Laptop',
       requiresAction: true,
     },
     placeOfDiscovery: 'In der Bibliothek auf dem Lesetisch',
@@ -87,7 +87,7 @@ const foundReports: FoundReport[] = [
     category: {
       id: '11',
       value: 'keys',
-      title: 'Schlüsselbund',
+      name: 'Schlüsselbund',
       requiresAction: false,
     },
     placeOfDiscovery: 'Vor dem Eingang des Supermarktes',
