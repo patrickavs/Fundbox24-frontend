@@ -1,10 +1,7 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-import LostReportScreen from '../../pages/lost/LostReportScreen.tsx';
 import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
-import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 import FoundReportNavStack from '../../pages/found/FoundReportNavStack';
 import LostReportNavStack from '../../pages/lost/LostReportNavStack';
@@ -34,9 +31,9 @@ const NewReportView = () => {
 function Tabbar() {
   const {isLoggedIn} = useUser();
 
+  if (!isLoggedIn) {
     return <AuthStack />;
   }
-
   return (
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen
