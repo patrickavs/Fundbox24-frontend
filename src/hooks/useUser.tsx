@@ -68,7 +68,12 @@ export function UserProvider({children}: {children: ReactNode}) {
   }
 
   async function logout() {
-    await AsyncStorage.removeItem('basicAuthCredentials');
+    const getCredentials = await AsyncStorage.getItem('basicAuthCredentials');
+    console.log(getCredentials);
+    const credentials = await AsyncStorage.removeItem(
+      'basicAuthCredentials',
+      () => console.log(credentials),
+    );
     setIsLoggedIn(false);
     setUser(null);
   }
