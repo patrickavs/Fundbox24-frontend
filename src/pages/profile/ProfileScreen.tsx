@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import IconButton from '../../components/IconButton.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
-import {Switch} from 'react-native';
-import {useUser} from '../../hooks/useUser.tsx';
+import { Switch } from 'react-native';
+import { useUser } from '../../hooks/useUser.tsx';
 import useStorage from '../../hooks/useStorage.ts';
-import {Settings} from '../../types/settings.ts';
+import { Settings } from '../../types/settings.ts';
 
 const defaultSettings: Settings = {
   sound: true,
@@ -55,7 +55,7 @@ const ProfileStyleSheet = StyleSheet.create({
 })
 
 function ProfileScreen(): React.JSX.Element {
-  const {user, isPending} = useUser(); //TODO: Implement a edit user function
+  const { user, isPending } = useUser();
   const [settings, setSettings] = useStorage('settings', defaultSettings);
 
   return (
@@ -66,6 +66,7 @@ function ProfileScreen(): React.JSX.Element {
         <View>
           <Text style={ProfileStyleSheet.label}>Email</Text>
           <TextInput
+            testID="input-email"
             placeholder={'max.mustermann@gmx.com'}
             value={user?.email}
             style={ProfileStyleSheet.input}
@@ -75,6 +76,7 @@ function ProfileScreen(): React.JSX.Element {
         <View>
           <Text style={ProfileStyleSheet.label}>Username</Text>
           <TextInput
+            testID="input-username"
             placeholder={'lilakuh55'}
             value={user?.username}
             style={ProfileStyleSheet.input}
@@ -82,8 +84,8 @@ function ProfileScreen(): React.JSX.Element {
           />
         </View>
         <View style={ProfileStyleSheet.buttonContainer}>
-          <IconButton title={'Meine Chats'}/>
-          <IconButton title={'Meine Anzeigen'}/>
+          <IconButton title={'Meine Chats'} />
+          <IconButton title={'Meine Anzeigen'} />
         </View>
         <Text style={ProfileStyleSheet.heading}>Benachrichtigungen</Text>
         <View style={ProfileStyleSheet.input}>
@@ -92,7 +94,7 @@ function ProfileScreen(): React.JSX.Element {
             <Switch
               value={settings.sound}
               onChange={event =>
-                setSettings({...settings, sound: !settings.sound})
+                setSettings({ ...settings, sound: !settings.sound })
               }
             />
           </View>
@@ -101,7 +103,7 @@ function ProfileScreen(): React.JSX.Element {
             <Switch
               value={settings.vibration}
               onChange={event =>
-                setSettings({...settings, vibration: !settings.vibration})
+                setSettings({ ...settings, vibration: !settings.vibration })
               }
             />
           </View>
@@ -111,7 +113,7 @@ function ProfileScreen(): React.JSX.Element {
           <Switch
             value={settings.location}
             onChange={event =>
-              setSettings({...settings, location: !settings.location})
+              setSettings({ ...settings, location: !settings.location })
             }
           />
         </View>

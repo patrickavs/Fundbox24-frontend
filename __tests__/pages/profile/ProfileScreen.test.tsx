@@ -5,6 +5,7 @@ import { expect, it, jest, describe } from '@jest/globals';
 import { UserProvider } from '../../../src/hooks/useUser.tsx';
 import { LostReport } from '../../../src/types/report-lost.ts';
 import ProfileScreen from '../../../src/pages/profile/ProfileScreen.tsx';
+import { act } from 'react-test-renderer';
 
 describe("ProfileScreen", () => {
     it('should display "wal@test.de"', () => {
@@ -46,6 +47,7 @@ describe("ProfileScreen", () => {
                 <ProfileScreen />
             </UserProvider>
         );
-        expect(screen.getByText('wal@test.de').props.children).toBeTruthy();
+
+        expect(screen.getByTestId('input-email').props.value === "wal@test.de").toBeTruthy();
     });
 });
