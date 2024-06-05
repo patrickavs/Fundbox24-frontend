@@ -46,7 +46,7 @@
     "@react-native/typescript-config": "0.74.81",
     "@types/is-url": "^1.2.32",
     "@types/react": "^18.2.6",
-    "@types/react-test-renderer": "^18.0.0",
+    "@types/react-test-renderer": "18.0.0",
     "babel-jest": "^29.6.3",
     "jest": "^29.6.3",
     "prettier": "2.8.8",
