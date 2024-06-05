@@ -5,10 +5,10 @@ import { expect, it, jest, describe } from '@jest/globals';
 import { render, screen } from '@testing-library/react-native';
 
 describe('App', () => {
-  it('should display ""', () => {
+  it('should display "Noch keinen Account bei uns?"', () => {
     render(<App />);
 
-    expect(screen.getByText('')).toBeTruthy();
+    expect(screen.getByText("Noch keinen Account bei uns?")).toBeTruthy();
   });
 });
 

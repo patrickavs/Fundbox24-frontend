@@ -36,7 +36,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function checkSavedBasicAuthCredentials() {
-      const basicAuthCredentials = await AsyncStorage.getItem(
+      const basicAuthCredentials = await AsyncStorage?.getItem(
         'basicAuthCredentials',
       );
 
@@ -77,7 +77,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     });
 
     if (response.ok) {
-      await AsyncStorage.setItem('basicAuthCredentials', basicAuthCredentials);
+      await AsyncStorage?.setItem('basicAuthCredentials', basicAuthCredentials);
       setIsLoggedIn(true);
       return;
     }

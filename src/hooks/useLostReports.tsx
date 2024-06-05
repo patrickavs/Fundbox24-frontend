@@ -45,7 +45,7 @@ export function useLostReports() {
   // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      AsyncStorage.getItem('basicAuthCredentials').then(
+      AsyncStorage?.getItem('basicAuthCredentials').then(
         basicAuthCredentials => {
           if (!basicAuthCredentials) {
             throw 'No Basic Auth Header! Please login.';
