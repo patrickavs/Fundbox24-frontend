@@ -1,18 +1,22 @@
 import { User } from '../types/user';
 import {
-  useTransition,
-  useEffect,
-  useContext,
-  useState,
   createContext,
-  useCallback,
   ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
 } from 'react';
+import { LOGIN_URL } from '../routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type UserContextType = {
   isPending: boolean;
   user: User | null;
   editUser: (u: Partial<User>) => Promise<void>;
+  isLoggedIn: boolean;
+  login: (email: string, password: string) => void;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -27,9 +31,24 @@ export function useUser() {
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
+    async function checkSavedBasicAuthCredentials() {
+      const basicAuthCredentials = await AsyncStorage.getItem(
+        'basicAuthCredentials',
+      );
+
+      if (!basicAuthCredentials) {
+        return;
+      }
+
+      return loginWithBasicAuth(basicAuthCredentials);
+    }
+
+    checkSavedBasicAuthCredentials();
+
     startTransition(() => {
       // TODO: fetch userdata
       // TODO: fetch data
@@ -43,6 +62,28 @@ export function UserProvider({ children }: { children: ReactNode }) {
       setUser(userData);
     });
   }, []);
+
+  async function login(email: string, password: string) {
+    // Credentials as Base64
+    const basicAuthCredentials = btoa(`${email}:${password}`);
+
+    return loginWithBasicAuth(basicAuthCredentials);
+  }
+
+  async function loginWithBasicAuth(basicAuthCredentials: string) {
+    const response = await fetch(LOGIN_URL, {
+      method: 'POST',
+      headers: { Authorization: `Basic ${basicAuthCredentials}` },
+    });
+
+    if (response.ok) {
+      await AsyncStorage.setItem('basicAuthCredentials', basicAuthCredentials);
+      setIsLoggedIn(true);
+      return;
+    }
+
+    console.log('Login failed. Wrong credentials!');
+  }
 
   const editUser = useCallback(async (updatedUser: Partial<User>) => {
     startTransition(() => {
@@ -60,7 +101,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ isPending, user: user, editUser }}>
+    <UserContext.Provider
+      value={{ isPending, user: user, editUser, isLoggedIn, login }}>
       {children}
     </UserContext.Provider>
   );

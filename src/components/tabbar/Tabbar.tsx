@@ -6,9 +6,10 @@ import LostReportScreen from '../../pages/lost/LostReportScreen.tsx';
 import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
 import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
-import AuthAlert from '../auth/alerts/AuthAlert.tsx';
+//import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
 import NewReport from '../NewReport.tsx';
+import {useUser} from '../../hooks/useUser.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,15 +21,21 @@ const getTabBarOptions = () => ({
   tabBarStyle: {backgroundColor: 'lightgray'},
 });
 
-const AuthAlertView = () => {
-  return <AuthAlert textField={true} />;
-};
+// const AuthAlertView = () => {
+//   return <AuthAlert textField={true} />;
+// };
 
 const NewReportView = () => {
   return <NewReport reportType={'found'} />;
 };
 
 function Tabbar() {
+  const {isLoggedIn} = useUser();
+
+  if (!isLoggedIn) {
+    return <AuthStack />;
+  }
+
   return (
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen

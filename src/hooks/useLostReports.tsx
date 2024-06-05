@@ -8,6 +8,7 @@ import React, {
   useTransition,
 } from 'react';
 import { ALL_LOST_REPORTS_URL, LOSTREPORT_URL } from '../routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LostReportContextType = {
   isPending: boolean;
@@ -44,18 +45,31 @@ export function useLostReports() {
   // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      fetch(ALL_LOST_REPORTS_URL, { method: 'GET' })
-        .then(async response => {
-          const data = await response.json();
-          if (response.status === 200) {
-            setLostReports(data);
-          } else {
-            setError(data);
+      AsyncStorage.getItem('basicAuthCredentials').then(
+        basicAuthCredentials => {
+          if (!basicAuthCredentials) {
+            throw 'No Basic Auth Header! Please login.';
           }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+
+          fetch(ALL_LOST_REPORTS_URL, {
+            method: 'GET',
+            headers: {
+              Authorization: `Basic ${basicAuthCredentials}`,
+            },
+          })
+            .then(async response => {
+              const data = await response.json();
+              if (response.status === 200) {
+                setLostReports(data);
+              } else {
+                setError(data);
+              }
+            })
+            .catch(fetchError => {
+              console.log(fetchError);
+            });
+        },
+      );
     });
   }, [startTransition, setLostReports, setError]);
 

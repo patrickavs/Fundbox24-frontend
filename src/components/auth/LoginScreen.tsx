@@ -1,5 +1,12 @@
-import React from 'react';
-import {SafeAreaView, View, Text, TouchableOpacity, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -9,9 +16,29 @@ import CustomButton from '../CustomButton.tsx';
 import InputField from '../InputField.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {AuthTheme} from '../../constants/theme.ts';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {useUser} from '../../hooks/useUser.tsx';
+import Config from 'react-native-config';
 
 function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation();
+
+  const [email, setEmail] = useState(Config.INITIAL_EMAIL ?? '');
+  const [password, setPassword] = useState(Config.INITIAL_PASSWORD ?? '');
+
+  const {login} = useUser();
+
+  function onLogin() {
+    if (email === '' || password === '') {
+      Alert.alert('Bitte Benutzername und Passwort eingeben.');
+      return;
+    }
+
+    login(email, password);
+
+    setEmail('');
+    setPassword('');
+  }
 
   const handleRegisterPress = () => {
     // TODO: Define screen names!
@@ -45,27 +72,35 @@ function LoginScreen(): React.JSX.Element {
           keyboardType="email-address"
           inputType={'email-address'}
           fieldButtonLabel={''}
+          value={email}
+          onChangeText={text => {
+            setEmail(text);
+          }}
         />
 
         <InputField
           label={'Passwort'}
           icon={
-            <MaterialIcons
-              name="lock-outline"
+            <Icon
+              name="lock"
               size={20}
               color="#666"
-              style={{marginLeft: -5}}
+              style={{marginLeft: -5, marginRight: 8}}
             />
           }
           inputType="password"
           keyboardType={'visible-password'}
           fieldButtonFunction={() => {}}
           fieldButtonLabel={''}
+          value={password}
+          onChangeText={text => {
+            setPassword(text);
+          }}
         />
 
         <CustomButton
           label={'Login'}
-          onPress={() => {}}
+          onPress={onLogin}
           backgroundColor={AuthTheme.colors.secondaryBackground}
           fontSize={16}
         />
