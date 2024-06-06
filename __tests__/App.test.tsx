@@ -1,17 +1,19 @@
-/**
- * @format
- */
-
-import 'react-native';
-import React from 'react';
-import App from '../App';
+import App from '../src/App';
 
 // Note: import explicitly to use the types shipped with jest.
-import {it} from '@jest/globals';
+import { expect, it, jest, describe } from '@jest/globals';
+import { render, screen } from '@testing-library/react-native';
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+describe('App', () => {
+  it('should display "Noch keinen Account bei uns?"', () => {
+    render(<App />);
 
-it('renders correctly', () => {
-  renderer.create(<App />);
+    expect(screen.getByText("Noch keinen Account bei uns?")).toBeTruthy();
+  });
 });
+
+// it('renderer App has 2 child', () => {
+//   const tree = renderer.create(<App />).toJSON();
+//   //console.log(JSON.stringify(tree));
+//   expect(tree.children.length).toBe(2);
+// });
