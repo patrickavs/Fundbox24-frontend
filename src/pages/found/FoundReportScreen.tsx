@@ -1,13 +1,14 @@
 import React from 'react';
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Button, FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useFoundReports} from '../../hooks/useFoundReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {FoundReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
-import FoundReportCard from '../lost/FoundReportCard.tsx';
+import FoundReportCard from './FoundReportCard.tsx';
+import {category} from '../../data/categories';
 
-function FoundReportScreen(): React.JSX.Element {
+function FoundReportScreen({navigation}): React.JSX.Element {
   const {foundReports} = useFoundReports();
 
   return (
@@ -46,7 +47,7 @@ function FoundReportScreen(): React.JSX.Element {
           />
         </View>
 
-        <Text style={styles.subtitle}>Gefunden in deinem Umkreis</Text>
+        <Text style={styles.text}>Gefunden in deinem Umkreis</Text>
 
         <FlatList
           style={styles.list}
@@ -55,7 +56,8 @@ function FoundReportScreen(): React.JSX.Element {
             <FoundReportCard
               key={item.id}
               report={item}
-              image={require('../../assets/images/wallet.png')}
+              onPress={(id) => navigation.navigate('SingleFoundReportScreen', {id: id})}
+              image={category.find((it) => it.name === item.category.name)?.image ?? category[category.length - 1].image }
             />
           )}
           keyExtractor={item => item.id}
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   list: {
     marginBottom: 200,
   },
-  subtitle: {
+  text: {
     color: 'black',
     marginTop: 40,
     marginBottom: 20,

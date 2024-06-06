@@ -1,14 +1,15 @@
 import React from 'react';
 
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {LostReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import LostReportCard from './LostReportCard.tsx';
+import {category} from '../../data/categories';
 
-function LostReportScreen(): React.JSX.Element {
+function LostReportScreen( {navigation} ): React.JSX.Element {
   const {lostReports} = useLostReports();
 
   return (
@@ -47,7 +48,7 @@ function LostReportScreen(): React.JSX.Element {
           />
         </View>
 
-        <Text style={styles.subtitle}>Gesucht in deinem Umkreis</Text>
+        <Text style={styles.text}>Gesucht in deinem Umkreis</Text>
 
         <FlatList
           style={styles.list}
@@ -56,8 +57,10 @@ function LostReportScreen(): React.JSX.Element {
             <LostReportCard
               key={item.id}
               report={item}
-              image={require('../../assets/images/winter_hat.png')}
-            />
+              onPress={(id) => navigation.navigate('SingleLostReportScreen', {id: id})}
+              image={category.find((it) => it.name === item.category.name)?.image ?? category[category.length - 1].image }
+
+              />
           )}
           keyExtractor={item => item.id}
           numColumns={2}
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
   list: {
     marginBottom: 200,
   },
-  subtitle: {
+  text: {
     color: 'black',
     marginTop: 40,
     marginBottom: 20,
