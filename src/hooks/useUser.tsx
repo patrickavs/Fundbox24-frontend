@@ -23,7 +23,11 @@ type UserContextType = {
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export function useUser() {
-  return useContext(UserContext);
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
 }
 
 export function UserProvider({children}: {children: ReactNode}) {
@@ -33,7 +37,7 @@ export function UserProvider({children}: {children: ReactNode}) {
 
   useEffect(() => {
     async function checkSavedBasicAuthCredentials() {
-      const basicAuthCredentials = await AsyncStorage.getItem(
+      const basicAuthCredentials = await AsyncStorage?.getItem(
         'basicAuthCredentials',
       );
 
@@ -85,7 +89,7 @@ export function UserProvider({children}: {children: ReactNode}) {
     });
 
     if (response.ok) {
-      await AsyncStorage.setItem('basicAuthCredentials', basicAuthCredentials);
+      await AsyncStorage?.setItem('basicAuthCredentials', basicAuthCredentials);
       setIsLoggedIn(true);
       return;
     }

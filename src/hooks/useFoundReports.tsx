@@ -1,4 +1,4 @@
-import {FoundReport, NewFoundReport} from '../types/report-found';
+import { FoundReport, NewFoundReport } from '../types/report-found';
 import React, {
   createContext,
   useCallback,
@@ -7,7 +7,7 @@ import React, {
   useState,
   useTransition,
 } from 'react';
-import {ALL_FOUND_REPORTS_URL, FOUNDREPORT_URL} from '../routes';
+import { ALL_FOUND_REPORTS_URL, FOUNDREPORT_URL } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type FoundReportsContextType = {
@@ -26,6 +26,7 @@ const FoundReportsContext = createContext<FoundReportsContextType>(
 );
 
 export function useFoundReports() {
+  const context = useContext(FoundReportsContext);
   const {
     isPending,
     startTransition,
@@ -35,12 +36,18 @@ export function useFoundReports() {
     foundReports,
     error,
     editFoundReport,
-  } = useContext(FoundReportsContext);
+  } = context;
+
+  if (!context) {
+    throw new Error(
+      'useFoundReports must be used within a FoundReportProvider',
+    );
+  }
 
   // Only loads data when the hook is called the first time
   useEffect(() => {
     startTransition(() => {
-      AsyncStorage.getItem('basicAuthCredentials').then(
+      AsyncStorage?.getItem('basicAuthCredentials').then(
         basicAuthCredentials => {
           if (!basicAuthCredentials) {
             throw 'No Basic Auth Credentials! Please login.';
@@ -68,10 +75,10 @@ export function useFoundReports() {
     });
   }, [startTransition, setFoundReports, setError]);
 
-  return {isPending, error, foundReports, createFoundReport, editFoundReport};
+  return { isPending, error, foundReports, createFoundReport, editFoundReport };
 }
 
-export function FoundReportProvider({children}: {children: React.ReactNode}) {
+export function FoundReportProvider({ children }: { children: React.ReactNode }) {
   const [foundReports, setFoundReports] = useState<Array<FoundReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -113,7 +120,7 @@ export function FoundReportProvider({children}: {children: React.ReactNode}) {
           const data = await response.json();
           if (response.status === 200) {
             setFoundReports(prev => [
-              ...prev.filter(({id}) => id !== report.id),
+              ...prev.filter(({ id }) => id !== report.id),
               data as FoundReport,
             ]);
           } else {

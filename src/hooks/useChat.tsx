@@ -1,5 +1,5 @@
-import {Chat} from '../types/chat';
-import {Message, NewMessage} from '../types/message';
+import { Chat } from '../types/chat';
+import { Message, NewMessage } from '../types/message';
 import {
   useContext,
   createContext,
@@ -8,8 +8,8 @@ import {
   useEffect,
   useCallback,
 } from 'react';
-import {CHAT_URL, MESSAGE_URL} from '../routes';
-import {FetchType, fetchAdapter} from '../mockups/fetching.ts';
+import { CHAT_URL, MESSAGE_URL } from '../routes';
+import { FetchType, fetchAdapter } from '../mockups/fetching.ts';
 
 type ChatContextType = {
   chats: Array<Chat>;
@@ -33,6 +33,7 @@ const ChatContext = createContext<ChatContextType>({} as ChatContextType);
 const fetch: FetchType = fetchAdapter;
 
 export const useChat = (userToken: string) => {
+  const context = useContext(ChatContext);
   const {
     startTransition,
     isPending,
@@ -43,11 +44,15 @@ export const useChat = (userToken: string) => {
     createChat,
     removeChat,
     addMessage,
-  } = useContext(ChatContext);
+  } = context;
+
+  if (!context) {
+    throw new Error('useChat must be used within a ChatProvider');
+  }
 
   useEffect(() => {
     startTransition(() => {
-      fetch({method: 'get', url: CHAT_URL}).then(response => {
+      fetch({ method: 'get', url: CHAT_URL }).then(response => {
         if (response.success) {
           setChats(response.data);
         } else {
@@ -57,10 +62,10 @@ export const useChat = (userToken: string) => {
     });
   }, []);
 
-  return {isPending, error, chats, createChat, removeChat, addMessage}; // Der returned wichtige Daten und Funktionen
+  return { isPending, error, chats, createChat, removeChat, addMessage }; // Der returned wichtige Daten und Funktionen
 };
 
-export function ChatProvider({children}: {children: React.ReactNode}) {
+export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [chats, setChats] = useState<Array<Chat>>([]);
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();

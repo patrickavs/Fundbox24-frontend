@@ -72,6 +72,7 @@ function ProfileScreen(): React.JSX.Element {
         <View>
           <Text style={ProfileStyleSheet.label}>Email</Text>
           <TextInput
+            testID="input-email"
             placeholder={'max.mustermann@gmx.com'}
             value={user?.email}
             style={ProfileStyleSheet.input}
@@ -81,6 +82,7 @@ function ProfileScreen(): React.JSX.Element {
         <View>
           <Text style={ProfileStyleSheet.label}>Username</Text>
           <TextInput
+            testID="input-username"
             placeholder={'lilakuh55'}
             value={user?.username}
             style={ProfileStyleSheet.input}
