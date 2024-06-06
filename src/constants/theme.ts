@@ -1,5 +1,7 @@
+// TODO: Do not use this file in testing
 const baseFontFamily = {
-  interRegular: require('../assets/fonts/inter/Inter-Regular.ttf'),
+  // interRegular: require('../assets/fonts/inter/Inter-Regular.ttf'),
+  interRegular: 'Inter-Regular',
 };
 
 const baseFontSize = 15;
