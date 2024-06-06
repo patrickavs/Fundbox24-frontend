@@ -10,6 +10,8 @@ import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
 import {useUser} from '../../hooks/useUser.tsx';
 import StartScreen from '../../pages/home/StartScreen.tsx';
+import {createStackNavigator} from '@react-navigation/stack';
+import SetPerimeterScreen from '../map/SetPerimeterScreen.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,9 +27,20 @@ const getTabBarOptions = () => ({
 //   return <AuthAlert textField={true} />;
 // };
 
+const NewReportStack = createStackNavigator();
+
 const NewReportView = () => {
-  return <AddReportScreen reportType={'lost'} />;
+  return <AddReportScreen reportType={'found'} />;
 };
+
+function ReportStack() {
+  return (
+    <NewReportStack.Navigator>
+      <NewReportStack.Screen name="NewReport" component={NewReportView} />
+      <NewReportStack.Screen name="Map" component={SetPerimeterScreen} />
+    </NewReportStack.Navigator>
+  );
+}
 
 function Tabbar() {
   const {isLoggedIn} = useUser();
@@ -68,7 +81,7 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Plus"
-        component={NewReportView}
+        component={ReportStack}
         options={{
           headerShown: false,
           tabBarIcon: ({focused, color}) => (

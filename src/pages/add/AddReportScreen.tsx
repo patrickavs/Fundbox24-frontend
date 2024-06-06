@@ -12,21 +12,25 @@ import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
 import {useLostReports} from '../../hooks/useLostReports.tsx';
 import {useFoundReports} from '../../hooks/useFoundReports.tsx';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import CustomButton from '../../components/CustomButton.tsx';
 import {NewLostReport} from '../../types/report-lost.ts';
 import {NewFoundReport} from '../../types/report-found.ts';
+import Dropdown from '../../components/Dropdown.tsx';
+import {category} from '../../data/categories.ts';
+import {Category} from '../../types/category.ts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 function AddReportScreen({reportType}: {reportType: string}) {
-  const {lostReports} = useLostReports();
-  const {foundReports} = useFoundReports();
+  const navigation = useNavigation();
+  const {createLostReport} = useLostReports();
+  const {createFoundReport} = useFoundReports();
   const [reportImage, setReportImage] = useState<string>('');
-  const [checkedMiddle, setCheckedMiddle] = useState<boolean>(false);
-  const [checkedHigh, setCheckedHigh] = useState<boolean>(false);
   const [reportName, setReportName] = useState<string>('');
   const [reportDescription, setReportDescription] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [reportCategory, setReportCategory] = useState<Category>(category[0]);
   const [report, setReport] = useState<NewLostReport | NewFoundReport>();
 
   useEffect(() => {
@@ -60,6 +64,57 @@ function AddReportScreen({reportType}: {reportType: string}) {
     validateDate(date);
   }, [date]);
 
+  const handleSubmit = async () => {
+    const newReport: NewLostReport | NewFoundReport = {
+      title: reportName,
+      description: reportDescription,
+      category: reportCategory,
+      myChats: [],
+      ...(reportType === 'lost'
+        ? {
+            lastSeenDate: date,
+            lastSeenLocation: {
+              latitude: 12345,
+              longitude: 5564646,
+            },
+            lostLocation: {
+              latitude: 12345,
+              longitude: 5564646,
+            },
+            lostRadius: 0,
+            placeOfDiscovery: 'Uga',
+            placeOfDelivery: 'Uga-uga',
+          }
+        : {
+            isFinished: false,
+            foundDate: date,
+            foundLocation: {
+              latitude: 12345,
+              longitude: 5564646,
+            },
+            currentLocation: {
+              latitude: 12345,
+              longitude: 5564646,
+            },
+          }),
+    };
+
+    setReport(newReport);
+
+    try {
+      const token = await AsyncStorage.getItem('basicAuthCredentials');
+      if (token) {
+        reportType === 'lost'
+          ? createLostReport(token, report as NewLostReport)
+          : createFoundReport(token, report as NewFoundReport);
+      }
+
+      console.error('Invalid token');
+    } catch (sendError) {
+      console.error('Error creating report:', sendError);
+    }
+  };
+
   return (
     <ScrollView>
       <>
@@ -89,40 +144,26 @@ function AddReportScreen({reportType}: {reportType: string}) {
           />
         )}
         <View style={styles.inputContainer}>
-          <Text style={styles.textStyle}>
-            Geschätzter Wert des Gegenstandes
-          </Text>
-          <BouncyCheckbox
-            size={25}
-            fillColor="lightgray"
-            unFillColor="#FFFFFF"
-            text="Mittel"
-            iconStyle={{borderColor: 'lightgray', borderRadius: 0}}
-            innerIconStyle={{borderRadius: 0}}
-            textStyle={{
-              fontFamily: 'JosefinSans-Regular',
-              textDecorationLine: 'none',
-            }}
-            onPress={(isCheckedMiddle: boolean) => {
-              setCheckedMiddle(isCheckedMiddle);
-            }}
-          />
-          <BouncyCheckbox
-            style={{paddingBottom: 20}}
-            size={25}
-            fillColor="lightgray"
-            unFillColor="#FFFFFF"
-            text="High"
-            iconStyle={{borderColor: 'lightgray', borderRadius: 0}}
-            innerIconStyle={{borderRadius: 0}}
-            textStyle={{
-              fontFamily: 'JosefinSans-Regular',
-              textDecorationLine: 'none',
-            }}
-            onPress={(isCheckedHigh: boolean) => {
-              setCheckedHigh(isCheckedHigh);
-            }}
-          />
+          <Text style={styles.textStyle}>Kategorie</Text>
+          <View style={{paddingBottom: 30}}>
+            <Dropdown
+              items={[
+                {label: category[0].title, value: category[0].value},
+                {label: category[1].title, value: category[1].value},
+                {label: category[2].title, value: category[2].value},
+              ]}
+              placeholder={'Kategorie'}
+              onChange={item => {
+                setReportCategory({
+                  id: '',
+                  image: undefined,
+                  title: item.label,
+                  value: item.value,
+                });
+                console.log(reportCategory);
+              }}
+            />
+          </View>
           <TextInput
             style={styles.textInputStyle}
             placeholder={'Bezeichnung des Gegenstandes'}
@@ -188,15 +229,20 @@ function AddReportScreen({reportType}: {reportType: string}) {
               <>
                 <CustomButton
                   label={'Letzte bekannte Position angeben'}
-                  onPress={() => console.log('pressed button!')}
+                  //@ts-ignore
+                  onPress={() => navigation.navigate('SetPerimeterScreen')}
                   backgroundColor={LostReportTheme.colors.secondaryBackground}
                   fontSize={14}
                 />
                 <CustomButton
                   label={'Suchanzeige speichern'}
                   disabled={error !== null}
-                  onPress={() => console.log('pressed button 2!')}
-                  backgroundColor={LostReportTheme.colors.secondaryBackground}
+                  onPress={handleSubmit}
+                  backgroundColor={
+                    !error
+                      ? LostReportTheme.colors.secondaryBackground
+                      : LostReportTheme.colors.secondaryAccent
+                  }
                   fontSize={14}
                 />
               </>
@@ -209,13 +255,15 @@ function AddReportScreen({reportType}: {reportType: string}) {
                   }}>
                   <CustomButton
                     label={'Fundort angeben'}
-                    onPress={() => console.log('pressed button!')}
+                    //@ts-ignore
+                    onPress={() => navigation.navigate('SetPerimeterScreen')}
                     backgroundColor={FoundReportTheme.colors.button1}
                     fontSize={14}
                   />
                   <CustomButton
                     label={'Abholort angeben'}
-                    onPress={() => console.log('pressed button 2!')}
+                    //@ts-ignore
+                    onPress={() => navigation.navigate('SetPerimeterScreen')}
                     backgroundColor={FoundReportTheme.colors.button1}
                     fontSize={14}
                   />
@@ -228,8 +276,12 @@ function AddReportScreen({reportType}: {reportType: string}) {
                 <CustomButton
                   label={'Fundanzeige erstellen'}
                   disabled={error !== null}
-                  onPress={() => console.log('pressed button! 3')}
-                  backgroundColor={FoundReportTheme.colors.button1}
+                  onPress={handleSubmit}
+                  backgroundColor={
+                    !error
+                      ? FoundReportTheme.colors.button1
+                      : FoundReportTheme.colors.button2
+                  }
                   fontSize={14}
                 />
               </View>
