@@ -1,4 +1,4 @@
-import {User} from '../types/user';
+import { User } from '../types/user';
 import {
   createContext,
   ReactNode,
@@ -8,7 +8,7 @@ import {
   useState,
   useTransition,
 } from 'react';
-import {LOGIN_URL} from '../routes';
+import { LOGIN_URL } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type UserContextType = {
@@ -22,17 +22,21 @@ type UserContextType = {
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export function useUser() {
-  return useContext(UserContext);
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
 }
 
-export function UserProvider({children}: {children: ReactNode}) {
+export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     async function checkSavedBasicAuthCredentials() {
-      const basicAuthCredentials = await AsyncStorage.getItem(
+      const basicAuthCredentials = await AsyncStorage?.getItem(
         'basicAuthCredentials',
       );
 
@@ -69,11 +73,11 @@ export function UserProvider({children}: {children: ReactNode}) {
   async function loginWithBasicAuth(basicAuthCredentials: string) {
     const response = await fetch(LOGIN_URL, {
       method: 'POST',
-      headers: {Authorization: `Basic ${basicAuthCredentials}`},
+      headers: { Authorization: `Basic ${basicAuthCredentials}` },
     });
 
     if (response.ok) {
-      await AsyncStorage.setItem('basicAuthCredentials', basicAuthCredentials);
+      await AsyncStorage?.setItem('basicAuthCredentials', basicAuthCredentials);
       setIsLoggedIn(true);
       return;
     }
@@ -98,7 +102,7 @@ export function UserProvider({children}: {children: ReactNode}) {
 
   return (
     <UserContext.Provider
-      value={{isPending, user: user, editUser, isLoggedIn, login}}>
+      value={{ isPending, user: user, editUser, isLoggedIn, login }}>
       {children}
     </UserContext.Provider>
   );

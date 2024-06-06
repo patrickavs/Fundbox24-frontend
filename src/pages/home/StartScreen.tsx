@@ -7,7 +7,7 @@ import { useChat } from '../../hooks/useChat';
 function StartScreen(): React.JSX.Element {
   const { isPending: isPendingUser, user } = useUser();
   const { isPending: isPendingLostReport, lostReports } = useLostReports();
-  const { isPending: isPendingChat, chats } = useChat();
+  const { isPending: isPendingChat, chats } = useChat(""); // TODO: Pass userToken here
 
   const isPending = isPendingUser || isPendingLostReport || isPendingChat;
 
@@ -15,12 +15,12 @@ function StartScreen(): React.JSX.Element {
     return <View><Text>Du bist nicht angemeldet</Text></View>
   }
 
-  const latestChats = useMemo(() =>
-    chats
-      .filter(({ isOpen }) => isOpen)
-      .sort((chat1, chat2) => chat1.updatedAt.getTime() - chat2.updatedAt.getTime()),
-    [chats]
-  );
+  // const latestChats = useMemo(() =>
+  //   chats
+  //     .filter(({ isOpen }) => isOpen)
+  //     .sort((chat1, chat2) => chat1.updatedAt.getTime() - chat2.updatedAt.getTime()),
+  //   [chats]
+  // );
 
   return (
     <View>
