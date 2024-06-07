@@ -8,13 +8,15 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
+build-job:       # This job runs in every branch.
   stage: build
   image: node:22-alpine3.19
+  artifacts: # TODO: Lookup
+    untracked: true
   script:
     - npm i
 
-ui-test-job:   # This job runs in the test stage.
+ui-test-job:   # This job runs only on main and develop branch.
   stage: test    # It only starts when the job in the build stage completes successfully.
   image: node:22-alpine3.19
   only:
@@ -23,4 +25,12 @@ ui-test-job:   # This job runs in the test stage.
   before_script:
     - npm i
   script:
-    - npm test
+    - npm run test:ci
+  coverage:  /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    paths:
+      - coverage/
+    when: always # TODO: Lookup
+    reports:
+      junit:
+        - junit.xml
