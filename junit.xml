@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="1.761">
+  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-07T09:56:00" time="0.906" tests="1">
+    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.249">
+    </testcase>
+  </testsuite>
+  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-07T09:56:00" time="0.973" tests="1">
+    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.255">
+    </testcase>
+  </testsuite>
+  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-07T09:56:00" time="1.381" tests="1">
+    <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.099">
+    </testcase>
+  </testsuite>
+</testsuites>

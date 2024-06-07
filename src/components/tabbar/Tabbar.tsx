@@ -7,8 +7,8 @@ import FoundReportNavStack from '../../pages/found/FoundReportNavStack';
 import LostReportNavStack from '../../pages/lost/LostReportNavStack';
 //import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
-import NewReport from '../NewReport.tsx';
 import {useUser} from '../../hooks/useUser.tsx';
+import StartScreen from '../../pages/home/StartScreen.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +34,7 @@ const getTabBarOptions = () => ({
 // };
 
 const NewReportView = () => {
-  return <NewReport reportType={'found'} />;
+  return <AddReportScreen reportType={'lost'} />;
 };
 
 function Tabbar() {
@@ -47,7 +47,7 @@ function Tabbar() {
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen
         name="Start"
-        component={NewReportView}
+        component={StartScreen}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons
@@ -85,8 +85,9 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Plus"
-        component={AddReportScreen}
+        component={NewReportView}
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color}) => (
             <Ionicons
               name={focused ? 'add' : 'add-outline'}

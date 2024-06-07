@@ -1,4 +1,4 @@
-import { User } from '../types/user';
+import {User} from '../types/user';
 import {
   createContext,
   ReactNode,
@@ -8,7 +8,7 @@ import {
   useState,
   useTransition,
 } from 'react';
-import { LOGIN_URL } from '../routes';
+import {LOGIN_URL} from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type UserContextType = {
@@ -17,6 +17,7 @@ type UserContextType = {
   editUser: (u: Partial<User>) => Promise<void>;
   isLoggedIn: boolean;
   login: (email: string, password: string) => void;
+  logout: () => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -29,7 +30,7 @@ export function useUser() {
   return context;
 }
 
-export function UserProvider({ children }: { children: ReactNode }) {
+export function UserProvider({children}: {children: ReactNode}) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -70,10 +71,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
     return loginWithBasicAuth(basicAuthCredentials);
   }
 
+  async function logout() {
+    await AsyncStorage.removeItem('basicAuthCredentials');
+    setIsLoggedIn(false);
+    setUser(null);
+  }
+
   async function loginWithBasicAuth(basicAuthCredentials: string) {
     const response = await fetch(LOGIN_URL, {
       method: 'POST',
-      headers: { Authorization: `Basic ${basicAuthCredentials}` },
+      headers: {Authorization: `Basic ${basicAuthCredentials}`},
     });
 
     if (response.ok) {
@@ -102,7 +109,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   return (
     <UserContext.Provider
-      value={{ isPending, user: user, editUser, isLoggedIn, login }}>
+      value={{isPending, user: user, editUser, isLoggedIn, login, logout}}>
       {children}
     </UserContext.Provider>
   );
