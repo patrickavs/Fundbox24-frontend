@@ -11,6 +11,7 @@ import {useUser} from '../../hooks/useUser.tsx';
 import StartScreen from '../../pages/home/StartScreen.tsx';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SetPerimeterScreen from '../map/SetPerimeterScreen.tsx';
+import {AddReportStack} from '../../pages/add/AddReportStack.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,27 +22,6 @@ const getTabBarOptions = () => ({
   tabBarHideOnKeyboard: true,
   tabBarStyle: {backgroundColor: 'lightgray'},
 });
-
-const NewReportView = () => {
-  return <AddReportScreen reportType={'found'} />;
-};
-
-const NewReportStack = createNativeStackNavigator();
-
-const ReportStack = () => (
-  <NewReportStack.Navigator>
-    <NewReportStack.Screen
-      name="NewReport"
-      component={NewReportView}
-      options={{headerShown: false}}
-    />
-    <NewReportStack.Screen
-      name="Map"
-      component={SetPerimeterScreen}
-      options={{headerShown: false}}
-    />
-  </NewReportStack.Navigator>
-);
 
 function Tabbar() {
   const {isLoggedIn} = useUser();
@@ -82,7 +62,7 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Plus"
-        component={ReportStack}
+        component={AddReportStack}
         options={{
           headerShown: false,
           tabBarIcon: ({focused, color}) => (
