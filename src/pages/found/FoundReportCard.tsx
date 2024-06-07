@@ -1,30 +1,30 @@
 import React from 'react';
 
 import {Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {LostReport} from '../../types/report-lost.ts';
 import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
+import {FoundReport} from '../../types/report-found.ts';
 import moment from 'moment';
 
 type ReportCardProps = {
-  report: LostReport;
+  report: FoundReport;
   image: ImageSourcePropType;
   onPress: (id: string) => void;
 };
 
-export default function LostReportCard(props: ReportCardProps) {
+export default function FoundReportCard(props: ReportCardProps): React.JSX.Element {
   return (
-    <View key={props.report.id} style={styles.container}>
-      <TouchableOpacity onPress={() => props.onPress(props.report.id)}>
-        <View style={styles.imageContainer}>
-          <Image style={styles.image} source={props.image} />
+        <View key={props.report.id} style={styles.container}>
+          <TouchableOpacity onPress={() => props.onPress(props.report.id)}>
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={props.image} />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.title} numberOfLines={2}>{props.report.title}</Text>
+              <Text style={styles.text}numberOfLines={1}>{props.report.category.name}</Text>
+              <Text style={styles.text}>{moment(props.report.foundDate).format('DD.MM.YYYY, HH:mm')}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
-          <Text style={styles.text} numberOfLines={1}>{props.report.description}</Text>
-          <Text style={styles.text} numberOfLines={1}>{moment(props.report.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
-        </View>
-        </TouchableOpacity>
-    </View>
   );
 }
 
@@ -46,13 +46,13 @@ const styles = StyleSheet.create({
     backgroundColor: LostReportTheme.colors.secondaryAccent,
   },
   foundReportBackgroundColor: {
-    backgroundColor: LostReportTheme.colors.primaryBackground,
+    backgroundColor: FoundReportTheme.colors.button1,
   },
   textContainer: {
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
     padding: 10,
-    backgroundColor: LostReportTheme.colors.secondaryAccent,
+    backgroundColor: FoundReportTheme.colors.button1,
   },
   title: {
     color: FoundReportTheme.colors.text,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     color: FoundReportTheme.colors.text,
     fontSize: 15,
-  },
+    },
   image: {
     height: 100,
     aspectRatio: 1,

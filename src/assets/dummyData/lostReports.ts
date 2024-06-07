@@ -12,7 +12,7 @@ const lostReports: LostReport[] = [
     category: {
       id: '2',
       value: 'keys',
-      title: 'Schlüssel',
+      name: 'Schlüssel',
       requiresAction: false,
     },
   },
@@ -26,7 +26,7 @@ const lostReports: LostReport[] = [
     category: {
       id: '3',
       value: 'sunglasses',
-      title: 'Sonnenbrille',
+      name: 'Sonnenbrille',
       requiresAction: false,
     },
   },
@@ -40,7 +40,7 @@ const lostReports: LostReport[] = [
     category: {
       id: '4',
       value: 'backpack',
-      title: 'Rucksack',
+      name: 'Rucksack',
       requiresAction: true,
     },
   },
@@ -54,7 +54,7 @@ const lostReports: LostReport[] = [
     category: {
       id: '5',
       value: 'wallet',
-      title: 'Geldbörse',
+      name: 'Geldbörse',
       requiresAction: true,
     },
   },
@@ -68,7 +68,7 @@ const lostReports: LostReport[] = [
     category: {
       id: '6',
       value: 'watch',
-      title: 'Armbanduhr',
+      name: 'Armbanduhr',
       requiresAction: false,
     },
   },
@@ -82,7 +82,7 @@ const lostReports: LostReport[] = [
     category: {
       id: '7',
       value: 'phone',
-      title: 'Handy',
+      name: 'Handy',
       requiresAction: true,
     },
   },
