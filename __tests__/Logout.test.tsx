@@ -14,6 +14,12 @@ describe('UserProvider logout function', () => {
       wrapper: UserProvider,
     });
 
+    jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
+            Promise.resolve({
+                json: () => Promise.resolve(),
+            }) as Promise<Response>
+        );
+
     // Set initial state for testing
     act(() => {
       result.current.login('lurchi@quakmail.de', 'lurch123');
