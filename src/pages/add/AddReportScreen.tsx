@@ -230,7 +230,7 @@ function AddReportScreen({reportType}: {reportType: string}) {
                 <CustomButton
                   label={'Letzte bekannte Position angeben'}
                   //@ts-ignore
-                  onPress={() => navigation.navigate('SetPerimeterScreen')}
+                  onPress={() => navigation.navigate('Map')}
                   backgroundColor={LostReportTheme.colors.secondaryBackground}
                   fontSize={14}
                 />
@@ -256,14 +256,14 @@ function AddReportScreen({reportType}: {reportType: string}) {
                   <CustomButton
                     label={'Fundort angeben'}
                     //@ts-ignore
-                    onPress={() => navigation.navigate('SetPerimeterScreen')}
+                    onPress={() => navigation.navigate('Map')}
                     backgroundColor={FoundReportTheme.colors.button1}
                     fontSize={14}
                   />
                   <CustomButton
                     label={'Abholort angeben'}
                     //@ts-ignore
-                    onPress={() => navigation.navigate('SetPerimeterScreen')}
+                    onPress={() => navigation.navigate('Map')}
                     backgroundColor={FoundReportTheme.colors.button1}
                     fontSize={14}
                   />

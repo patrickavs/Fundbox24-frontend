@@ -6,16 +6,14 @@ import LostReportScreen from '../../pages/lost/LostReportScreen.tsx';
 import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
 import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
-//import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
 import {useUser} from '../../hooks/useUser.tsx';
 import StartScreen from '../../pages/home/StartScreen.tsx';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SetPerimeterScreen from '../map/SetPerimeterScreen.tsx';
 
 const Tab = createBottomTabNavigator();
 
-// defining tab bar options
 const getTabBarOptions = () => ({
   tabBarActiveTintColor: 'tomato',
   tabBarInactiveTintColor: 'black',
@@ -23,24 +21,26 @@ const getTabBarOptions = () => ({
   tabBarStyle: {backgroundColor: 'lightgray'},
 });
 
-// const AuthAlertView = () => {
-//   return <AuthAlert textField={true} />;
-// };
-
-const NewReportStack = createStackNavigator();
-
 const NewReportView = () => {
   return <AddReportScreen reportType={'found'} />;
 };
 
-function ReportStack() {
-  return (
-    <NewReportStack.Navigator>
-      <NewReportStack.Screen name="NewReport" component={NewReportView} />
-      <NewReportStack.Screen name="Map" component={SetPerimeterScreen} />
-    </NewReportStack.Navigator>
-  );
-}
+const NewReportStack = createNativeStackNavigator();
+
+const ReportStack = () => (
+  <NewReportStack.Navigator>
+    <NewReportStack.Screen
+      name="NewReport"
+      component={NewReportView}
+      options={{headerShown: false}}
+    />
+    <NewReportStack.Screen
+      name="Map"
+      component={SetPerimeterScreen}
+      options={{headerShown: false}}
+    />
+  </NewReportStack.Navigator>
+);
 
 function Tabbar() {
   const {isLoggedIn} = useUser();
@@ -50,7 +50,7 @@ function Tabbar() {
   }
 
   return (
-    <Tab.Navigator screenOptions={getTabBarOptions}>
+    <Tab.Navigator screenOptions={getTabBarOptions} initialRouteName="Start">
       <Tab.Screen
         name="Start"
         component={StartScreen}
