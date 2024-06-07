@@ -21,9 +21,9 @@ import {AuthTheme} from '../../constants/theme.ts';
 
 function RegisterScreen() {
   const navigation = useNavigation();
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [dobLabel, setDobLabel] = useState('Geburtsdatum');
+  const [date, setDate] = useState<Date>(new Date());
+  const [open, setOpen] = useState<boolean>(false);
+  const [dobLabel, setDobLabel] = useState<string>('Geburtsdatum');
 
   return (
     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
@@ -55,18 +55,18 @@ function RegisterScreen() {
         </Text>
 
         <InputField
-          label={'Name'}
+          placeholder={'Name'}
           icon={<Ionicons name="person-outline" size={20} color="#666" />}
         />
 
         <InputField
-          label={'E-Mail'}
+          placeholder={'E-Mail'}
           icon={<Ionicons name="at-outline" size={20} color="#666" />}
           keyboardType="email-address"
         />
 
         <InputField
-          label={'Passwort'}
+          placeholder={'Passwort'}
           icon={
             <Ionicons
               name="lock-closed-outline"
@@ -79,7 +79,7 @@ function RegisterScreen() {
         />
 
         <InputField
-          label={'Bestätige dein Passwort'}
+          placeholder={'Bestätige dein Passwort'}
           icon={
             <Ionicons
               name="lock-closed-outline"
