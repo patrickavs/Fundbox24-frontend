@@ -24,7 +24,10 @@ export const AddReportStack = () => (
     <NewReportStack.Screen
       name="Map"
       component={SetPerimeterScreen}
-      options={{headerShown: false}}
+      options={{
+        headerTitle: '',
+        headerTransparent: true,
+      }}
     />
   </NewReportStack.Navigator>
 );

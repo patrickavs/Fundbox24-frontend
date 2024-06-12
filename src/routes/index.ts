@@ -8,4 +8,6 @@ export const LOSTREPORT_URL = (id?: string) => `${BASE_URL}/report/lost/${id}`;
 export const ALL_LOST_REPORTS_URL = `${BASE_URL}/report/lost`;
 export const ALL_FOUND_REPORTS_URL = `${BASE_URL}/report/found`;
 
+export const ALL_CATEGORIES_URL = `${BASE_URL}/report/categories`;
+
 export const LOGIN_URL = `${BASE_URL}/login`;

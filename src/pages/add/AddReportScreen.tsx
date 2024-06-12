@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   Image,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   View,
 } from 'react-native';
 import CustomHeader from '../../components/CustomHeader.tsx';
@@ -20,6 +21,7 @@ import {category} from '../../data/categories.ts';
 import {Category} from '../../types/category.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {ALL_CATEGORIES_URL} from '../../routes';
 
 function AddReportScreen() {
   const route = useRoute<any>();
@@ -34,6 +36,29 @@ function AddReportScreen() {
   const [error, setError] = useState<string | null>(null);
   const [reportCategory, setReportCategory] = useState<Category>(category[0]);
   const [report, setReport] = useState<NewLostReport | NewFoundReport>();
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchAllCategories = async () => {
+      try {
+        const response = await fetch(ALL_CATEGORIES_URL, {
+          method: 'GET',
+          headers: {'Content-Type': 'application/json'},
+        });
+
+        const categories = await response.json();
+        setAllCategories(categories);
+      } catch {
+        console.log('Error fetching categories');
+        ToastAndroid.show(
+          'An error occurred while fetching categories',
+          ToastAndroid.SHORT,
+        );
+      }
+    };
+
+    fetchAllCategories().then(r => console.log(r));
+  }, []);
 
   useEffect(() => {
     const validateDate = (text: string) => {
@@ -149,12 +174,11 @@ function AddReportScreen() {
           <Text style={styles.textStyle}>Kategorie</Text>
           <View style={{paddingBottom: 30}}>
             <Dropdown
-              items={[
-                {label: category[0].name, value: category[0].value},
-                {label: category[1].name, value: category[1].value},
-                {label: category[2].name, value: category[2].value},
-              ]}
-              placeholder={'Kategorie'}
+              items={allCategories.map(c => ({
+                label: c.name,
+                value: c.value,
+              }))}
+              placeholder={allCategories[0].name}
               onChange={item => {
                 setReportCategory({
                   id: '',
