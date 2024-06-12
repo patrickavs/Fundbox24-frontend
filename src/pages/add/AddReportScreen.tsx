@@ -19,9 +19,11 @@ import Dropdown from '../../components/Dropdown.tsx';
 import {category} from '../../data/categories.ts';
 import {Category} from '../../types/category.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-function AddReportScreen({reportType}: {reportType: string}) {
+function AddReportScreen() {
+  const route = useRoute<any>();
+  const {reportType} = route.params;
   const navigation = useNavigation();
   const {createLostReport} = useLostReports();
   const {createFoundReport} = useFoundReports();
@@ -148,16 +150,16 @@ function AddReportScreen({reportType}: {reportType: string}) {
           <View style={{paddingBottom: 30}}>
             <Dropdown
               items={[
-                {label: category[0].title, value: category[0].value},
-                {label: category[1].title, value: category[1].value},
-                {label: category[2].title, value: category[2].value},
+                {label: category[0].name, value: category[0].value},
+                {label: category[1].name, value: category[1].value},
+                {label: category[2].name, value: category[2].value},
               ]}
               placeholder={'Kategorie'}
               onChange={item => {
                 setReportCategory({
                   id: '',
                   image: undefined,
-                  title: item.label,
+                  name: item.label,
                   value: item.value,
                 });
                 console.log(reportCategory);
