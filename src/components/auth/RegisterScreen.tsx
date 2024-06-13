@@ -19,11 +19,20 @@ import CustomButton from '../CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import {AuthTheme} from '../../constants/theme.ts';
 
+type RegisterUserData = Partial<{
+  date: Date,
+  name: string,
+  email: string,
+  password: string,
+  passwordRepeat: string,
+}>
+
 function RegisterScreen() {
   const navigation = useNavigation();
-  const [date, setDate] = useState<Date>(new Date());
-  const [open, setOpen] = useState<boolean>(false);
-  const [dobLabel, setDobLabel] = useState<string>('Geburtsdatum');
+  const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
+  const [registerUserData, setRegisterUserData] = useState<RegisterUserData>({})
+
+  console.log(registerUserData) // TODO: Remove later
 
   return (
     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
@@ -57,12 +66,16 @@ function RegisterScreen() {
         <InputField
           placeholder={'Name'}
           icon={<Ionicons name="person-outline" size={20} color="#666" />}
+          value={registerUserData.name}
+          onChangeText={(name) => setRegisterUserData(prev => ({...prev, name}))}
         />
 
         <InputField
           placeholder={'E-Mail'}
           icon={<Ionicons name="at-outline" size={20} color="#666" />}
           keyboardType="email-address"
+          value={registerUserData.email}
+          onChangeText={(email) => setRegisterUserData(prev => ({...prev, email}))}
         />
 
         <InputField
@@ -76,6 +89,8 @@ function RegisterScreen() {
             />
           }
           inputType="password"
+          value={registerUserData.password}
+          onChangeText={(password) => setRegisterUserData(prev => ({...prev, password}))}
         />
 
         <InputField
@@ -89,6 +104,8 @@ function RegisterScreen() {
             />
           }
           inputType="password"
+          value={registerUserData.passwordRepeat}
+          onChangeText={(passwordRepeat) => setRegisterUserData(prev => ({...prev, passwordRepeat}))}
         />
 
         <View
@@ -105,27 +122,24 @@ function RegisterScreen() {
             color="#666"
             style={{marginLeft: 2}}
           />
-          <TouchableOpacity onPress={() => setOpen(true)}>
+          <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
             <Text style={{color: '#666', marginLeft: 5, marginTop: 4}}>
-              {dobLabel}
+              {registerUserData.date?.toLocaleDateString() ?? new Date().toLocaleDateString()}
             </Text>
           </TouchableOpacity>
         </View>
 
         <DatePicker
           modal
-          open={open}
-          date={date}
+          open={datePickerOpen}
+          date={registerUserData.date ?? new Date()}
           mode={'date'}
-          maximumDate={new Date('2005-01-01')}
-          minimumDate={new Date('1980-01-01')}
           onConfirm={date => {
-            setOpen(false);
-            setDate(date);
-            setDobLabel(date.toDateString());
+            setDatePickerOpen(false);
+            setRegisterUserData(prev => ({...prev, date}))
           }}
           onCancel={() => {
-            setOpen(false);
+            setDatePickerOpen(false);
           }}
         />
 
