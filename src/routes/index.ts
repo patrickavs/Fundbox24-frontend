@@ -9,3 +9,4 @@ export const ALL_LOST_REPORTS_URL = `${BASE_URL}/report/lost`;
 export const ALL_FOUND_REPORTS_URL = `${BASE_URL}/report/found`;
 
 export const LOGIN_URL = `${BASE_URL}/login`;
+export const REGISTER_URL = `${BASE_URL}/register`;

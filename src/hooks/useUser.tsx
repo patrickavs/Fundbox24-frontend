@@ -1,4 +1,4 @@
-import {User} from '../types/user';
+import {RegisterUserCredentials, User} from '../types/user';
 import {
   createContext,
   ReactNode,
@@ -8,7 +8,7 @@ import {
   useState,
   useTransition,
 } from 'react';
-import {LOGIN_URL} from '../routes';
+import {LOGIN_URL, REGISTER_URL} from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type UserContextType = {
@@ -18,6 +18,7 @@ type UserContextType = {
   isLoggedIn: boolean;
   login: (email: string, password: string) => void;
   logout: () => Promise<void>;
+  register: (userData: any) => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -107,9 +108,24 @@ export function UserProvider({children}: {children: ReactNode}) {
     });
   }, []);
 
+  const register = useCallback(async (userCredentials: RegisterUserCredentials) => {
+    startTransition(() => {
+      // TODO: 1. Send Data to server mit Name, Email und Passwort 
+      // TODO: 2. Login User with received credentials
+      fetch(REGISTER_URL, {
+        body: JSON.stringify(userCredentials),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }).then(response => response.json())
+      .then(response => login(response.email, userCredentials.password))
+      .catch(error => console.log(error))
+    })
+  }, [])
+
   return (
     <UserContext.Provider
-      value={{isPending, user: user, editUser, isLoggedIn, login, logout}}>
+      value={{isPending, user: user, editUser, isLoggedIn, login, logout, register}}>
       {children}
     </UserContext.Provider>
   );

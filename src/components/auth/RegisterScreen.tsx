@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,21 +18,34 @@ import '../../assets/images/login.png';
 import CustomButton from '../CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import {AuthTheme} from '../../constants/theme.ts';
+import { useUser } from '../../hooks/useUser.tsx';
+import { RegisterUserCredentials } from '../../types/user.ts';
 
-type RegisterUserData = Partial<{
-  date: Date,
-  name: string,
-  email: string,
-  password: string,
-  passwordRepeat: string,
-}>
+const defaultRegisterCredentials: RegisterUserCredentials = {
+  name: "",
+  email: "",
+  password: "",
+  passwordRepeat: ""
+}
 
+// TODO: Zeige dem Benutzer alle Fehler mit registerErrorMap an
 function RegisterScreen() {
   const navigation = useNavigation();
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
-  const [registerUserData, setRegisterUserData] = useState<RegisterUserData>({})
+  const [registerUserData, setRegisterUserData] = useState<RegisterUserCredentials>(defaultRegisterCredentials)
+  const [registerErrorMap, setRegisterErrorMap] = useState<Map<string, Error>>(new Map())
+  const {register} = useUser();
 
-  console.log(registerUserData) // TODO: Remove later
+  const registerCallback = useCallback((userCredentials: RegisterUserCredentials) => {
+    const {password, passwordRepeat} = userCredentials;
+
+    if(password !== passwordRepeat) {
+      setRegisterErrorMap(prev => ({...prev, password: new Error("Die Passwörter sind nicht gleich")}))
+      return;
+    } 
+    
+    register(userCredentials).catch(error => setRegisterErrorMap(prev => ({...prev, "fetch": error})))
+  }, [])
 
   return (
     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
@@ -145,7 +158,7 @@ function RegisterScreen() {
 
         <CustomButton
           label={'Register'}
-          onPress={() => {}}
+          onPress={() => registerCallback(registerUserData)}
           backgroundColor={AuthTheme.colors.secondaryBackground}
           fontSize={16}
         />
