@@ -101,6 +101,7 @@ function ChatList() {
   return (
     <View style={styles.chatListContainer}>
       <FlatList
+        style={styles.list}
         data={chats.filter((_, index) => index < 3)}
         renderItem={renderItem}
         keyExtractor={item => item.name}
@@ -112,6 +113,9 @@ function ChatList() {
 }
 
 const styles = StyleSheet.create({
+  list: {
+    gap: 10,
+  },
   chatListContainer: {
     marginHorizontal: 15,
     marginBottom: 100,

@@ -21,7 +21,11 @@ function ChatListItem({
 }: ChatItemProps) {
   const isValidAvatarUri = isUrl(avatarUri);
   return (
-    <ListItem key={name} onPress={onPress} containerStyle={styles.listItem}>
+    <ListItem
+      key={name}
+      onPress={onPress}
+      containerStyle={styles.listItem}
+      underlayColor="transparent">
       {!isValidAvatarUri ? (
         <Ionicons
           name={'person-circle-outline'}
@@ -58,8 +62,6 @@ const styles = StyleSheet.create({
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    marginTop: 15,
     borderRadius: 10,
   },
   name: {
