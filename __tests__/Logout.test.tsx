@@ -1,37 +1,37 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {renderHook, act} from '@testing-library/react-native';
-import {UserProvider, useUser} from '../src/hooks/useUser.tsx';
-import {expect, it, describe} from '@jest/globals';
+import React from 'react';
+import {render, fireEvent, waitFor} from '@testing-library/react-native';
+import ProfileScreen from '../src/pages/profile/ProfileScreen.tsx';
+import * as useUserModule from '../src/hooks/useUser';
+import {jest, describe, it, expect} from '@jest/globals';
 
-jest.mock('@react-native-async-storage/async-storage', () => ({
-  getItem: jest.fn(),
-  removeItem: jest.fn(),
-}));
+const mockUser = {
+  id: '1',
+  email: 'wal@test.de',
+  firstName: 'Blauerwal',
+  lastName: '24',
+  username: 'blauerwal24',
+};
 
-describe('UserProvider logout function', () => {
-  it('should remove credentials, set isLoggedIn to false, and reset user state', async () => {
-    const {result} = renderHook(() => useUser(), {
-      wrapper: UserProvider,
-    });
+const mockLogout = jest.fn();
 
-    // Set initial state for testing
-    act(() => {
-      result.current.login('lurchi@quakmail.de', 'lurch123');
-    });
+jest.spyOn(useUserModule, 'useUser').mockReturnValue({
+  user: mockUser,
+  isPending: false,
+  logout: mockLogout,
+});
 
-    await act(async () => {
-      await result.current.logout();
-    });
-
-    // Check if removeItem was called with the correct key
-    expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
-      'basicAuthCredentials',
+describe('ProfileScreen Logout', () => {
+  it('calls logout function when logout button is pressed', async () => {
+    const {getByText} = render(
+      <useUserModule.UserProvider>
+        <ProfileScreen />
+      </useUserModule.UserProvider>,
     );
 
-    // Check if isLoggedIn is set to false
-    expect(result.current.isLoggedIn).toBe(false);
+    fireEvent.press(getByText('Logout'));
 
-    // Check if user state is reset to null
-    expect(result.current.user).toBeNull();
+    await waitFor(() => {
+      expect(mockLogout).toHaveBeenCalled();
+    });
   });
 });
