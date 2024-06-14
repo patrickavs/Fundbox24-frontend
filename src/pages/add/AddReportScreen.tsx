@@ -260,14 +260,14 @@ function AddReportScreen() {
                     label={'Fundort angeben'}
                     //@ts-ignore
                     onPress={() => navigation.navigate('Map')}
-                    backgroundColor={FoundReportTheme.colors.button1}
+                    backgroundColor={FoundReportTheme.colors.button2}
                     fontSize={14}
                   />
                   <CustomButton
                     label={'Abholort angeben'}
                     //@ts-ignore
                     onPress={() => navigation.navigate('Map')}
-                    backgroundColor={FoundReportTheme.colors.button1}
+                    backgroundColor={FoundReportTheme.colors.button2}
                     fontSize={14}
                   />
                 </View>
