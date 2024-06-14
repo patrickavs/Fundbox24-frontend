@@ -1,12 +1,39 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, ToastAndroid, View} from 'react-native';
 import CustomButton from '../../components/CustomButton.tsx';
 import {useNavigation} from '@react-navigation/native';
 import CustomDivider from '../../components/CustomDivider.tsx';
 import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ALL_CATEGORIES_URL} from '../../routes';
+import {Category} from '../../types/category.ts';
 
 const AddFoundOrLostReport = () => {
   const navigation = useNavigation();
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchAllCategories = async () => {
+      const token = await AsyncStorage.getItem('basicAuthCredentials');
+      const response = await fetch(ALL_CATEGORIES_URL, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${token}`,
+        },
+      });
+
+      const categories = response.json();
+
+      if (categories === undefined) {
+        ToastAndroid.show('Error fetching categories', ToastAndroid.SHORT);
+      }
+      setAllCategories(await categories);
+    };
+
+    fetchAllCategories();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Neuen Gegenstand anlegen</Text>
@@ -19,7 +46,10 @@ const AddFoundOrLostReport = () => {
           label={'Fundanzeige'}
           onPress={() =>
             // @ts-ignore
-            navigation.navigate('NewReport', {reportType: 'found'})
+            navigation.navigate('NewReport', {
+              reportType: 'found',
+              categories: allCategories,
+            })
           }
           fontSize={17}
           backgroundColor={FoundReportTheme.colors.button2}
@@ -27,7 +57,12 @@ const AddFoundOrLostReport = () => {
         <CustomButton
           label={'Suchanzeige'}
           // @ts-ignore
-          onPress={() => navigation.navigate('NewReport', {reportType: 'lost'})}
+          onPress={() =>
+            navigation.navigate('NewReport', {
+              reportType: 'lost',
+              categories: allCategories,
+            })
+          }
           fontSize={17}
           backgroundColor={LostReportTheme.colors.button}
         />
