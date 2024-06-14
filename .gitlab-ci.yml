@@ -11,8 +11,6 @@ stages:          # List of stages for jobs, and their order of execution
 build-job:       # This job runs in every branch.
   stage: build
   image: node:22-alpine3.19
-  artifacts: # TODO: Lookup
-    untracked: true
   script:
     - npm i
 
