@@ -1,26 +1,14 @@
 import React, {useMemo} from 'react';
-import {
-  FlatList,
-  ScrollView,
-  SectionList,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useUser} from '../../hooks/useUser';
 import {useLostReports} from '../../hooks/useLostReports';
 import {useChat} from '../../hooks/useChat';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import LostReportCard from '../lost/LostReportCard.tsx';
 import {category} from '../../data/categories.ts';
-import {useNavigation} from '@react-navigation/native';
 import ChatList from '../../components/chat/ChatList.tsx';
-import ChatListItem from '../../components/chat/ChatListItem.tsx';
-import {LostReportTheme} from '../../constants/theme.ts';
-import ShortChatList from '../../components/chat/ShortChatList.tsx';
 
 export default function StartScreen(): React.JSX.Element {
-  const navigation = useNavigation();
   const {isPending: isPendingUser, user} = useUser();
   const {isPending: isPendingLostReport, lostReports} = useLostReports();
   const {isPending: isPendingChat, chats} = useChat(''); // TODO: Pass userToken here
@@ -42,17 +30,17 @@ export default function StartScreen(): React.JSX.Element {
   //   [chats]
   // );
 
-  const latestChats = useMemo(
-    () =>
-      chats
-        .filter(({isOpen}) => isOpen)
-        .sort(
-          (chat1, chat2) =>
-            chat1.updatedAt.getTime() - chat2.updatedAt.getTime(),
-        )
-        .slice(0, 4),
-    [chats],
-  );
+  // const latestChats = useMemo(
+  //   () =>
+  //     chats
+  //       .filter(({isOpen}) => isOpen)
+  //       .sort(
+  //         (chat1, chat2) =>
+  //           chat1.updatedAt.getTime() - chat2.updatedAt.getTime(),
+  //       )
+  //       .slice(0, 4),
+  //   [chats],
+  // );
 
   return (
     <ScrollView style={styles.big}>
