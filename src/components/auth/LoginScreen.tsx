@@ -99,6 +99,7 @@ function LoginScreen(): React.JSX.Element {
         />
 
         <CustomButton
+          testID="LoginButton"
           label={'Login'}
           onPress={onLogin}
           backgroundColor={AuthTheme.colors.secondaryBackground}
