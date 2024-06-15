@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1 / 2,
     padding: 10,
+    width: 200,
   },
   imageContainer: {
     display: 'flex',
