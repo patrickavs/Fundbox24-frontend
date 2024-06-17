@@ -8,6 +8,7 @@ import moment from 'moment';
 import SpacerVertical from '../found/SpacerVertical';
 import {useLostReports} from '../../hooks/useLostReports';
 import {category} from '../../data/categories';
+import {useRoute} from '@react-navigation/native';
 
 
 function SingleLostReportScreen( {navigation} ): React.JSX.Element {
@@ -19,11 +20,12 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
         });
     }, [navigation]);
 
-    //const route = useRoute();
-    //const { id } = route.params ?? {id: foundReports.at(0).id};
+    const route = useRoute();
+    const { id } = route.params ?? {id: lostReports.at(0)?.id};
+    const lostReport = lostReports.find((report) => report.id === id) ?? lostReports[0];
 
     const [position] = React.useState<LatLng>(
-        lostReports[0].lostLocation
+        lostReport.lostLocation ?? {latitude: 53.551086, longitude: 9.993682}
     );
 
     const [radius] = React.useState<number>(1000);
@@ -35,11 +37,11 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                     <Image style={styles.image} source={category.find((item) => item.name === lostReports[0].category.name)?.image ?? category[category.length - 1].image } />
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.title}>{lostReports[0].title}</Text>
-                    <Text style={styles.text}>{lostReports[0].description}</Text>
+                    <Text style={styles.title}>{lostReport.title}</Text>
+                    <Text style={styles.text}>{lostReport.description}</Text>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'time'} style={styles.icon}/>
-                        <Text style={styles.text}>Zuletzt gesehen am {moment(lostReports[0].lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
+                        <Text style={styles.text}>Zuletzt gesehen am {moment(lostReport.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
                     </View>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'location'} style={styles.icon}/>
@@ -144,3 +146,5 @@ const styles = StyleSheet.create({
         paddingRight: 6,
     },
 });
+
+

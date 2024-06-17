@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../components/CustomButton';
 import moment from 'moment';
 import {category} from '../../data/categories';
+import {useRoute} from '@react-navigation/native';
 
 
 function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
@@ -19,8 +20,10 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
         });
     }, [navigation]);
 
-    //const route = useRoute();
-    //const { id } = route.params ?? {id: foundReports.at(0).id};
+    const route = useRoute();
+    const { id } = route.params ?? {id: foundReports.at(0)?.id};
+    const foundReport = foundReports.find((report) => report.id === id) ?? foundReports[0];
+
 
     const [position] = React.useState<LatLng>(
         foundReports[0].foundLocation
@@ -32,14 +35,14 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
         <View style={styles.screenContainer}>
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={category.find((item) => item.name === foundReports[0].category.name)?.image ?? category[category.length - 1].image } />
+                    <Image style={styles.image} source={category.find((item) => item.name === foundReport.category.name)?.image ?? category[category.length - 1].image } />
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.title}>{foundReports[0].title}</Text>
-                    <Text style={styles.text}>{foundReports[0].description}</Text>
+                    <Text style={styles.title}>{foundReport.title}</Text>
+                    <Text style={styles.text}>{foundReport.description}</Text>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'time'} style={styles.icon}/>
-                        <Text style={styles.text}>Gefunden am {moment(foundReports[0].foundDate).format('DD.MM.YYYY, HH:mm')}</Text>
+                        <Text style={styles.text}>Gefunden am {moment(foundReport.foundDate).format('DD.MM.YYYY, HH:mm')}</Text>
                     </View>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'location'} style={styles.icon}/>

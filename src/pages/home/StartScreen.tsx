@@ -8,7 +8,7 @@ import LostReportCard from '../lost/LostReportCard.tsx';
 import {category} from '../../data/categories.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
 
-export default function StartScreen(): React.JSX.Element {
+export default function StartScreen( {navigation}): React.JSX.Element {
   const {isPending: isPendingUser, user} = useUser();
   const {isPending: isPendingLostReport, lostReports} = useLostReports();
   const {isPending: isPendingChat, chats} = useChat(''); // TODO: Pass userToken here
@@ -58,7 +58,7 @@ export default function StartScreen(): React.JSX.Element {
                     <Text style={styles.text}>Gesucht in deinem Umkreis</Text>
                     <Text
                       style={styles.text2}
-                      onPress={() => navigation.navigate('LostReportScreen')}>
+                      onPress={() => navigation.navigate('Verloren', { screen: 'LostReportScreen'})}>
                       mehr anzeigen
                     </Text>
                   </View>
@@ -72,10 +72,9 @@ export default function StartScreen(): React.JSX.Element {
                         <LostReportCard
                           key={index}
                           report={item}
-                          onPress={id =>
-                            navigation.navigate('SingleLostReportScreen', {
-                              id: id,
-                            })
+                          onPress={() =>
+                            navigation.navigate('Verloren', { screen: 'SingleLostReportScreen', params:
+                                  {id: item.id}})
                           }
                           image={
                             category.find(it => it.name === item.category.name)
