@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {BackHandler, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {LostReportTheme} from '../../constants/theme';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,28 +20,39 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
         });
     }, [navigation]);
 
-    const route = useRoute();
-    const { id } = route.params ?? {id: lostReports.at(0)?.id};
-    const lostReport = lostReports.find((report) => report.id === id) ?? lostReports[0];
+    useEffect(() => {
+        const backAction = () => {
+            // Custom back button behavior
+            navigation.navigate('LostReportScreen');
+            return true; // This will prevent the app from exiting
+        };
 
-    const [position] = React.useState<LatLng>(
-        lostReport.lostLocation ?? {latitude: 53.551086, longitude: 9.993682}
-    );
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+        return () => backHandler.remove(); // Don't forget to remove the listener when the component unmounts
+    }, [navigation]);
+
+    const route = useRoute();
+    const { id } = route.params;
+    const [lostReport] = React.useState(lostReports.find((report) => report.id === id));
+
+    const [position] = React.useState<LatLng>(lostReport?.lostLocation ?? null);
+
 
     const [radius] = React.useState<number>(1000);
 
     return (
-        <View style={styles.screenContainer}>
+        <View style={styles.screenContainer} testID="single-lost-report-screen">
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={category.find((item) => item.name === lostReports[0].category.name)?.image ?? category[category.length - 1].image } />
+                    <Image style={styles.image} source={category.find((item) => item.name === lostReport?.category.name)?.image ?? category[category.length - 1].image} />
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.title}>{lostReport.title}</Text>
-                    <Text style={styles.text}>{lostReport.description}</Text>
+                    <Text style={styles.title}>{lostReport?.title ?? 'Titel'}</Text>
+                    <Text style={styles.text}>{lostReport?.description ?? 'Beschreibung'}</Text>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'time'} style={styles.icon}/>
-                        <Text style={styles.text}>Zuletzt gesehen am {moment(lostReport.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
+                        <Text style={styles.text}>Zuletzt gesehen am {moment(lostReport?.lastSeenDate).format('DD.MM.YYYY, HH:mm') ?? 'Datum'}</Text>
                     </View>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'location'} style={styles.icon}/>

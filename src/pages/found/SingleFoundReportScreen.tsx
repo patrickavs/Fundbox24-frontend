@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {BackHandler, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useFoundReports} from '../../hooks/useFoundReports';
 import {FoundReportTheme} from '../../constants/theme';
 import MapView, {Circle, LatLng} from 'react-native-maps';
@@ -20,14 +20,24 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
         });
     }, [navigation]);
 
+    useEffect(() => {
+        const backAction = () => {
+            // Custom back button behavior
+            navigation.navigate('FoundReportScreen');
+            return true; // This will prevent the app from exiting
+        };
+
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+        return () => backHandler.remove(); // Don't forget to remove the listener when the component unmounts
+    }, [navigation]);
+
     const route = useRoute();
-    const { id } = route.params ?? {id: foundReports.at(0)?.id};
-    const foundReport = foundReports.find((report) => report.id === id) ?? foundReports[0];
+    const { id } = route.params;
+    const [foundReport] = React.useState(foundReports.find((report) => report.id === id));
 
 
-    const [position] = React.useState<LatLng>(
-        foundReports[0].foundLocation
-    );
+    const [position] = React.useState<LatLng>(foundReport?.foundLocation ?? null);
 
     const [radius] = React.useState<number>(1000);
 
@@ -35,14 +45,14 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
         <View style={styles.screenContainer}>
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={category.find((item) => item.name === foundReport.category.name)?.image ?? category[category.length - 1].image } />
+                    <Image style={styles.image} source={category.find((item) => item.name === foundReport?.category.name)?.image ?? category[category.length - 1].image } />
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.title}>{foundReport.title}</Text>
-                    <Text style={styles.text}>{foundReport.description}</Text>
+                    <Text style={styles.title}>{foundReport?.title ?? 'Titel'}</Text>
+                    <Text style={styles.text}>{foundReport?.description ?? 'Beschreibung'}</Text>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'time'} style={styles.icon}/>
-                        <Text style={styles.text}>Gefunden am {moment(foundReport.foundDate).format('DD.MM.YYYY, HH:mm')}</Text>
+                        <Text style={styles.text}>Gefunden am {moment(foundReport?.foundDate).format('DD.MM.YYYY, HH:mm') ?? 'Datum'}</Text>
                     </View>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'location'} style={styles.icon}/>
