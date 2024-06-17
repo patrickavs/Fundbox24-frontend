@@ -15,7 +15,7 @@ function LostReportScreen(): React.JSX.Element {
   const navigation = useNavigation();
 
   return (
-    <View>
+    <View testID={'lost-report-screen'}>
       <CustomHeader
         backgroundColor={LostReportTheme.colors.secondaryAccent}
         title={'Suchanzeigen'}
