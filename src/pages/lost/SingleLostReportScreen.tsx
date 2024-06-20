@@ -20,14 +20,12 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
 
     useEffect(() => {
         const backAction = () => {
-            // Custom back button behavior
             navigation.replace('LostReportScreen');
-            return true; // This will prevent the app from exiting
+            return true;
         };
 
         const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
-        return () => backHandler.remove(); // Don't forget to remove the listener when the component unmounts
+        return () => backHandler.remove();
     }, [navigation]);
 
 
@@ -36,6 +34,11 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
     }, [item, position]);
 
     const [radius] = React.useState<number>(1000);
+
+    const navigateToChat = () => {
+        console.log('navigate to chat');
+        // TODO: navigate to chat
+    };
 
     return (
         <View style={styles.screenContainer} testID="single-lost-report-screen">
@@ -72,10 +75,10 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                 <SpacerVertical size={20}/>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" />
+                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" onPress={navigateToChat} />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" />
+                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" onPress={navigateToChat} />
                     </View>
                 </View>
                 <SpacerVertical size={20}/>
