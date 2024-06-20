@@ -6,6 +6,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {UserProvider} from '../../../src/hooks/useUser.tsx';
 
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+}));
+
 describe('LoginScreen', () => {
   // Mock the fetch function
   jest.spyOn(global, 'fetch').mockImplementation(() =>
