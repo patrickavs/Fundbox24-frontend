@@ -10,6 +10,10 @@ import { ChatProvider } from '../../../src/hooks/useChat.tsx';
 import { LostReport } from '../../../src/types/report-lost.ts';
 import { act } from 'react-test-renderer';
 
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+}));
+
 describe('StartScreen', () => {
   it('renders find text "Du bist nicht angemeldet"', () => {
 
@@ -21,24 +25,24 @@ describe('StartScreen', () => {
         lastSeenDate: new Date(Date.now()).toLocaleTimeString(),
         lastSeenLocation: {
           latitude: 53.551086,
-          longitude: 9.993682
+          longitude: 9.993682,
         },
         lostLocation: {
           latitude: 53.551086,
-          longitude: 9.993682
+          longitude: 9.993682,
         },
         lostRadius: 100,
         category: {
           id: '1',
-          value: "",
+          value: '',
           title: 'Schlüssel',
-          image: ""
+          image: '',
         },
         placeOfDiscovery: 'Hamburg',
         placeOfDelivery: 'Hamburg',
-        myChats: []
-      }
-    ]
+        myChats: [],
+      },
+    ];
 
     jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
       Promise.resolve({

@@ -74,7 +74,7 @@ export default function StartScreen( {navigation}): React.JSX.Element {
                           report={item}
                           onPress={() =>
                             navigation.navigate('Verloren', { screen: 'SingleLostReportScreen', params:
-                                  {id: item.id}})
+                                  {item: item}})
                           }
                           image={
                             category.find(it => it.name === item.category.name)
