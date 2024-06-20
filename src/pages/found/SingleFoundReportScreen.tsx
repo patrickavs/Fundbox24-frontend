@@ -20,18 +20,6 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
         });
     }, [navigation]);
 
-    useEffect(() => {
-        const backAction = () => {
-            // Custom back button behavior
-            navigation.navigate('FoundReportScreen');
-            return true; // This will prevent the app from exiting
-        };
-
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
-        return () => backHandler.remove(); // Don't forget to remove the listener when the component unmounts
-    }, [navigation]);
-
     const route = useRoute();
     const { id } = route.params;
     const [foundReport] = React.useState(foundReports.find((report) => report.id === id));
@@ -42,7 +30,7 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
     const [radius] = React.useState<number>(1000);
 
     return (
-        <View style={styles.screenContainer}>
+        <View style={styles.screenContainer} testID={'single-lost-report-screen'}>
             <ScrollView>
                 <View style={styles.imageContainer}>
                     <Image style={styles.image} source={category.find((item) => item.name === foundReport?.category.name)?.image ?? category[category.length - 1].image } />

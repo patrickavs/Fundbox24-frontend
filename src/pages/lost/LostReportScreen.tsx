@@ -59,8 +59,8 @@ function LostReportScreen(): React.JSX.Element {
             <LostReportCard
               key={item.id}
               report={item}
-              onPress={id =>
-                navigation.navigate('SingleLostReportScreen', {id: id})
+              onPress={() =>
+                navigation.navigate('SingleLostReportScreen', {item: item})
               }
               image={
                 category.find(it => it.name === item.category.name)?.image ??
