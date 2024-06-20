@@ -33,7 +33,7 @@ export function useUser() {
 }
 
 export function UserProvider({children}: {children: ReactNode}) {
-  const [user, setUser] = useStorage<User | null>("user-crendentials", null);
+  const [user, setUser] = useStorage<User | null>('user-crendentials', null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -50,17 +50,17 @@ export function UserProvider({children}: {children: ReactNode}) {
       return loginWithBasicAuth(basicAuthCredentials);
     }
 
-    checkSavedBasicAuthCredentials().then((credentials) => {
+    checkSavedBasicAuthCredentials().then(credentials => {
       startTransition(() => {
         fetch(USER_URL, {
-          method: "get",
+          method: 'get',
           headers: {
-            Authorization: `Basic ${credentials}`
-          }
+            Authorization: `Basic ${credentials}`,
+          },
         })
-        .then(response => response.json())
-        .then(setUser)
-        .catch(console.log)
+          .then(response => response.json())
+          .then(setUser)
+          .catch(console.log);
       });
     });
   }, []);
@@ -78,7 +78,9 @@ export function UserProvider({children}: {children: ReactNode}) {
     setUser(null);
   }
 
-  async function loginWithBasicAuth(basicAuthCredentials: string): Promise<string> {
+  async function loginWithBasicAuth(
+    basicAuthCredentials: string,
+  ): Promise<string> {
     const response = await fetch(LOGIN_URL, {
       method: 'POST',
       headers: {Authorization: `Basic ${basicAuthCredentials}`},
@@ -109,26 +111,39 @@ export function UserProvider({children}: {children: ReactNode}) {
     });
   }, []);
 
-  const register = useCallback(async (userCredentials: RegisterUserCredentials) => {
-    startTransition(() => {
-      fetch(REGISTER_URL, {
-        body: JSON.stringify(userCredentials),
-        headers: {
-          "Content-Type": "application/json",
-        }
-      }).then(response => response.json())
-      .then(async (response) => {
-        await login(response.email, userCredentials.password)
-        return {...response, password: userCredentials.password};
-      })
-      .then(setUser)
-      .catch(error => console.log(error))
-    })
-  }, [])
+  const register = useCallback(
+    async (userCredentials: RegisterUserCredentials) => {
+      startTransition(() => {
+        fetch(REGISTER_URL, {
+          method: 'POST',
+          body: JSON.stringify(userCredentials),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => response.json())
+          .then(async response => {
+            await login(response.email, userCredentials.password);
+            return {...response, password: userCredentials.password};
+          })
+          .then(setUser)
+          .catch(error => console.log(error));
+      });
+    },
+    [],
+  );
 
   return (
     <UserContext.Provider
-      value={{isPending, user: user, editUser, isLoggedIn, login, logout, register}}>
+      value={{
+        isPending,
+        user: user,
+        editUser,
+        isLoggedIn,
+        login,
+        logout,
+        register,
+      }}>
       {children}
     </UserContext.Provider>
   );
