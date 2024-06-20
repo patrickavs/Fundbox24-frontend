@@ -11,7 +11,7 @@ const LostReportNavStack = () => {
                 <Stack.Screen
                     name="LostReportScreen"
                     component={LostReportScreen}
-                    options={{headerShown: false}}
+                    options={{headerShown: false, animation: 'none'}}
 
                 />
                 <Stack.Screen

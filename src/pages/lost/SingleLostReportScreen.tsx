@@ -35,12 +35,6 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
         setPosition(item.lostLocation as LatLng);
     }, [item, position]);
 
-    /*useEffect(() => {
-        navigation.setOptions({
-            ...navigation.options,
-        });
-    }, [navigation]);*/
-
     const [radius] = React.useState<number>(1000);
 
     return (
@@ -78,10 +72,10 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                 <SpacerVertical size={20}/>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" onPress={() => navigation.goBack()} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" onPress={() => navigation.goBack()} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" />
                     </View>
                 </View>
                 <SpacerVertical size={20}/>
