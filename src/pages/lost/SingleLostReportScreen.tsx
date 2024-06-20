@@ -6,24 +6,22 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../components/CustomButton';
 import moment from 'moment';
 import SpacerVertical from '../found/SpacerVertical';
-import {useLostReports} from '../../hooks/useLostReports';
 import {category} from '../../data/categories';
 import {useRoute} from '@react-navigation/native';
+import {LostReport} from '../../types/report-lost';
 
 
 function SingleLostReportScreen( {navigation} ): React.JSX.Element {
 
-    const {lostReports} = useLostReports();
-    useEffect(() => {
-        navigation.setOptions({
-            ...navigation.options,
-        });
-    }, [navigation]);
+    const route = useRoute();
+    const { item } = route.params as { item: LostReport };
+
+    const [position, setPosition] = React.useState<LatLng>((item.lostLocation as LatLng));
 
     useEffect(() => {
         const backAction = () => {
             // Custom back button behavior
-            navigation.navigate('LostReportScreen');
+            navigation.replace('LostReportScreen');
             return true; // This will prevent the app from exiting
         };
 
@@ -32,12 +30,16 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
         return () => backHandler.remove(); // Don't forget to remove the listener when the component unmounts
     }, [navigation]);
 
-    const route = useRoute();
-    const { id } = route.params;
-    const [lostReport] = React.useState(lostReports.find((report) => report.id === id));
 
-    const [position] = React.useState<LatLng>(lostReport?.lostLocation ?? null);
+    useEffect(() => {
+        setPosition(item.lostLocation as LatLng);
+    }, [item, position]);
 
+    /*useEffect(() => {
+        navigation.setOptions({
+            ...navigation.options,
+        });
+    }, [navigation]);*/
 
     const [radius] = React.useState<number>(1000);
 
@@ -45,14 +47,14 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
         <View style={styles.screenContainer} testID="single-lost-report-screen">
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={category.find((item) => item.name === lostReport?.category.name)?.image ?? category[category.length - 1].image} />
+                    <Image style={styles.image} source={category.find((it) => it.name === item?.category.name)?.image ?? category[category.length - 1].image} />
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.title}>{lostReport?.title ?? 'Titel'}</Text>
-                    <Text style={styles.text}>{lostReport?.description ?? 'Beschreibung'}</Text>
+                    <Text style={styles.title}>{item?.title ?? 'Titel'}</Text>
+                    <Text style={styles.text}>{item?.description ?? 'Beschreibung'}</Text>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'time'} style={styles.icon}/>
-                        <Text style={styles.text}>Zuletzt gesehen am {moment(lostReport?.lastSeenDate).format('DD.MM.YYYY, HH:mm') ?? 'Datum'}</Text>
+                        <Text style={styles.text}>Zuletzt gesehen am {moment(item?.lastSeenDate).format('DD.MM.YYYY, HH:mm') ?? 'Datum'}</Text>
                     </View>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'location'} style={styles.icon}/>
