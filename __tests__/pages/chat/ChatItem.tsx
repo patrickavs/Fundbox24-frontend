@@ -6,22 +6,23 @@ import {UserProvider} from "../../../src/hooks/useUser.tsx";
 import React from "react";
 import {FoundReportProvider} from "../../../src/hooks/useFoundReports.tsx";
 import {ChatProvider} from "../../../src/hooks/useChat.tsx";
+import ChatList from "../../../src/components/chat/ChatList.tsx";
 
 describe('App', () => {
-    it('should display a ItemList', () => {
+    it('should display three ChatItems"', () => {
         render(
             <UserProvider>
                 <LostReportProvider >
                     <FoundReportProvider>
                         <ChatProvider>
-                            <StartScreen />
+                            <ChatList />
                         </ChatProvider>
                     </FoundReportProvider>
                 </LostReportProvider>
             </UserProvider>
         );
 
-        const chatList = screen.queryAllByTestId('chat-list');
-        expect(chatList).toBeTruthy();
+        const chatItems = screen.queryAllByTestId('chat');
+        expect(chatItems.length).toBe(3);
     });
 });

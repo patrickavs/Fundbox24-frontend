@@ -22,6 +22,7 @@ function ChatListItem({
   const isValidAvatarUri = isUrl(avatarUri);
   return (
     <ListItem
+      testID={'chat'}
       key={name}
       onPress={onPress}
       containerStyle={styles.listItem}

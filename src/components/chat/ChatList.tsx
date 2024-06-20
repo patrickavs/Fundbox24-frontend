@@ -95,7 +95,7 @@ function ChatList() {
   ]);
 
   const renderItem = ({item}: {item: ChatItemProps}) => {
-    return <ChatListItem {...item} />;
+    return <ChatListItem {...item}   />;
   };
 
   return (
