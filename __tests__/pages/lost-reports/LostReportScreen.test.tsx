@@ -1,6 +1,5 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react-native';
-import SingleLostReportScreen from '../../../src/pages/lost/SingleLostReportScreen';
 import {ChatProvider} from '../../../src/hooks/useChat';
 import {FoundReportProvider} from '../../../src/hooks/useFoundReports';
 import {LostReportProvider} from '../../../src/hooks/useLostReports';
@@ -9,7 +8,11 @@ import {describe, expect, it} from '@jest/globals';
 import {NavigationContainer} from '@react-navigation/native';
 import LostReportNavStack from '../../../src/pages/lost/LostReportNavStack';
 
-describe('SingleLostReportScreen', () => {
+jest.mock('@react-navigation/native', () => ({
+    ...jest.requireActual('@react-navigation/native'),
+}));
+
+describe('LostReportScreen', () => {
     it('renders correctly', () => {
         const { getByTestId } = render(
             <UserProvider>

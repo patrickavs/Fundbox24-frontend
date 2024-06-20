@@ -1,10 +1,14 @@
 import React from 'react';
-import {describe, it, jest} from '@jest/globals';
+import {describe, it} from '@jest/globals';
 import {fireEvent, render, screen} from '@testing-library/react-native';
 import LoginScreen from '../../../src/components/auth/LoginScreen.tsx';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {UserProvider} from '../../../src/hooks/useUser.tsx';
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+}));
 
 describe('LoginScreen', () => {
   // Mock the fetch function
