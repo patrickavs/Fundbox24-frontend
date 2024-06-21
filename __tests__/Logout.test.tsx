@@ -1,6 +1,5 @@
 import 'react-native';
-import { act, render, screen, waitFor } from '@testing-library/react-native';
-import { renderHook } from '@testing-library/react-native';
+import { act, renderHook } from '@testing-library/react-native';
 import { expect, it, jest, describe } from '@jest/globals';
 import { UserProvider, useUser } from '../src/hooks/useUser.tsx';
 import { User } from '../src/types/user.ts';

@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="7" failures="0" errors="0" time="8.05">
-  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:17:05" time="1.414" tests="1">
-    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.131">
-    </testcase>
-  </testsuite>
-  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:17:07" time="2.104" tests="1">
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="8.178">
+  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:02" time="3.246" tests="1">
     <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.132">
     </testcase>
   </testsuite>
-  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:17:09" time="0.907" tests="1">
-    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.251">
+  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:06" time="0.918" tests="1">
+    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.252">
     </testcase>
   </testsuite>
-  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:17:10" time="0.798" tests="1">
-    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.242">
+  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:06" time="0.319" tests="1">
+    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.04">
     </testcase>
   </testsuite>
-  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:17:11" time="0.76" tests="1">
-    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.067">
+  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:07" time="0.818" tests="1">
+    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.209">
     </testcase>
   </testsuite>
-  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:17:11" time="0.601" tests="1">
-    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.299">
+  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:08" time="0.767" tests="1">
+    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.069">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:17:12" time="0.624" tests="1">
-    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.217">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:08" time="0.653" tests="1">
+    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.227">
+    </testcase>
+  </testsuite>
+  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:09" time="0.608" tests="1">
+    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.304">
     </testcase>
   </testsuite>
 </testsuites>

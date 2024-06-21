@@ -62,10 +62,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
           },
         })
           .then(response => response.json())
-          .then(data => {
-            console.log(data)
-            return data;
-          })
           .then(setUser)
           .catch(console.log);
       });
