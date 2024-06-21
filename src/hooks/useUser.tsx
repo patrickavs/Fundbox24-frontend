@@ -51,6 +51,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
 
     checkSavedBasicAuthCredentials().then(credentials => {
+      if (!credentials) {
+        return;
+      }
       startTransition(() => {
         fetch(USER_URL, {
           method: 'get',

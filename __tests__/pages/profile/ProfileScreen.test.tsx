@@ -3,7 +3,6 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react-native';
 import { expect, it, jest, describe } from '@jest/globals';
 import { UserProvider } from '../../../src/hooks/useUser.tsx';
-import { LostReport } from '../../../src/types/report-lost.ts';
 import ProfileScreen from '../../../src/pages/profile/ProfileScreen.tsx';
 import { User } from '../../../src/types/user.ts';
 
