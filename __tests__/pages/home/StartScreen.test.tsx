@@ -1,13 +1,13 @@
 import 'react-native';
 import React from 'react';
-import {render, screen} from '@testing-library/react-native';
-import {expect, it, jest, describe} from '@jest/globals';
+import { render, screen } from '@testing-library/react-native';
+import { expect, it, jest, describe } from '@jest/globals';
 import StartScreen from '../../../src/pages/home/StartScreen.tsx';
-import {UserProvider} from '../../../src/hooks/useUser.tsx';
-import {LostReportProvider} from '../../../src/hooks/useLostReports.tsx';
-import {FoundReportProvider} from '../../../src/hooks/useFoundReports.tsx';
-import {ChatProvider} from '../../../src/hooks/useChat.tsx';
-import {LostReport} from '../../../src/types/report-lost.ts';
+import { UserProvider } from '../../../src/hooks/useUser.tsx';
+import { LostReportProvider } from '../../../src/hooks/useLostReports.tsx';
+import { FoundReportProvider } from '../../../src/hooks/useFoundReports.tsx';
+import { ChatProvider } from '../../../src/hooks/useChat.tsx';
+import { LostReport } from '../../../src/types/report-lost.ts';
 
 jest.mock('@react-navigation/native', () => ({
   ...jest.requireActual('@react-navigation/native'),
@@ -54,7 +54,7 @@ describe('StartScreen', () => {
         <LostReportProvider>
           <FoundReportProvider>
             <ChatProvider>
-              <StartScreen />;
+              <StartScreen navigation={null} />;
             </ChatProvider>
           </FoundReportProvider>
         </LostReportProvider>

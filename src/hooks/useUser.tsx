@@ -1,4 +1,4 @@
-import {RegisterUserCredentials, User} from '../types/user';
+import { RegisterUserCredentials, User } from '../types/user';
 import {
   createContext,
   ReactNode,
@@ -8,7 +8,7 @@ import {
   useState,
   useTransition,
 } from 'react';
-import {LOGIN_URL, REGISTER_URL, USER_URL} from '../routes';
+import { LOGIN_URL, REGISTER_URL, USER_URL } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useStorage from './useStorage';
 
@@ -32,7 +32,7 @@ export function useUser() {
   return context;
 }
 
-export function UserProvider({children}: {children: ReactNode}) {
+export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useStorage<User | null>('user-crendentials', null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -59,6 +59,10 @@ export function UserProvider({children}: {children: ReactNode}) {
           },
         })
           .then(response => response.json())
+          .then(data => {
+            console.log(data)
+            return data;
+          })
           .then(setUser)
           .catch(console.log);
       });
@@ -83,7 +87,7 @@ export function UserProvider({children}: {children: ReactNode}) {
   ): Promise<string> {
     const response = await fetch(LOGIN_URL, {
       method: 'POST',
-      headers: {Authorization: `Basic ${basicAuthCredentials}`},
+      headers: { Authorization: `Basic ${basicAuthCredentials}` },
     });
 
     if (response.ok) {
@@ -124,7 +128,7 @@ export function UserProvider({children}: {children: ReactNode}) {
           .then(response => response.json())
           .then(async response => {
             await login(response.email, userCredentials.password);
-            return {...response, password: userCredentials.password};
+            return { ...response, password: userCredentials.password };
           })
           .then(setUser)
           .catch(error => console.log(error));
