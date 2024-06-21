@@ -3,6 +3,11 @@ import {renderHook, act} from '@testing-library/react-native';
 import {UserProvider, useUser} from '../src/hooks/useUser.tsx';
 import {expect, it, describe} from '@jest/globals';
 
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+}));
+
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
   removeItem: jest.fn(),
@@ -13,6 +18,12 @@ describe('UserProvider logout function', () => {
     const {result} = renderHook(() => useUser(), {
       wrapper: UserProvider,
     });
+
+    jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
+            Promise.resolve({
+                json: () => Promise.resolve(),
+            }) as Promise<Response>
+        );
 
     // Set initial state for testing
     act(() => {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {FlatList, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {LostReportTheme} from '../../constants/theme.ts';
@@ -8,12 +8,14 @@ import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import LostReportCard from './LostReportCard.tsx';
 import {category} from '../../data/categories';
+import {useNavigation} from '@react-navigation/native';
 
-function LostReportScreen( {navigation} ): React.JSX.Element {
+function LostReportScreen(): React.JSX.Element {
   const {lostReports} = useLostReports();
+  const navigation = useNavigation();
 
   return (
-    <View>
+    <View testID={'lost-report-screen'}>
       <CustomHeader
         backgroundColor={LostReportTheme.colors.secondaryAccent}
         title={'Suchanzeigen'}
@@ -57,10 +59,14 @@ function LostReportScreen( {navigation} ): React.JSX.Element {
             <LostReportCard
               key={item.id}
               report={item}
-              onPress={(id) => navigation.navigate('SingleLostReportScreen', {id: id})}
-              image={category.find((it) => it.name === item.category.name)?.image ?? category[category.length - 1].image }
-
-              />
+              onPress={() =>
+                navigation.navigate('SingleLostReportScreen', {item: item})
+              }
+              image={
+                category.find(it => it.name === item.category.name)?.image ??
+                category[category.length - 1].image
+              }
+            />
           )}
           keyExtractor={item => item.id}
           numColumns={2}

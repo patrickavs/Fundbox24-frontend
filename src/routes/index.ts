@@ -11,3 +11,5 @@ export const ALL_FOUND_REPORTS_URL = `${BASE_URL}/report/found`;
 export const ALL_CATEGORIES_URL = `${BASE_URL}/categories`;
 
 export const LOGIN_URL = `${BASE_URL}/login`;
+export const USER_URL = `${BASE_URL}/user`;
+export const REGISTER_URL = `${BASE_URL}/register`;

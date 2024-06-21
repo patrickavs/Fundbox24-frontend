@@ -20,6 +20,7 @@ function CustomHeader({
 
 const styles = StyleSheet.create({
   container: {
+    zIndex: 2,
     borderBottomEndRadius: 30,
     borderBottomStartRadius: 30,
     height: 100,

@@ -1,45 +1,57 @@
 import React, {useEffect} from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {BackHandler, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {LostReportTheme} from '../../constants/theme';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../components/CustomButton';
 import moment from 'moment';
 import SpacerVertical from '../found/SpacerVertical';
-import {useLostReports} from '../../hooks/useLostReports';
 import {category} from '../../data/categories';
+import {useRoute} from '@react-navigation/native';
+import {LostReport} from '../../types/report-lost';
 
 
 function SingleLostReportScreen( {navigation} ): React.JSX.Element {
 
-    const {lostReports} = useLostReports();
+    const route = useRoute();
+    const { item } = route.params as { item: LostReport };
+
+    const [position, setPosition] = React.useState<LatLng>((item.lostLocation as LatLng));
+
     useEffect(() => {
-        navigation.setOptions({
-            ...navigation.options,
-        });
+        const backAction = () => {
+            navigation.replace('LostReportScreen');
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+        return () => backHandler.remove();
     }, [navigation]);
 
-    //const route = useRoute();
-    //const { id } = route.params ?? {id: foundReports.at(0).id};
 
-    const [position] = React.useState<LatLng>(
-        lostReports[0].lostLocation
-    );
+    useEffect(() => {
+        setPosition(item.lostLocation as LatLng);
+    }, [item, position]);
 
     const [radius] = React.useState<number>(1000);
 
+    const navigateToChat = () => {
+        console.log('navigate to chat');
+        // TODO: navigate to chat
+    };
+
     return (
-        <View style={styles.screenContainer}>
+        <View style={styles.screenContainer} testID="single-lost-report-screen">
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={category.find((item) => item.name === lostReports[0].category.name)?.image ?? category[category.length - 1].image } />
+                    <Image style={styles.image} source={category.find((it) => it.name === item?.category.name)?.image ?? category[category.length - 1].image} />
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.title}>{lostReports[0].title}</Text>
-                    <Text style={styles.text}>{lostReports[0].description}</Text>
+                    <Text style={styles.title}>{item?.title ?? 'Titel'}</Text>
+                    <Text style={styles.text}>{item?.description ?? 'Beschreibung'}</Text>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'time'} style={styles.icon}/>
-                        <Text style={styles.text}>Zuletzt gesehen am {moment(lostReports[0].lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
+                        <Text style={styles.text}>Zuletzt gesehen am {moment(item?.lastSeenDate).format('DD.MM.YYYY, HH:mm') ?? 'Datum'}</Text>
                     </View>
                     <View style={styles.textIconContainer}>
                         <Ionicons name={'location'} style={styles.icon}/>
@@ -63,10 +75,10 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                 <SpacerVertical size={20}/>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" onPress={() => navigation.goBack()} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" onPress={navigateToChat} />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" onPress={() => navigation.goBack()} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" onPress={navigateToChat} />
                     </View>
                 </View>
                 <SpacerVertical size={20}/>
@@ -144,3 +156,5 @@ const styles = StyleSheet.create({
         paddingRight: 6,
     },
 });
+
+

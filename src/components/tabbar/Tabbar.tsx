@@ -17,10 +17,19 @@ const Tab = createBottomTabNavigator();
 
 // defining tab bar options
 const getTabBarOptions = () => ({
-  tabBarActiveTintColor: 'tomato',
-  tabBarInactiveTintColor: 'black',
+  tabBarActiveTintColor: 'black',
+  tabBarInactiveTintColor: 'gray',
   tabBarHideOnKeyboard: true,
-  tabBarStyle: {backgroundColor: 'lightgray'},
+  tabBarStyle: {
+      backgroundColor: 'white',
+      height: 85,
+      elevation: 3,
+      borderRadius: 20,
+      borderStyle: 'solid',
+      borderWidth: 0.5,
+      borderColor: 'grey',
+      top: 15,
+  },
 });
 
 function Tabbar() {
@@ -44,6 +53,11 @@ function Tabbar() {
             />
           ),
           headerShown: false,
+          tabBarItemStyle: {
+              paddingBottom: 5,
+              paddingTop: 17,
+              marginBottom: 20,
+          },
         }}
       />
       <Tab.Screen
@@ -58,6 +72,11 @@ function Tabbar() {
               color={color}
             />
           ),
+          tabBarItemStyle: {
+              paddingBottom: 5,
+              paddingTop: 17,
+              marginBottom: 20,
+          },
         }}
       />
       <Tab.Screen
@@ -74,12 +93,15 @@ function Tabbar() {
           ),
           tabBarItemStyle: {
             bottom: 50,
-            backgroundColor: 'lightgray',
+            backgroundColor: 'white',
+            elevation: 3,
+            borderStyle: 'solid',
+            borderWidth: 0.5,
+            borderColor: 'lightgray',
             borderTopLeftRadius: 50,
             borderTopRightRadius: 50,
             borderBottomRightRadius: 50,
             borderBottomLeftRadius: 50,
-            elevation: 5,
             paddingTop: 16,
             padding: 0,
             aspectRatio: 1,
@@ -99,6 +121,11 @@ function Tabbar() {
               color={color}
             />
           ),
+          tabBarItemStyle: {
+              paddingBottom: 5,
+              paddingTop: 17,
+              marginBottom: 20,
+          },
         }}
       />
       <Tab.Screen
@@ -113,6 +140,11 @@ function Tabbar() {
             />
           ),
           headerShown: false,
+          tabBarItemStyle: {
+              paddingBottom: 5,
+              paddingTop: 17,
+              marginBottom: 20,
+          },
         }}
       />
     </Tab.Navigator>
