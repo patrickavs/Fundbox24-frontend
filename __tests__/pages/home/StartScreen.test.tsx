@@ -62,7 +62,7 @@ describe('StartScreen', () => {
     );
 
     expect(
-      screen.getByText('Willkommen, blauerwal24').props.children,
+      screen.getByText('Du bist nicht angemeldet').props.children,
     ).toBeTruthy();
   });
 });

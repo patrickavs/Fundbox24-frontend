@@ -1,36 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="7" failures="2" errors="0" time="3.474">
-  <testsuite name="StartScreen" errors="0" failures="1" skipped="0" timestamp="2024-06-21T11:01:43" time="0.8" tests="1">
-    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.136">
-      <failure>Error: Unable to find an element with text: Willkommen, blauerwal24
-
-[
-  &lt;View&gt;
-    &lt;Text&gt;
-      Du bist nicht angemeldet
-    &lt;/Text&gt;
-  &lt;/View&gt;,
-  &quot;;&quot;,
-]
-    at Object.getByText (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/__tests__/pages/home/StartScreen.test.tsx:65:14)
-    at Promise.then.completed (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/jest-circus/build/run.js:121:9)
-    at run (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)</failure>
+<testsuites name="jest tests" tests="7" failures="1" errors="0" time="3.46">
+  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T14:59:49" time="0.986" tests="1">
+    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.123">
     </testcase>
   </testsuite>
-  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T11:01:44" time="0.477" tests="1">
-    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.122">
-    </testcase>
-  </testsuite>
-  <testsuite name="UserProvider logout function" errors="0" failures="1" skipped="0" timestamp="2024-06-21T11:01:44" time="0.16" tests="1">
-    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.017">
+  <testsuite name="UserProvider logout function" errors="0" failures="1" skipped="0" timestamp="2024-06-21T14:59:50" time="0.167" tests="1">
+    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.022">
       <failure>TypeError: Cannot read properties of undefined (reading &apos;then&apos;)
     at /home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/src/hooks/useStorage.ts:8:31
     at commitHookEffectListMount (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12999:26)
@@ -65,20 +40,24 @@
     at runAndTransformResultsToJestFormat (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-21T11:01:44" time="0.645" tests="1">
+  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-21T14:59:50" time="0.608" tests="1">
     <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.09">
     </testcase>
   </testsuite>
-  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T11:01:45" time="0.367" tests="1">
-    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.098">
+  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T14:59:50" time="0.405" tests="1">
+    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.103">
     </testcase>
   </testsuite>
-  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T11:01:46" time="0.31" tests="1">
-    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.088">
+  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T14:59:51" time="0.315" tests="1">
+    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.089">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-21T11:01:46" time="0.244" tests="1">
-    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.086">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-21T14:59:51" time="0.247" tests="1">
+    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.089">
+    </testcase>
+  </testsuite>
+  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T14:59:51" time="0.255" tests="1">
+    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.124">
     </testcase>
   </testsuite>
 </testsuites>
