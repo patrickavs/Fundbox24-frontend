@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="7" failures="0" errors="0" time="8.178">
-  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:02" time="3.246" tests="1">
-    <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.132">
+<testsuites name="jest tests" tests="9" failures="1" errors="0" time="3.581">
+  <testsuite name="RegisterScreen" errors="0" failures="1" skipped="0" timestamp="2024-06-21T15:52:43" time="0.935" tests="2">
+    <testcase classname="RegisterScreen should display the input fields" name="RegisterScreen should display the input fields" time="0.296">
+    </testcase>
+    <testcase classname="RegisterScreen should register a user" name="RegisterScreen should register a user" time="0.054">
+      <failure>Error: expect(received).toBeTruthy()
+
+Received: false
+    at Object.toBeTruthy (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/__tests__/pages/auth/RegisterScreen.test.tsx:65:80)
+    at Generator.next (&lt;anonymous&gt;)
+    at asyncGeneratorStep (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:24)
+    at asyncGeneratorStep (/home/lukas/Documents/Entwicklung/Atem/fundbox24-frontend/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:9)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:06" time="0.918" tests="1">
-    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.252">
+  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:52:43" time="0.687" tests="1">
+    <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.042">
     </testcase>
   </testsuite>
-  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:06" time="0.319" tests="1">
-    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.04">
+  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:52:44" time="0.358" tests="1">
+    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.099">
     </testcase>
   </testsuite>
-  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:07" time="0.818" tests="1">
-    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.209">
+  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:52:45" time="0.315" tests="1">
+    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.077">
     </testcase>
   </testsuite>
-  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:08" time="0.767" tests="1">
-    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.069">
+  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:52:45" time="0.282" tests="1">
+    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.019">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:08" time="0.653" tests="1">
-    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.227">
+  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:52:45" time="0.231" tests="1">
+    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.115">
     </testcase>
   </testsuite>
-  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:19:09" time="0.608" tests="1">
-    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.304">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:52:45" time="0.244" tests="1">
+    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.086">
+    </testcase>
+  </testsuite>
+  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-21T15:52:46" time="0.123" tests="1">
+    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.015">
     </testcase>
   </testsuite>
 </testsuites>

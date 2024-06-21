@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -16,8 +16,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import '../../assets/images/login.png';
 import CustomButton from '../CustomButton';
-import {useNavigation} from '@react-navigation/native';
-import {AuthTheme} from '../../constants/theme.ts';
+import { useNavigation } from '@react-navigation/native';
+import { AuthTheme } from '../../constants/theme.ts';
 import { useUser } from '../../hooks/useUser.tsx';
 import { RegisterUserCredentials } from '../../types/user.ts';
 
@@ -34,25 +34,25 @@ function RegisterScreen() {
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
   const [registerUserData, setRegisterUserData] = useState<RegisterUserCredentials>(defaultRegisterCredentials)
   const [registerErrorMap, setRegisterErrorMap] = useState<Map<string, Error>>(new Map())
-  const {register} = useUser();
+  const { register } = useUser();
 
   const registerCallback = useCallback((userCredentials: RegisterUserCredentials) => {
-    const {password, passwordRepeat} = userCredentials;
+    const { password, passwordRepeat } = userCredentials;
 
-    if(password !== passwordRepeat) {
-      setRegisterErrorMap(prev => ({...prev, password: new Error("Die Passwörter sind nicht gleich")}))
+    if (password !== passwordRepeat) {
+      setRegisterErrorMap(prev => ({ ...prev, password: new Error("Die Passwörter sind nicht gleich") }))
       return;
-    } 
-    
-    register(userCredentials).catch(error => setRegisterErrorMap(prev => ({...prev, "fetch": error})))
+    }
+
+    register(userCredentials).catch(error => setRegisterErrorMap(prev => ({ ...prev, "fetch": error })))
   }, [])
 
   return (
-    <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{paddingHorizontal: 25, marginBottom: 50}}>
-        <View style={{alignItems: 'center'}}>
+        style={{ paddingHorizontal: 25, marginBottom: 50 }}>
+        <View style={{ alignItems: 'center' }}>
           <Image
             source={require('../../assets/images/register.png')}
             style={{
@@ -80,30 +80,32 @@ function RegisterScreen() {
           placeholder={'Name'}
           icon={<Ionicons name="person-outline" size={20} color="#666" />}
           value={registerUserData.name}
-          onChangeText={(name) => setRegisterUserData(prev => ({...prev, name}))}
+          onChangeText={(name) => setRegisterUserData(prev => ({ ...prev, name }))}
         />
 
         <InputField
+          testID='input-email'
           placeholder={'E-Mail'}
           icon={<Ionicons name="at-outline" size={20} color="#666" />}
           keyboardType="email-address"
           value={registerUserData.email}
-          onChangeText={(email) => setRegisterUserData(prev => ({...prev, email}))}
+          onChangeText={(email) => setRegisterUserData(prev => ({ ...prev, email }))}
         />
 
         <InputField
+          testID='input-password'
           placeholder={'Passwort'}
           icon={
             <Ionicons
               name="lock-closed-outline"
               size={20}
               color="#666"
-              style={{marginLeft: -5}}
+              style={{ marginLeft: -5 }}
             />
           }
           inputType="password"
           value={registerUserData.password}
-          onChangeText={(password) => setRegisterUserData(prev => ({...prev, password}))}
+          onChangeText={(password) => setRegisterUserData(prev => ({ ...prev, password }))}
         />
 
         <InputField
@@ -113,12 +115,13 @@ function RegisterScreen() {
               name="lock-closed-outline"
               size={20}
               color="#666"
-              style={{marginLeft: -5}}
+              style={{ marginLeft: -5 }}
             />
           }
+          testID='input-password-repeat'
           inputType="password"
           value={registerUserData.passwordRepeat}
-          onChangeText={(passwordRepeat) => setRegisterUserData(prev => ({...prev, passwordRepeat}))}
+          onChangeText={(passwordRepeat) => setRegisterUserData(prev => ({ ...prev, passwordRepeat }))}
         />
 
         <View
@@ -133,10 +136,10 @@ function RegisterScreen() {
             name="calendar-outline"
             size={20}
             color="#666"
-            style={{marginLeft: 2}}
+            style={{ marginLeft: 2 }}
           />
           <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-            <Text style={{color: '#666', marginLeft: 5, marginTop: 4}}>
+            <Text style={{ color: '#666', marginLeft: 5, marginTop: 4 }}>
               {registerUserData.date?.toLocaleDateString() ?? new Date().toLocaleDateString()}
             </Text>
           </TouchableOpacity>
@@ -149,7 +152,7 @@ function RegisterScreen() {
           mode={'date'}
           onConfirm={date => {
             setDatePickerOpen(false);
-            setRegisterUserData(prev => ({...prev, date}))
+            setRegisterUserData(prev => ({ ...prev, date }))
           }}
           onCancel={() => {
             setDatePickerOpen(false);
@@ -158,6 +161,7 @@ function RegisterScreen() {
 
         <CustomButton
           label={'Register'}
+          testID='register-button'
           onPress={() => registerCallback(registerUserData)}
           backgroundColor={AuthTheme.colors.secondaryBackground}
           fontSize={16}
@@ -171,7 +175,7 @@ function RegisterScreen() {
           }}>
           <Text>Schon registriert?</Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{color: '#AD40AF', fontWeight: '700'}}> Login</Text>
+            <Text style={{ color: '#AD40AF', fontWeight: '700' }}> Login</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
