@@ -67,10 +67,9 @@ function LoginScreen(): React.JSX.Element {
         </Text>
 
         <InputField
-          label={'E-Mail'}
+          placeholder={'E-Mail'}
           icon={<Ionicons name="at-outline" size={20} color="#666" />}
           keyboardType="email-address"
-          inputType={'email-address'}
           fieldButtonLabel={''}
           value={email}
           onChangeText={text => {
@@ -79,7 +78,7 @@ function LoginScreen(): React.JSX.Element {
         />
 
         <InputField
-          label={'Passwort'}
+          placeholder={'Passwort'}
           icon={
             <Icon
               name="lock"

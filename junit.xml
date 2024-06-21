@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" errors="0" time="1.107">
-  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-07T10:31:15" time="0.529" tests="1">
-    <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.094">
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="1.602">
+  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-13T10:51:49" time="1.091" tests="1">
+    <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.112">
     </testcase>
   </testsuite>
-  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-07T10:31:15" time="0.078" tests="1">
-    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.048">
+  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-13T10:51:50" time="0.096" tests="1">
+    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.07">
     </testcase>
   </testsuite>
-  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-07T10:31:15" time="0.055" tests="1">
-    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.024">
+  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-13T10:51:50" time="0.054" tests="1">
+    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.025">
     </testcase>
   </testsuite>
-  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-07T10:31:15" time="0.174" tests="1">
-    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.014">
+  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-13T10:51:50" time="0.037" tests="1">
+    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.012">
     </testcase>
   </testsuite>
 </testsuites>

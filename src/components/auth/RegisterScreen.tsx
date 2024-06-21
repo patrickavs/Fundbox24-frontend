@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,12 +18,34 @@ import '../../assets/images/login.png';
 import CustomButton from '../CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import {AuthTheme} from '../../constants/theme.ts';
+import { useUser } from '../../hooks/useUser.tsx';
+import { RegisterUserCredentials } from '../../types/user.ts';
 
+const defaultRegisterCredentials: RegisterUserCredentials = {
+  name: "",
+  email: "",
+  password: "",
+  passwordRepeat: ""
+}
+
+// TODO: Zeige dem Benutzer alle Fehler mit registerErrorMap an
 function RegisterScreen() {
   const navigation = useNavigation();
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [dobLabel, setDobLabel] = useState('Geburtsdatum');
+  const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
+  const [registerUserData, setRegisterUserData] = useState<RegisterUserCredentials>(defaultRegisterCredentials)
+  const [registerErrorMap, setRegisterErrorMap] = useState<Map<string, Error>>(new Map())
+  const {register} = useUser();
+
+  const registerCallback = useCallback((userCredentials: RegisterUserCredentials) => {
+    const {password, passwordRepeat} = userCredentials;
+
+    if(password !== passwordRepeat) {
+      setRegisterErrorMap(prev => ({...prev, password: new Error("Die Passwörter sind nicht gleich")}))
+      return;
+    } 
+    
+    register(userCredentials).catch(error => setRegisterErrorMap(prev => ({...prev, "fetch": error})))
+  }, [])
 
   return (
     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
@@ -55,18 +77,22 @@ function RegisterScreen() {
         </Text>
 
         <InputField
-          label={'Name'}
+          placeholder={'Name'}
           icon={<Ionicons name="person-outline" size={20} color="#666" />}
+          value={registerUserData.name}
+          onChangeText={(name) => setRegisterUserData(prev => ({...prev, name}))}
         />
 
         <InputField
-          label={'E-Mail'}
+          placeholder={'E-Mail'}
           icon={<Ionicons name="at-outline" size={20} color="#666" />}
           keyboardType="email-address"
+          value={registerUserData.email}
+          onChangeText={(email) => setRegisterUserData(prev => ({...prev, email}))}
         />
 
         <InputField
-          label={'Passwort'}
+          placeholder={'Passwort'}
           icon={
             <Ionicons
               name="lock-closed-outline"
@@ -76,10 +102,12 @@ function RegisterScreen() {
             />
           }
           inputType="password"
+          value={registerUserData.password}
+          onChangeText={(password) => setRegisterUserData(prev => ({...prev, password}))}
         />
 
         <InputField
-          label={'Bestätige dein Passwort'}
+          placeholder={'Bestätige dein Passwort'}
           icon={
             <Ionicons
               name="lock-closed-outline"
@@ -89,6 +117,8 @@ function RegisterScreen() {
             />
           }
           inputType="password"
+          value={registerUserData.passwordRepeat}
+          onChangeText={(passwordRepeat) => setRegisterUserData(prev => ({...prev, passwordRepeat}))}
         />
 
         <View
@@ -105,33 +135,30 @@ function RegisterScreen() {
             color="#666"
             style={{marginLeft: 2}}
           />
-          <TouchableOpacity onPress={() => setOpen(true)}>
+          <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
             <Text style={{color: '#666', marginLeft: 5, marginTop: 4}}>
-              {dobLabel}
+              {registerUserData.date?.toLocaleDateString() ?? new Date().toLocaleDateString()}
             </Text>
           </TouchableOpacity>
         </View>
 
         <DatePicker
           modal
-          open={open}
-          date={date}
+          open={datePickerOpen}
+          date={registerUserData.date ?? new Date()}
           mode={'date'}
-          maximumDate={new Date('2005-01-01')}
-          minimumDate={new Date('1980-01-01')}
           onConfirm={date => {
-            setOpen(false);
-            setDate(date);
-            setDobLabel(date.toDateString());
+            setDatePickerOpen(false);
+            setRegisterUserData(prev => ({...prev, date}))
           }}
           onCancel={() => {
-            setOpen(false);
+            setDatePickerOpen(false);
           }}
         />
 
         <CustomButton
           label={'Register'}
-          onPress={() => {}}
+          onPress={() => registerCallback(registerUserData)}
           backgroundColor={AuthTheme.colors.secondaryBackground}
           fontSize={16}
         />
