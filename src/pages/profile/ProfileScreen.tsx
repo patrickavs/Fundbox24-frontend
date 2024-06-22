@@ -1,13 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import IconButton from '../../components/IconButton.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
-import {Switch} from 'react-native';
-import {useUser} from '../../hooks/useUser.tsx';
+import { Switch } from 'react-native';
+import { useUser } from '../../hooks/useUser.tsx';
 import useStorage from '../../hooks/useStorage.ts';
-import {Settings} from '../../types/settings.ts';
+import { Settings } from '../../types/settings.ts';
 import CustomButton from '../../components/CustomButton.tsx';
-import {AuthTheme} from '../../constants/theme.ts';
+import { AuthTheme } from '../../constants/theme.ts';
 
 const defaultSettings: Settings = {
   sound: true,
@@ -57,7 +57,7 @@ const ProfileStyleSheet = StyleSheet.create({
 });
 
 function ProfileScreen(): React.JSX.Element {
-  const {user, isPending, logout} = useUser(); //TODO: Implement a edit user function
+  const { user, isPending, logout } = useUser(); //TODO: Implement a edit user function
   const [settings, setSettings] = useStorage('settings', defaultSettings);
 
   const onLogout = async () => {
@@ -100,7 +100,7 @@ function ProfileScreen(): React.JSX.Element {
             <Switch
               value={settings.sound}
               onChange={event =>
-                setSettings({...settings, sound: !settings.sound})
+                setSettings({ ...settings, sound: !settings.sound })
               }
             />
           </View>
@@ -109,7 +109,7 @@ function ProfileScreen(): React.JSX.Element {
             <Switch
               value={settings.vibration}
               onChange={event =>
-                setSettings({...settings, vibration: !settings.vibration})
+                setSettings({ ...settings, vibration: !settings.vibration })
               }
             />
           </View>
@@ -119,11 +119,11 @@ function ProfileScreen(): React.JSX.Element {
           <Switch
             value={settings.location}
             onChange={event =>
-              setSettings({...settings, location: !settings.location})
+              setSettings({ ...settings, location: !settings.location })
             }
           />
         </View>
-        <View style={{paddingTop: 20}}>
+        <View style={{ paddingTop: 20 }}>
           <CustomButton
             label={'Logout'}
             onPress={onLogout}

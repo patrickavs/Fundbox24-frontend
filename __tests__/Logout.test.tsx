@@ -1,32 +1,46 @@
+import 'react-native';
+import { act, renderHook } from '@testing-library/react-native';
+import { expect, it, jest, describe } from '@jest/globals';
+import { UserProvider, useUser } from '../src/hooks/useUser.tsx';
+import { User } from '../src/types/user.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {renderHook, act} from '@testing-library/react-native';
-import {UserProvider, useUser} from '../src/hooks/useUser.tsx';
-import {expect, it, describe} from '@jest/globals';
-
-
-jest.mock('@react-navigation/native', () => ({
-  ...jest.requireActual('@react-navigation/native'),
-}));
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
-  getItem: jest.fn(),
-  removeItem: jest.fn(),
+  getItem: jest.fn((key: string) => {
+    if (key === 'user-credentials') {
+      return Promise.resolve(JSON.stringify(userData));
+    } else if (key === 'basicAuthCredentials') {
+      return Promise.resolve('dXNlcjpwYXNz');
+    }
+    return Promise.resolve(null);
+  }),
+  setItem: jest.fn((key: string, value: string) => Promise.resolve()),
+  removeItem: jest.fn((key: string) => Promise.resolve(null)),
 }));
+
+const userData: User = {
+  id: '1',
+  email: 'wal@test.de',
+  firstName: 'Walter',
+  lastName: 'White',
+  username: 'walterwhite',
+}
 
 describe('UserProvider logout function', () => {
   it('should remove credentials, set isLoggedIn to false, and reset user state', async () => {
-    const {result} = renderHook(() => useUser(), {
+    const { result } = renderHook(() => useUser(), {
       wrapper: UserProvider,
     });
 
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
-            Promise.resolve({
-                json: () => Promise.resolve(),
-            }) as Promise<Response>
-        );
+    jest.spyOn(global, 'fetch').mockImplementation(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(userData),
+        ok: true,
+      }) as Promise<Response>
+    );
 
     // Set initial state for testing
-    act(() => {
+    await act(() => {
       result.current.login('lurchi@quakmail.de', 'lurch123');
     });
 
