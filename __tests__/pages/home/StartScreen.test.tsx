@@ -8,11 +8,13 @@ import { LostReportProvider } from '../../../src/hooks/useLostReports.tsx';
 import { FoundReportProvider } from '../../../src/hooks/useFoundReports.tsx';
 import { ChatProvider } from '../../../src/hooks/useChat.tsx';
 import { LostReport } from '../../../src/types/report-lost.ts';
-import { act } from 'react-test-renderer';
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+}));
 
 describe('StartScreen', () => {
   it('renders find text "Du bist nicht angemeldet"', () => {
-
     const fakeLostReports: LostReport[] = [
       {
         id: '1',
@@ -21,29 +23,30 @@ describe('StartScreen', () => {
         lastSeenDate: new Date(Date.now()).toLocaleTimeString(),
         lastSeenLocation: {
           latitude: 53.551086,
-          longitude: 9.993682
+          longitude: 9.993682,
         },
         lostLocation: {
           latitude: 53.551086,
-          longitude: 9.993682
+          longitude: 9.993682,
         },
         lostRadius: 100,
         category: {
           id: '1',
-          value: "",
+          value: '',
           title: 'Schlüssel',
-          image: ""
+          image: '',
         },
         placeOfDiscovery: 'Hamburg',
         placeOfDelivery: 'Hamburg',
-        myChats: []
-      }
-    ]
+        myChats: [],
+      },
+    ];
 
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
-      Promise.resolve({
-        json: () => Promise.resolve(fakeLostReports),
-      }) as Promise<Response>
+    jest.spyOn(global, 'fetch').mockImplementationOnce(
+      () =>
+        Promise.resolve({
+          json: () => Promise.resolve(fakeLostReports),
+        }) as Promise<Response>,
     );
 
     render(
@@ -51,14 +54,15 @@ describe('StartScreen', () => {
         <LostReportProvider>
           <FoundReportProvider>
             <ChatProvider>
-              <StartScreen />;
+              <StartScreen navigation={null} />;
             </ChatProvider>
           </FoundReportProvider>
         </LostReportProvider>
-      </UserProvider>
+      </UserProvider>,
     );
 
-    expect(screen.getByText('Willkommen, blauerwal24').props.children).toBeTruthy();
+    expect(
+      screen.getByText('Du bist nicht angemeldet').props.children,
+    ).toBeTruthy();
   });
 });
-

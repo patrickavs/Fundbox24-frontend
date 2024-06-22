@@ -4,28 +4,20 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  KeyboardTypeOptions,
+  TextInputProps,
+  GestureResponderEvent,
 } from 'react-native';
 
-function InputField({
-  label,
-  icon,
-  inputType,
-  keyboardType,
-  fieldButtonLabel,
-  fieldButtonFunction,
-  value,
-  onChangeText,
-}: {
-  label: string;
-  icon: any;
-  inputType?: string;
-  keyboardType?: KeyboardTypeOptions | undefined;
-  fieldButtonLabel?: string;
-  fieldButtonFunction?: () => void;
-  value: string;
-  onChangeText?: (text: string) => void;
-}) {
+interface InputFieldProps extends TextInputProps {
+  inputType?: "text" | "email-address" | "password",
+  icon?: any,
+  fieldButtonFunction?: ((event: GestureResponderEvent) => void),
+  fieldButtonLabel?: string
+}
+
+function InputField(props: InputFieldProps) {
+  const {inputType, icon, fieldButtonFunction, fieldButtonLabel} = props;
+
   return (
     <View
       style={{
@@ -38,12 +30,9 @@ function InputField({
       }}>
       {icon}
       <TextInput
-        value={value}
-        placeholder={label}
-        keyboardType={keyboardType}
+        {...props}
         style={{flex: 1, paddingVertical: 0}}
         secureTextEntry={inputType === 'password'}
-        onChangeText={onChangeText}
       />
       <TouchableOpacity onPress={fieldButtonFunction}>
         <Text style={{color: '#AD40FF', fontWeight: '700'}}>

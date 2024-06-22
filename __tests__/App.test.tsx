@@ -1,14 +1,22 @@
 import App from '../src/App';
 
 // Note: import explicitly to use the types shipped with jest.
-import { expect, it, jest, describe } from '@jest/globals';
-import { render, screen } from '@testing-library/react-native';
+import {expect, it, describe} from '@jest/globals';
+import {render, screen} from '@testing-library/react-native';
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+}));
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+}));
 
 describe('App', () => {
   it('should display "Noch keinen Account bei uns?"', () => {
     render(<App />);
 
-    expect(screen.getByText("Noch keinen Account bei uns?")).toBeTruthy();
+    expect(screen.getByText('Noch keinen Account bei uns?')).toBeTruthy();
   });
 });
 

@@ -111,16 +111,17 @@ export const LostReportTheme = {
     secondaryBackground: '#87B9DD',
     primaryAccent: '#F2F2F2',
     secondaryAccent: '#DFF1FF',
+    button: '#3082BF',
   },
   fonts: commonFonts,
 };
 
 export const FoundReportTheme = {
   colors: {
-    text: '#333333',
+    text: '#000000',
     background: '#FEF1ED',
-    button1: '#BDEEB5',
-    button2: '#FFC9C6',
+    button1: '#C8FAD8',
+    button2: '#4DAD7E',
   },
   fonts: commonFonts,
 };

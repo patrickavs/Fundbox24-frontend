@@ -1,4 +1,4 @@
-import { User } from '../types/user';
+import { RegisterUserCredentials, User } from '../types/user';
 import {
   createContext,
   ReactNode,
@@ -8,8 +8,9 @@ import {
   useState,
   useTransition,
 } from 'react';
-import { LOGIN_URL } from '../routes';
+import { LOGIN_URL, REGISTER_URL, USER_URL } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useStorage from './useStorage';
 
 type UserContextType = {
   isPending: boolean;
@@ -17,6 +18,8 @@ type UserContextType = {
   editUser: (u: Partial<User>) => Promise<void>;
   isLoggedIn: boolean;
   login: (email: string, password: string) => void;
+  logout: () => Promise<void>;
+  register: (userData: any) => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -30,7 +33,7 @@ export function useUser() {
 }
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useStorage<User | null>('user-crendentials', null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -47,19 +50,21 @@ export function UserProvider({ children }: { children: ReactNode }) {
       return loginWithBasicAuth(basicAuthCredentials);
     }
 
-    checkSavedBasicAuthCredentials();
-
-    startTransition(() => {
-      // TODO: fetch userdata
-      // TODO: fetch data
-      const userData = {
-        id: '1',
-        email: 'wal@test.de',
-        firstName: 'Blauerwal',
-        lastName: '24',
-        username: 'blauerwal24',
-      };
-      setUser(userData);
+    checkSavedBasicAuthCredentials().then(credentials => {
+      if (!credentials) {
+        return;
+      }
+      startTransition(() => {
+        fetch(USER_URL, {
+          method: 'get',
+          headers: {
+            Authorization: `Basic ${credentials}`,
+          },
+        })
+          .then(response => response.json())
+          .then(setUser)
+          .catch(console.log);
+      });
     });
   }, []);
 
@@ -70,7 +75,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
     return loginWithBasicAuth(basicAuthCredentials);
   }
 
-  async function loginWithBasicAuth(basicAuthCredentials: string) {
+  async function logout() {
+    await AsyncStorage.removeItem('basicAuthCredentials');
+    setIsLoggedIn(false);
+    setUser(null);
+  }
+
+  async function loginWithBasicAuth(
+    basicAuthCredentials: string,
+  ): Promise<string> {
     const response = await fetch(LOGIN_URL, {
       method: 'POST',
       headers: { Authorization: `Basic ${basicAuthCredentials}` },
@@ -79,10 +92,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
     if (response.ok) {
       await AsyncStorage?.setItem('basicAuthCredentials', basicAuthCredentials);
       setIsLoggedIn(true);
-      return;
+      return basicAuthCredentials;
     }
 
     console.log('Login failed. Wrong credentials!');
+    return basicAuthCredentials;
   }
 
   const editUser = useCallback(async (updatedUser: Partial<User>) => {
@@ -100,9 +114,39 @@ export function UserProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const register = useCallback(
+    async (userCredentials: RegisterUserCredentials) => {
+      startTransition(() => {
+        fetch(REGISTER_URL, {
+          method: 'POST',
+          body: JSON.stringify(userCredentials),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => response.json())
+          .then(async response => {
+            await login(response.email, userCredentials.password);
+            return { ...response, password: userCredentials.password };
+          })
+          .then(setUser)
+          .catch(error => console.log(error));
+      });
+    },
+    [],
+  );
+
   return (
     <UserContext.Provider
-      value={{ isPending, user: user, editUser, isLoggedIn, login }}>
+      value={{
+        isPending,
+        user: user,
+        editUser,
+        isLoggedIn,
+        login,
+        logout,
+        register,
+      }}>
       {children}
     </UserContext.Provider>
   );

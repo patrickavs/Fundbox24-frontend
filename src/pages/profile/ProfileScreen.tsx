@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import IconButton from '../../components/IconButton.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
@@ -6,6 +6,8 @@ import { Switch } from 'react-native';
 import { useUser } from '../../hooks/useUser.tsx';
 import useStorage from '../../hooks/useStorage.ts';
 import { Settings } from '../../types/settings.ts';
+import CustomButton from '../../components/CustomButton.tsx';
+import { AuthTheme } from '../../constants/theme.ts';
 
 const defaultSettings: Settings = {
   sound: true,
@@ -19,44 +21,48 @@ const ProfileStyleSheet = StyleSheet.create({
     borderColor: 'lightgray',
     borderWidth: 1,
     paddingVertical: 4,
-    paddingHorizontal: 14
+    paddingHorizontal: 14,
   },
   label: {
-    color: "black"
+    color: 'black',
   },
   container: {
     paddingHorizontal: 25,
     marginTop: 20,
-    display: "flex",
-    flexDirection: "column",
-    gap: 10
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 10,
   },
   heading: {
-    fontSize: 16
+    fontSize: 16,
   },
   switch: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     paddingVertical: 5,
   },
   buttonContainer: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     gap: 8,
     marginTop: 15,
-    marginBottom: 10
+    marginBottom: 10,
   },
   button: {
     borderRadius: 8,
-    textAlign: "left"
-  }
-})
+    textAlign: 'left',
+  },
+});
 
 function ProfileScreen(): React.JSX.Element {
-  const { user, isPending } = useUser();
+  const { user, isPending, logout } = useUser(); //TODO: Implement a edit user function
   const [settings, setSettings] = useStorage('settings', defaultSettings);
+
+  const onLogout = async () => {
+    await logout();
+  };
 
   return (
     <View>
@@ -115,6 +121,14 @@ function ProfileScreen(): React.JSX.Element {
             onChange={event =>
               setSettings({ ...settings, location: !settings.location })
             }
+          />
+        </View>
+        <View style={{ paddingTop: 20 }}>
+          <CustomButton
+            label={'Logout'}
+            onPress={onLogout}
+            backgroundColor={AuthTheme.colors.secondaryBackground}
+            fontSize={17}
           />
         </View>
       </View>

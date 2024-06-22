@@ -1,24 +1,32 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-import LostReportScreen from '../../pages/lost/LostReportScreen.tsx';
 import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
-import FoundReportScreen from '../../pages/found/FoundReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
+import FoundReportNavStack from '../../pages/found/FoundReportNavStack';
+import LostReportNavStack from '../../pages/lost/LostReportNavStack';
 //import AuthAlert from '../auth/alerts/AuthAlert.tsx';
 import AuthStack from '../auth/AuthStack.tsx';
-import NewReport from '../NewReport.tsx';
 import {useUser} from '../../hooks/useUser.tsx';
+import StartScreen from '../../pages/home/StartScreen.tsx';
 
 const Tab = createBottomTabNavigator();
 
 // defining tab bar options
 const getTabBarOptions = () => ({
-  tabBarActiveTintColor: 'tomato',
-  tabBarInactiveTintColor: 'black',
+  tabBarActiveTintColor: 'black',
+  tabBarInactiveTintColor: 'gray',
   tabBarHideOnKeyboard: true,
-  tabBarStyle: {backgroundColor: 'lightgray'},
+  tabBarStyle: {
+      backgroundColor: 'white',
+      height: 85,
+      elevation: 3,
+      borderRadius: 20,
+      borderStyle: 'solid',
+      borderWidth: 0.5,
+      borderColor: 'grey',
+      top: 15,
+  },
 });
 
 // const AuthAlertView = () => {
@@ -26,7 +34,7 @@ const getTabBarOptions = () => ({
 // };
 
 const NewReportView = () => {
-  return <NewReport reportType={'found'} />;
+  return <AddReportScreen reportType={'lost'} />;
 };
 
 function Tabbar() {
@@ -35,12 +43,11 @@ function Tabbar() {
   if (!isLoggedIn) {
     return <AuthStack />;
   }
-
   return (
     <Tab.Navigator screenOptions={getTabBarOptions}>
       <Tab.Screen
         name="Start"
-        component={NewReportView}
+        component={StartScreen}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <Ionicons
@@ -50,11 +57,16 @@ function Tabbar() {
             />
           ),
           headerShown: false,
+          tabBarItemStyle: {
+              paddingBottom: 5,
+              paddingTop: 17,
+              marginBottom: 20,
+          },
         }}
       />
       <Tab.Screen
         name="Verloren"
-        component={LostReportScreen}
+        component={LostReportNavStack}
         options={{
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
@@ -64,12 +76,18 @@ function Tabbar() {
               color={color}
             />
           ),
+          tabBarItemStyle: {
+              paddingBottom: 5,
+              paddingTop: 17,
+              marginBottom: 20,
+          },
         }}
       />
       <Tab.Screen
         name="Plus"
-        component={AddReportScreen}
+        component={NewReportView}
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color}) => (
             <Ionicons
               name={focused ? 'add' : 'add-outline'}
@@ -79,12 +97,15 @@ function Tabbar() {
           ),
           tabBarItemStyle: {
             bottom: 50,
-            backgroundColor: 'lightgray',
+            backgroundColor: 'white',
+            elevation: 3,
+            borderStyle: 'solid',
+            borderWidth: 0.5,
+            borderColor: 'lightgray',
             borderTopLeftRadius: 50,
             borderTopRightRadius: 50,
             borderBottomRightRadius: 50,
             borderBottomLeftRadius: 50,
-            elevation: 5,
             paddingTop: 16,
             padding: 0,
             aspectRatio: 1,
@@ -94,7 +115,7 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Gefunden"
-        component={FoundReportScreen}
+        component={FoundReportNavStack}
         options={{
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
@@ -104,6 +125,11 @@ function Tabbar() {
               color={color}
             />
           ),
+          tabBarItemStyle: {
+              paddingBottom: 5,
+              paddingTop: 17,
+              marginBottom: 20,
+          },
         }}
       />
       <Tab.Screen
@@ -118,6 +144,11 @@ function Tabbar() {
             />
           ),
           headerShown: false,
+          tabBarItemStyle: {
+              paddingBottom: 5,
+              paddingTop: 17,
+              marginBottom: 20,
+          },
         }}
       />
     </Tab.Navigator>
