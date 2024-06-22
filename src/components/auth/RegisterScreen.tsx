@@ -161,7 +161,6 @@ function RegisterScreen() {
 
         <CustomButton
           label={'Register'}
-          testID='register-button'
           onPress={() => registerCallback(registerUserData)}
           backgroundColor={AuthTheme.colors.secondaryBackground}
           fontSize={16}
@@ -174,7 +173,7 @@ function RegisterScreen() {
             marginBottom: 30,
           }}>
           <Text>Schon registriert?</Text>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()} testID='back-button'>
             <Text style={{ color: '#AD40AF', fontWeight: '700' }}> Login</Text>
           </TouchableOpacity>
         </View>
