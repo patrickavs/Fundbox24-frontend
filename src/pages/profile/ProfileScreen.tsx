@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import {Platform, StyleSheet, Text, TextInput, View} from 'react-native';
 import IconButton from '../../components/IconButton.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import { Switch } from 'react-native';
@@ -23,8 +23,22 @@ const ProfileStyleSheet = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 14,
   },
+  inputIOS: {
+    paddingVertical: 8,
+  },
+  horizontalContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 5,
+  },
   label: {
     color: 'black',
+  },
+  labelInputNonEditable: {
+    marginBottom: 5,
+    marginTop: 10,
   },
   container: {
     paddingHorizontal: 25,
@@ -54,6 +68,10 @@ const ProfileStyleSheet = StyleSheet.create({
     borderRadius: 8,
     textAlign: 'left',
   },
+  notEditable: {
+    color: 'darkgray',
+    backgroundColor: '#eaeaea',
+  },
 });
 
 function ProfileScreen(): React.JSX.Element {
@@ -70,22 +88,22 @@ function ProfileScreen(): React.JSX.Element {
       <View style={ProfileStyleSheet.container}>
         <Text style={ProfileStyleSheet.heading}>Persönliche Daten</Text>
         <View>
-          <Text style={ProfileStyleSheet.label}>Email</Text>
+          <Text style={[ProfileStyleSheet.label, ProfileStyleSheet.labelInputNonEditable]}>Email</Text>
           <TextInput
             testID="input-email"
             placeholder={'max.mustermann@gmx.com'}
             value={user?.email}
-            style={ProfileStyleSheet.input}
+            style={[ProfileStyleSheet.input, ProfileStyleSheet.notEditable, Platform.OS === 'android' ? null : ProfileStyleSheet.inputIOS]}
             editable={false}
           />
         </View>
         <View>
-          <Text style={ProfileStyleSheet.label}>Username</Text>
+          <Text style={[ProfileStyleSheet.label, ProfileStyleSheet.labelInputNonEditable]}>Username</Text>
           <TextInput
             testID="input-username"
             placeholder={'lilakuh55'}
             value={user?.username}
-            style={ProfileStyleSheet.input}
+            style={[ProfileStyleSheet.input, ProfileStyleSheet.notEditable, Platform.OS === 'android' ? null : ProfileStyleSheet.inputIOS]}
             editable={false}
           />
         </View>
@@ -114,9 +132,10 @@ function ProfileScreen(): React.JSX.Element {
             />
           </View>
         </View>
-        <View style={ProfileStyleSheet.input}>
+        <View style={[ProfileStyleSheet.input, ProfileStyleSheet.horizontalContainer]}>
           <Text style={ProfileStyleSheet.label}>Standort verwenden</Text>
           <Switch
+            style={ProfileStyleSheet.switch}
             value={settings.location}
             onChange={event =>
               setSettings({ ...settings, location: !settings.location })
