@@ -5,13 +5,14 @@ import {AuthTheme} from '../constants/theme.ts';
 function CustomHeader({
   title = 'dajsdhajds',
   backgroundColor = AuthTheme.colors.accentSecondary,
+  isSmall = false,
 }: {
   title: string;
   backgroundColor?: string;
 }): React.JSX.Element {
   return (
     <>
-      <View style={[styles.container, {backgroundColor}]}>
+      <View style={[styles.container, isSmall ? styles.smallStyle : null, {backgroundColor}]}>
         <Text style={styles.title}>{title}</Text>
       </View>
     </>
@@ -29,6 +30,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 10,
     elevation: 5,
+  },
+  smallStyle: {
+    height: 30,
+    borderBottomEndRadius: 0,
+    borderBottomStartRadius: 0,
   },
   title: {
     fontSize: 20,
