@@ -1,6 +1,5 @@
-import React, {useEffect} from 'react';
-import {BackHandler, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useFoundReports} from '../../hooks/useFoundReports';
+import React from 'react';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {FoundReportTheme} from '../../constants/theme';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import SpacerVertical from './SpacerVertical';
@@ -13,16 +12,9 @@ import {useRoute} from '@react-navigation/native';
 
 function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
 
-    const {foundReports} = useFoundReports();
-    useEffect(() => {
-        navigation.setOptions({
-            ...navigation.options,
-        });
-    }, [navigation]);
-
     const route = useRoute();
-    const { id } = route.params;
-    const [foundReport] = React.useState(foundReports.find((report) => report.id === id));
+    const { item } = route.params;
+    const foundReport = item;
 
 
     const [position] = React.useState<LatLng>(foundReport?.foundLocation ?? null);

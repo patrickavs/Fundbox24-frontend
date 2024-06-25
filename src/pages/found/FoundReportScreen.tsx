@@ -12,7 +12,7 @@ function FoundReportScreen({navigation}): React.JSX.Element {
   const {foundReports} = useFoundReports();
 
   return (
-    <View>
+    <View testID={'found-report-screen'}>
       <CustomHeader
         backgroundColor={FoundReportTheme.colors.button1}
         title={'Fundanzeigen'}
@@ -41,8 +41,8 @@ function FoundReportScreen({navigation}): React.JSX.Element {
               {label: 'Nur mein Heimatumkreis', value: 'in my region'},
               {label: 'Nur heute', value: 'only today'},
             ]}
-            onChange={item => {
-              console.log('Benutzer hat gefiltert nach: ' + item.value);
+            onChange={query => {
+              console.log('Benutzer hat gefiltert nach: ' + query.value);
             }}
           />
         </View>
@@ -56,7 +56,7 @@ function FoundReportScreen({navigation}): React.JSX.Element {
             <FoundReportCard
               key={item.id}
               report={item}
-              onPress={(id) => navigation.navigate('SingleFoundReportScreen', {id: id})}
+              onPress={() => navigation.navigate('SingleFoundReportScreen', {item: item})}
               image={category.find((it) => it.name === item.category.name)?.image ?? category[category.length - 1].image }
             />
           )}
