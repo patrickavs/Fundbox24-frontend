@@ -3,10 +3,10 @@ import React from 'react';
 import { render, screen, waitFor, act, fireEvent, renderHook } from '@testing-library/react-native';
 import { expect, it, jest, describe } from '@jest/globals';
 import { UserProvider, useUser } from '../../../src/hooks/useUser.tsx';
-import ProfileScreen from '../../../src/pages/profile/ProfileScreen.tsx';
 import { User } from '../../../src/types/user.ts';
 import RegisterScreen from '../../../src/components/auth/RegisterScreen.tsx';
 import { useNavigation } from '@react-navigation/native';
+import * as UserHook from "../../../src/hooks/useUser.tsx"
 
 const registerUserData = {
     email: 'wal@test.de',
@@ -65,5 +65,37 @@ describe('RegisterScreen', () => {
         })
 
         expect(result.current.user).toEqual(receivedUserData);
+    });
+
+    it('should display an error message if the passwords do not match', async () => {
+
+        jest.spyOn(UserHook, 'useUser').mockImplementation(() => ({
+            isPending: false,
+            user: null,
+            editUser: jest.fn(async (userData: Partial<User>) => { }),
+            isLoggedIn: false,
+            login: jest.fn(async (email: string, password: string) => { }),
+            logout: jest.fn(async () => { }),
+            register: jest.fn(async (userData: any) => { })
+        }
+        ));
+
+        const view = render(<RegisterScreen />, { wrapper: UserProvider });
+
+        // Wait for useEffects
+        await act(() => {
+        });
+
+        await act(() => {
+            fireEvent.changeText(view.getByTestId('input-password'), '1234');
+            fireEvent.changeText(view.getByTestId('input-password-repeat'), '12345');
+        })
+
+        await act(() => {
+            fireEvent.press(view.getByTestId('button-register'));
+        });
+
+        // Check if register hook is called
+        expect(view.getByText("Die Passwörter sind nicht gleich")).toBeTruthy();
     });
 })
