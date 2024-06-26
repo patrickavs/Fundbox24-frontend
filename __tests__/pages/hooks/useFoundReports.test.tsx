@@ -60,7 +60,7 @@ describe('FoundReport-Hook', () => {
         expect(result.current.foundReports).toMatchObject([foundReportMockupData])
     });
 
-    it('should create a new lost report', async () => {
+    it('should create a new found report', async () => {
         jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
             Promise.resolve({
                 json: () => Promise.resolve([foundReportMockupData]),
@@ -90,7 +90,7 @@ describe('FoundReport-Hook', () => {
         expect(result.current.foundReports).toMatchObject([foundReportMockupData, foundReportMockupData])
     });
 
-    it('should edit an existing lost report', async () => {
+    it('should edit an existing found report', async () => {
         const titleChange = "New Title"
 
         jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
@@ -102,7 +102,7 @@ describe('FoundReport-Hook', () => {
         ).mockImplementationOnce(() => Promise.resolve({
             json: () => Promise.resolve({ ...foundReportMockupData, title: titleChange }),
             ok: true,
-            status: 201
+            status: 200
         }) as Promise<Response>);
 
         const { result } = renderHook(useFoundReports, {
