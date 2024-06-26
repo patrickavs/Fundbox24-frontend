@@ -88,6 +88,7 @@ function RegisterScreen() {
 
         <InputField
           placeholder={'Name'}
+          testID='input-name'
           icon={<Ionicons name="person-outline" size={20} color="#666" />}
           value={registerUserData.name}
           onChangeText={(name) => setRegisterUserData(prev => ({ ...prev, name }))}

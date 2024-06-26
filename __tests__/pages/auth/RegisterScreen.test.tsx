@@ -43,9 +43,26 @@ describe('RegisterScreen', () => {
     it('should display the input fields', async () => {
         const view = render(<RegisterScreen />, { wrapper: UserProvider });
 
+        expect(view.getByTestId('input-name').props.value === "").toBeTruthy();
         expect(view.getByTestId('input-email').props.value === "").toBeTruthy();
         expect(view.getByTestId('input-password').props.value === "").toBeTruthy();
         expect(view.getByTestId('input-password-repeat').props.value === "").toBeTruthy();
+    });
+
+    it('should listen to changes in input fields', async () => {
+        const view = render(<RegisterScreen />, { wrapper: UserProvider });
+
+        await act(() => {
+            fireEvent.changeText(view.getByTestId('input-name'), registerUserData.firstName);
+            fireEvent.changeText(view.getByTestId('input-email'), registerUserData.email);
+            fireEvent.changeText(view.getByTestId('input-password'), registerUserData.password);
+            fireEvent.changeText(view.getByTestId('input-password-repeat'), registerUserData.passwordRepeat);
+        });
+
+        expect(view.getByTestId('input-email').props.value === registerUserData.email).toBeTruthy();
+        expect(view.getByTestId('input-name').props.value === registerUserData.firstName).toBeTruthy();
+        expect(view.getByTestId('input-password').props.value === registerUserData.password).toBeTruthy();
+        expect(view.getByTestId('input-password-repeat').props.value === registerUserData.passwordRepeat).toBeTruthy();
     });
 
     it('should register a user', async () => {
