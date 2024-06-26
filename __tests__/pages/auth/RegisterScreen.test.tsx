@@ -67,7 +67,7 @@ describe('RegisterScreen', () => {
         expect(result.current.user).toEqual(receivedUserData);
     });
 
-    it('should display an error message if the passwords do not match', async () => {
+    it('should display error messages if the passwords do not match or the fetch failed', async () => {
 
         jest.spyOn(UserHook, 'useUser').mockImplementation(() => ({
             isPending: false,
@@ -76,7 +76,7 @@ describe('RegisterScreen', () => {
             isLoggedIn: false,
             login: jest.fn(async (email: string, password: string) => { }),
             logout: jest.fn(async () => { }),
-            register: jest.fn(async (userData: any) => { })
+            register: jest.fn(async (userData: any) => { throw new Error("Fetch failed") })
         }
         ));
 
@@ -95,7 +95,16 @@ describe('RegisterScreen', () => {
             fireEvent.press(view.getByTestId('button-register'));
         });
 
-        // Check if register hook is called
         expect(view.getByText("Die Passwörter sind nicht gleich")).toBeTruthy();
+
+        await act(() => {
+            fireEvent.changeText(view.getByTestId('input-password-repeat'), '1234');
+        });
+
+        await act(() => {
+            fireEvent.press(view.getByTestId('button-register'));
+        });
+
+        expect(view.queryByText("Fetch failed")).toBeTruthy();
     });
 })

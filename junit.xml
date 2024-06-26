@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="16" failures="0" errors="0" time="4.116">
-  <testsuite name="RegisterScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:19" time="1.057" tests="3">
-    <testcase classname="RegisterScreen should display the input fields" name="RegisterScreen should display the input fields" time="0.292">
+<testsuites name="jest tests" tests="16" failures="0" errors="0" time="4.246">
+  <testsuite name="RegisterScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:20" time="1.14" tests="3">
+    <testcase classname="RegisterScreen should display the input fields" name="RegisterScreen should display the input fields" time="0.289">
     </testcase>
-    <testcase classname="RegisterScreen should register a user" name="RegisterScreen should register a user" time="0.036">
+    <testcase classname="RegisterScreen should register a user" name="RegisterScreen should register a user" time="0.037">
     </testcase>
-    <testcase classname="RegisterScreen should display an error message if the passwords do not match" name="RegisterScreen should display an error message if the passwords do not match" time="0.021">
-    </testcase>
-  </testsuite>
-  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:20" time="0.678" tests="1">
-    <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.047">
+    <testcase classname="RegisterScreen should display error messages if the passwords do not match or the fetch failed" name="RegisterScreen should display error messages if the passwords do not match or the fetch failed" time="0.055">
     </testcase>
   </testsuite>
-  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:21" time="0.36" tests="1">
-    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.09">
+  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:21" time="0.687" tests="1">
+    <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.045">
     </testcase>
   </testsuite>
-  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:21" time="0.292" tests="1">
-    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.018">
+  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:21" time="0.398" tests="1">
+    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.111">
     </testcase>
   </testsuite>
-  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:21" time="0.368" tests="1">
-    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.101">
+  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:22" time="0.322" tests="1">
+    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.079">
     </testcase>
   </testsuite>
-  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:22" time="0.247" tests="1">
-    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.115">
+  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:22" time="0.303" tests="1">
+    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.019">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:22" time="0.246" tests="1">
-    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.087">
+  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:22" time="0.245" tests="1">
+    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.118">
     </testcase>
   </testsuite>
-  <testsuite name="LostReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:22" time="0.129" tests="3">
-    <testcase classname="LostReport-Hook should fetch the relevant data the first time it is called" name="LostReport-Hook should fetch the relevant data the first time it is called" time="0.011">
-    </testcase>
-    <testcase classname="LostReport-Hook should create a new lost report" name="LostReport-Hook should create a new lost report" time="0.003">
-    </testcase>
-    <testcase classname="LostReport-Hook should edit an existing lost report" name="LostReport-Hook should edit an existing lost report" time="0.004">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:23" time="0.251" tests="1">
+    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.089">
     </testcase>
   </testsuite>
-  <testsuite name="FoundReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:22" time="0.155" tests="3">
-    <testcase classname="FoundReport-Hook should fetch the relevant data the first time it is called" name="FoundReport-Hook should fetch the relevant data the first time it is called" time="0.013">
+  <testsuite name="FoundReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:23" time="0.133" tests="3">
+    <testcase classname="FoundReport-Hook should fetch the relevant data the first time it is called" name="FoundReport-Hook should fetch the relevant data the first time it is called" time="0.011">
     </testcase>
     <testcase classname="FoundReport-Hook should create a new found report" name="FoundReport-Hook should create a new found report" time="0.004">
     </testcase>
-    <testcase classname="FoundReport-Hook should edit an existing found report" name="FoundReport-Hook should edit an existing found report" time="0.007">
+    <testcase classname="FoundReport-Hook should edit an existing found report" name="FoundReport-Hook should edit an existing found report" time="0.005">
     </testcase>
   </testsuite>
-  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:27:22" time="0.135" tests="1">
-    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.016">
+  <testsuite name="LostReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:23" time="0.15" tests="3">
+    <testcase classname="LostReport-Hook should fetch the relevant data the first time it is called" name="LostReport-Hook should fetch the relevant data the first time it is called" time="0.013">
+    </testcase>
+    <testcase classname="LostReport-Hook should create a new lost report" name="LostReport-Hook should create a new lost report" time="0.005">
+    </testcase>
+    <testcase classname="LostReport-Hook should edit an existing lost report" name="LostReport-Hook should edit an existing lost report" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-26T09:32:23" time="0.138" tests="1">
+    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.013">
     </testcase>
   </testsuite>
 </testsuites>

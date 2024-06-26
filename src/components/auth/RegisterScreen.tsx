@@ -83,6 +83,7 @@ function RegisterScreen() {
 
         <View>
           {registerErrorMap.password && <Text>{registerErrorMap.password?.message}</Text>}
+          {registerErrorMap.fetch && <Text>{registerErrorMap.fetch?.message}</Text>}
         </View>
 
         <InputField
