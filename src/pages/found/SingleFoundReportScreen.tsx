@@ -70,7 +70,7 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
                         <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={() => navigation.goBack()} />
                     </View>
                 </View>
-                <SpacerVertical size={20}/>
+                <SpacerVertical size={80}/>
             </ScrollView>
         </View>
     );

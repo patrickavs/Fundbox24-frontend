@@ -81,7 +81,7 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                         <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" onPress={navigateToChat} />
                     </View>
                 </View>
-                <SpacerVertical size={20}/>
+                <SpacerVertical size={80}/>
             </ScrollView>
         </View>
     );

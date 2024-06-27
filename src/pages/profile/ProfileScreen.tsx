@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import IconButton from '../../components/IconButton.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import { Switch } from 'react-native';
@@ -72,6 +72,9 @@ const ProfileStyleSheet = StyleSheet.create({
     color: 'darkgray',
     backgroundColor: '#eaeaea',
   },
+  scrollView: {
+    height: '100%',
+  },
 });
 
 function ProfileScreen(): React.JSX.Element {
@@ -85,6 +88,7 @@ function ProfileScreen(): React.JSX.Element {
   return (
     <View>
       <CustomHeader title={'Mein Konto'} />
+      <ScrollView style={ProfileStyleSheet.scrollView}>
       <View style={ProfileStyleSheet.container}>
         <Text style={ProfileStyleSheet.heading}>Persönliche Daten</Text>
         <View>
@@ -151,6 +155,7 @@ function ProfileScreen(): React.JSX.Element {
           />
         </View>
       </View>
+      </ScrollView>
     </View>
   );
 }

@@ -19,13 +19,14 @@ const getTabBarOptions = () => (Platform.OS === 'android' ?
           lazy: false,
           tabBarStyle: {
               backgroundColor: 'white',
-              height: 85,
+              position: 'absolute',
+              height: '10%',
               elevation: 3,
               borderRadius: 20,
               borderStyle: 'solid',
               borderWidth: 0.5,
               borderColor: 'grey',
-              top: 15,
+              marginBottom: -15,
           },
     }
     : {     tabBarActiveTintColor: 'black',
@@ -34,13 +35,14 @@ const getTabBarOptions = () => (Platform.OS === 'android' ?
             lazy: false,
             tabBarStyle: {
                 backgroundColor: 'white',
-                height: 110,
+                position: 'absolute',
+                height: '12%',
                 elevation: 3,
                 borderRadius: 20,
                 borderStyle: 'solid',
                 borderWidth: 0.5,
                 borderColor: 'grey',
-                top: 15,
+                marginBottom: -15,
             },
         }
 );
@@ -111,7 +113,7 @@ function Tabbar() {
             renderIcon(focused, color, size, 'add', 'add-outline')
           ),
           tabBarItemStyle: {
-            bottom: 50,
+            bottom: 40,
             backgroundColor: 'white',
             elevation: 3,
             borderStyle: 'solid',
