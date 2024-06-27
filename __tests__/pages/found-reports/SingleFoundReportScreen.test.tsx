@@ -5,6 +5,8 @@ import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
 import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
 import FoundReportCard from '../../../src/pages/found/FoundReportCard';
+import * as Route from '@react-navigation/native';
+import SingleFoundReportScreen from '../../../src/pages/found/SingleFoundReportScreen';
 
 const fakeFoundReport: FoundReport =
 {
@@ -31,14 +33,17 @@ const fakeFoundReport: FoundReport =
 };
 
 jest.mock('@react-navigation/native', () => ({
-    useNavigation: jest.fn(() => ({
-        goBack: jest.fn(),
-    }),)
+    useNavigation: jest.fn(),
+    useRoute: jest.fn(() => ({
+        params: { id: '1' },
+        key: "",
+        name: ""
+    })),
 }));
 
 describe('FoundReportScreen', () => {
 
-    it('should renders single FoundReportCards', async () => {
+    it('should render properly', async () => {
         jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
             isPending: false,
             foundReports: [fakeFoundReport],
@@ -47,37 +52,42 @@ describe('FoundReportScreen', () => {
             editFoundReport: (userToken: string, report: FoundReport) => null
         }));
 
-        const view = render(<FoundReportScreen navigation={null} />);
+        const navigation = {
+            setOptions: jest.fn(),
+        }
+
+        const view = render(<SingleFoundReportScreen navigation={navigation} />);
 
         expect(view.getByText(fakeFoundReport.title)).toBeTruthy();
     });
 
-    // it('should render the dropdowns', async () => {
-    //     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-    //         isPending: false,
-    //         lostReports: [fakeLostReports],
-    //         error: null,
-    //         createLostReport: (userToken: string, report: NewLostReport) => null,
-    //         editLostReport: (userToken: string, report: LostReport) => null
-    //     }));
+    it('should go back in navigation when back-buttons clicked', async () => {
+        jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
+            isPending: false,
+            foundReports: [fakeFoundReport],
+            error: null,
+            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            editFoundReport: (userToken: string, report: FoundReport) => null
+        }));
 
-    //     const view = render(<LostReportScreen />);
+        const navigation = {
+            setOptions: jest.fn(),
+            goBack: jest.fn(),
+        }
 
-    //     expect(view.getByTestId('sort-dropdown')).toBeTruthy();
-    //     expect(view.getByTestId('filter-dropdown')).toBeTruthy();
-    // });
+        const view = render(<SingleFoundReportScreen navigation={navigation} />);
 
-    it('should execute the onPress callback function', async () => {
-        const pressCallback = jest.fn((id: string) => { })
-
-        // @ts-ignore
-        const view = render(<FoundReportCard report={fakeFoundReport} onPress={pressCallback} />);
-
-        await act(() => {
-            fireEvent.press(view.getByTestId('report-card-press'));
+        await act(async () => {
+            fireEvent.press(view.getByTestId('back-button-1'));
         });
 
-        expect(pressCallback).toBeCalled();
-    })
+        expect(navigation.goBack).toBeCalled();
+
+        await act(async () => {
+            fireEvent.press(view.getByTestId('back-button-2'));
+        });
+
+        expect(navigation.goBack).toBeCalledTimes(2);
+    });
 
 });
