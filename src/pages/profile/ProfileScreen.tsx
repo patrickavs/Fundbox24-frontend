@@ -98,18 +98,20 @@ function ProfileScreen(): React.JSX.Element {
           <View style={ProfileStyleSheet.switch}>
             <Text style={ProfileStyleSheet.label}>Ton</Text>
             <Switch
+              testID='switch-sound'
               value={settings.sound}
-              onChange={event =>
-                setSettings({ ...settings, sound: !settings.sound })
+              onValueChange={value =>
+                setSettings({ ...settings, sound: value })
               }
             />
           </View>
           <View style={ProfileStyleSheet.switch}>
             <Text style={ProfileStyleSheet.label}>Vibration</Text>
             <Switch
+              testID='switch-vibration'
               value={settings.vibration}
-              onChange={event =>
-                setSettings({ ...settings, vibration: !settings.vibration })
+              onValueChange={value =>
+                setSettings({ ...settings, vibration: value })
               }
             />
           </View>
@@ -117,15 +119,17 @@ function ProfileScreen(): React.JSX.Element {
         <View style={ProfileStyleSheet.input}>
           <Text style={ProfileStyleSheet.label}>Standort verwenden</Text>
           <Switch
+            testID='switch-location'
             value={settings.location}
-            onChange={event =>
-              setSettings({ ...settings, location: !settings.location })
+            onValueChange={value =>
+              setSettings({ ...settings, location: value })
             }
           />
         </View>
         <View style={{ paddingTop: 20 }}>
           <CustomButton
             label={'Logout'}
+            testID='button-logout'
             onPress={onLogout}
             backgroundColor={AuthTheme.colors.secondaryBackground}
             fontSize={17}

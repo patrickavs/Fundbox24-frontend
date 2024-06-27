@@ -12,6 +12,7 @@ type DropdownProps = {
   placeholder?: string;
   items: DropdownItem[];
   onChange: (item: DropdownItem) => void;
+  testID?: string
 };
 
 function Dropdown(props: DropdownProps) {
@@ -21,6 +22,7 @@ function Dropdown(props: DropdownProps) {
   return (
     <View style={styles.container}>
       <ReactNativeDropdown
+        testID={props.testID}
         style={[styles.dropdown, isFocus ? styles.focus : null]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
