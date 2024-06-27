@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { describe, expect, it, jest } from '@jest/globals';
 import * as LostReportHook from '../../../src/hooks/useLostReports';
 import { LostReport, NewLostReport } from '../../../src/types/report-lost';
 import LostReportScreen from '../../../src/pages/lost/LostReportScreen';
+import LostReportCard from '../../../src/pages/lost/LostReportCard';
 
 const fakeLostReports: LostReport =
 {
@@ -86,5 +87,18 @@ describe('LostReportScreen', () => {
     //     expect(view.getByTestId('sort-dropdown')).toBeTruthy();
     //     expect(view.getByTestId('filter-dropdown')).toBeTruthy();
     // });
+
+    it('should execute the onPress callback function', async () => {
+        const pressCallback = jest.fn((id: string) => { })
+
+        // @ts-ignore
+        const view = render(<LostReportCard report={fakeLostReports} onPress={pressCallback} />);
+
+        await act(() => {
+            fireEvent.press(view.getByTestId('report-card-press'));
+        });
+
+        expect(pressCallback).toBeCalled();
+    })
 
 });
