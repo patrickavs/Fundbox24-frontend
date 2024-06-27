@@ -45,6 +45,8 @@ export default function StartScreen( {navigation}): React.JSX.Element {
   return (
       <FlatList
         key={'vertical'}
+        data={chats}
+        renderItem={null}
         style={styles.outer}
         ListHeaderComponent={
           <>
