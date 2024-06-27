@@ -1,11 +1,12 @@
 import React from 'react';
-import MapView, {Circle, LatLng} from 'react-native-maps';
-import {Text, View} from 'react-native';
-import {Slider} from '@miblanchard/react-native-slider';
+import MapView, { Circle, LatLng } from 'react-native-maps';
+import { Text, View } from 'react-native';
+import { Slider } from '@miblanchard/react-native-slider';
 import mapConstants from '../../constants/map.ts';
 import styles from './styles.ts';
+import eventEmitter from '../eventEmitter.ts';
 
-const numberFormat = Intl.NumberFormat('de-DE', {maximumFractionDigits: 1});
+const numberFormat = Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
 
 export default function SetPerimeterScreen(): React.JSX.Element {
   const [position, setPosition] = React.useState<LatLng>(
@@ -13,6 +14,7 @@ export default function SetPerimeterScreen(): React.JSX.Element {
   );
 
   const [radius, setRadius] = React.useState<number>(mapConstants.minRadius);
+  //const [locationName, setLocationName] = React.useState<string>('');
 
   function getFormattedDiameter(): string {
     const radiusInKM = radius / 1000;
@@ -25,10 +27,29 @@ export default function SetPerimeterScreen(): React.JSX.Element {
       sliderValue * (mapConstants.maxRadius - mapConstants.minRadius);
 
     setRadius(newRadius);
+    eventEmitter.emit('reportRadiusChange', newRadius);
   }
 
-  function onChangePosition(newPosition: LatLng) {
+  async function onChangePosition(newPosition: LatLng) {
     setPosition(newPosition);
+    eventEmitter.emit('reportPositionChange', newPosition);
+
+    /*try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${newPosition.latitude}&lon=${newPosition.longitude}&format=json`);
+      const data = await response.json();
+
+      if (data && data.address) {
+        const { city, town, village, hamlet, locality } = data.address;
+        const name = city || town || village || hamlet || locality || 'Kein Ort gefunden';
+        setLocationName(name);
+        eventEmitter.emit('reportLocationNameChange', locationName);
+      } else {
+        setLocationName('Kein Ort gefunden');
+      }
+    } catch (error) {
+      console.error(error);
+      setLocationName('Fehler beim Abrufen des Ortsnamens');
+    }*/
   }
 
   return (

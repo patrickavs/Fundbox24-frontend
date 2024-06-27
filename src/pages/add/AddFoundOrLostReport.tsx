@@ -48,7 +48,7 @@ const AddFoundOrLostReport = () => {
             // @ts-ignore
             navigation.navigate('NewReport', {
               reportType: 'found',
-              categories: allCategories,
+              fetchedCategories: allCategories,
             })
           }
           fontSize={17}
@@ -56,11 +56,11 @@ const AddFoundOrLostReport = () => {
         />
         <CustomButton
           label={'Suchanzeige'}
-          // @ts-ignore
           onPress={() =>
+            // @ts-ignore
             navigation.navigate('NewReport', {
               reportType: 'lost',
-              categories: allCategories,
+              fetchedCategories: allCategories,
             })
           }
           fontSize={17}

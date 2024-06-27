@@ -29,6 +29,7 @@ const getTabBarOptions = () => ({
       borderWidth: 0.5,
       borderColor: 'grey',
       top: 15,
+      position: 'static',
   },
 });
 

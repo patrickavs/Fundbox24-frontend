@@ -7,7 +7,7 @@ import React, {
   useState,
   useTransition,
 } from 'react';
-import { ALL_FOUND_REPORTS_URL, FOUNDREPORT_URL } from '../routes';
+import { ALL_FOUND_REPORTS_URL, CREATE_FOUNDREPORT_URL, FOUNDREPORT_URL } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type FoundReportsContextType = {
@@ -85,12 +85,12 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
 
   const createFoundReport = useCallback(
     (userToken: string, report: NewFoundReport) => {
-      fetch(FOUNDREPORT_URL(), {
+      fetch(CREATE_FOUNDREPORT_URL(), {
         method: 'POST',
         body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userToken}`,
+          Authorization: `Basic ${userToken}`,
         },
       })
         .then(async response => {
@@ -113,7 +113,7 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
         body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userToken}`,
+          Authorization: `Basic ${userToken}`,
         },
       })
         .then(async response => {
