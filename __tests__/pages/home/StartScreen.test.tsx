@@ -56,8 +56,6 @@ const fakeLostReports: LostReport[] = [
 
 describe('StartScreen', () => {
 
-  before
-
   it('should render "Du bist nicht angemeldet" because there is no userToken', async () => {
 
     jest.spyOn(ChatHook, 'useChat').mockImplementation(() => ({
