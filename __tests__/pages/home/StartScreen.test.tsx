@@ -15,10 +15,6 @@ import { User } from '../../../src/types/user.ts';
 import * as UserHook from '../../../src/hooks/useUser.tsx';
 import { NewMessage } from '../../../src/types/message.ts';
 
-jest.mock('@react-navigation/native', () => ({
-  ...jest.requireActual('@react-navigation/native'),
-}));
-
 const userData: User = {
   id: '1',
   email: 'wal@test.de',
@@ -45,7 +41,7 @@ const fakeLostReports: LostReport[] = [
     category: {
       id: '1',
       value: '',
-      title: 'Schlüssel',
+      name: 'Schlüssel',
       image: '',
     },
     placeOfDiscovery: 'Hamburg',
