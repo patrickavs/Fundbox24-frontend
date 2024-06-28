@@ -17,7 +17,7 @@ const FoundReportNavStack = () => {
                 <Stack.Screen
                     name="SingleFoundReportScreen"
                     component={SingleFoundReportScreen}
-                    options={{headerShown: false}}
+                    options={{headerShown: true, headerTitle: '', headerTransparent: true}}
                 />
             </Stack.Navigator>
 );
