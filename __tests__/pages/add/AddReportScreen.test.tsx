@@ -3,7 +3,6 @@ import { act, fireEvent, render } from '@testing-library/react-native';
 import { describe, expect, it, jest } from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import * as LostReportHook from '../../../src/hooks/useLostReports';
-import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
 import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
 import { LostReport, NewLostReport } from '../../../src/types/report-lost';
 import AddReportScreen from '../../../src/pages/add/AddReportScreen';
@@ -22,12 +21,8 @@ const fakeFoundReport: FoundReport =
         longitude: 9.993682,
     },
     foundDate: new Date(Date.now()).toLocaleTimeString(),
-    category: {
-        id: '1',
-        value: '',
-        name: 'Schlüssel',
-        image: '',
-    },
+    categoryId: 1,
+    imagePath: '',
     isFinished: false,
     myChats: [],
 };
@@ -47,21 +42,19 @@ const fakeLostReports: LostReport =
         longitude: 9.993682,
     },
     lostRadius: 100,
-    category: {
-        id: '1',
-        value: '',
-        name: 'Schlüssel',
-        image: '',
-    },
-    placeOfDiscovery: 'Hamburg',
-    placeOfDelivery: 'Hamburg',
+    categoryId: 1,
+    imagePath: '',
     myChats: [],
+    isFinished: false,
 };
 
 jest.mock('@react-navigation/native', () => ({
     useNavigation: jest.fn(() => ({
         goBack: jest.fn(),
-    }),)
+    }),),
+    useRoute: jest.fn(() => ({
+        params: { reportType: 'found', fetchedCategories: []},
+    })),
 }));
 
 describe('AddReportScreen', () => {
@@ -72,7 +65,7 @@ describe('AddReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             createFoundReport: (userToken: string, report: NewFoundReport) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null
+            editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
         jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
@@ -80,14 +73,14 @@ describe('AddReportScreen', () => {
             lostReports: [fakeLostReports],
             error: null,
             createLostReport: (userToken: string, report: NewLostReport) => null,
-            editLostReport: (userToken: string, report: LostReport) => null
+            editLostReport: (userToken: string, report: LostReport) => null,
         }));
 
-        const view = render(<AddReportScreen reportType='lost' />);
+        const view = render(<AddReportScreen reportType="lost" />);
 
         await act(async () => { });
 
-        expect(view.getByText("Neue Suchanzeige")).toBeTruthy();
+        expect(view.getByText('Neue Suchanzeige')).toBeTruthy();
 
         await act(async () => {
             fireEvent.changeText(view.getByTestId('input-name'), 'Thomas');
@@ -109,7 +102,7 @@ describe('AddReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             createFoundReport: (userToken: string, report: NewFoundReport) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null
+            editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
         jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
@@ -117,14 +110,14 @@ describe('AddReportScreen', () => {
             lostReports: [fakeLostReports],
             error: null,
             createLostReport: (userToken: string, report: NewLostReport) => null,
-            editLostReport: (userToken: string, report: LostReport) => null
+            editLostReport: (userToken: string, report: LostReport) => null,
         }));
 
-        const view = render(<AddReportScreen reportType='' />);
+        const view = render(<AddReportScreen reportType="" />);
 
         await act(async () => { });
 
-        expect(view.getByText("Neue Fundanzeige")).toBeTruthy();
+        expect(view.getByText('Neue Fundanzeige')).toBeTruthy();
         expect(view.getByText(`Nur der Umkreis des Fundortes ist in der Anzeige sichtbar.
                   Abhol- und Fundort können im Chat mit einem anfragenden Nutzer
                   freigegeben werden.`)).toBeTruthy();
@@ -136,7 +129,7 @@ describe('AddReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             createFoundReport: (userToken: string, report: NewFoundReport) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null
+            editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
         jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
@@ -144,10 +137,10 @@ describe('AddReportScreen', () => {
             lostReports: [fakeLostReports],
             error: null,
             createLostReport: (userToken: string, report: NewLostReport) => null,
-            editLostReport: (userToken: string, report: LostReport) => null
+            editLostReport: (userToken: string, report: LostReport) => null,
         }));
 
-        const lostReportView = render(<AddReportScreen reportType='lost' />);
+        const lostReportView = render(<AddReportScreen reportType="lost" />);
 
         await act(async () => { });
 
@@ -185,7 +178,7 @@ describe('AddReportScreen', () => {
 
 
 
-        const foundReportView = render(<AddReportScreen reportType='' />);
+        const foundReportView = render(<AddReportScreen reportType="" />);
         await act(async () => { });
 
         // Check if error is shown when date is edge case
