@@ -30,12 +30,12 @@ import DatePicker from 'react-native-date-picker';
 
 function AddReportScreen() {
   const route = useRoute<any>();
-  const { reportType, fetchedCategories } = route.params;
   const navigation = useNavigation();
+  const { reportType, fetchedCategories } = route.params;
   const { createLostReport } = useLostReports();
   const { createFoundReport } = useFoundReports();
-  const [reportPosition, setReportPosition] = React.useState<LatLng>(mapConstants.initialMapPosition);
-  const [reportRadius, setReportRadius] = React.useState<number>(mapConstants.minRadius);
+  const [reportPosition, setReportPosition] = useState<LatLng>(mapConstants.initialMapPosition);
+  const [reportRadius, setReportRadius] = useState<number>(mapConstants.minRadius);
   //const [locationName, setLocationName] = React.useState<string>('');
   const [reportImage, setReportImage] = useState<string>(category[0].image);
   const [reportName, setReportName] = useState<string>('');
@@ -44,15 +44,15 @@ function AddReportScreen() {
   //const [error, setError] = useState<string | null>(null);
   const [reportCategory, setReportCategory] = useState<Category>(category[0]);
   //const [report, setReport] = useState<NewLostReport | NewFoundReport>();
-  const categories: any = fetchedCategories.map((c: Category) => ({label: c.name, value: c.value}));
+  const categories: any = fetchedCategories.map((c: Category) => ({ label: c.name, value: c.value }));
 
   useEffect(() => {
-    const positionListener = eventEmitter.addListener('reportPositionChange', function(position: LatLng) {
+    const positionListener = eventEmitter.addListener('reportPositionChange', function (position: LatLng) {
       console.log('Report position changed:', position);
       setReportPosition(position);
     });
 
-    const radiusListener = eventEmitter.addListener('reportRadiusChange', function(radius: number) {
+    const radiusListener = eventEmitter.addListener('reportRadiusChange', function (radius: number) {
       console.log('Report radius changed:', radius);
       setReportRadius(radius);
     });
@@ -145,12 +145,12 @@ function AddReportScreen() {
               : FoundReportTheme.colors.button1
           }
         />
-          <Image
-            borderRadius={15}
-            resizeMethod={'scale'}
-            source={reportImage}
-            style={styles.imageContainer}
-          />
+        <Image
+          borderRadius={15}
+          resizeMethod={'scale'}
+          src={reportImage}
+          style={styles.imageContainer}
+        />
         <View style={styles.inputContainer}>
           <Text style={styles.textStyle}>Kategorie</Text>
           <View style={{ paddingBottom: 30 }}>
@@ -170,8 +170,8 @@ function AddReportScreen() {
                   });
                   setReportImage(categoryDrop.image);
                 }
-                console.log(categoryDrop.id);
-                console.log('Image: ', typeof categoryDrop.image);
+                console.log(categoryDrop?.id);
+                console.log('Image: ', typeof categoryDrop?.image);
                 console.log(`Category: ${reportCategory.name}`);
               }}
             />
@@ -182,6 +182,8 @@ function AddReportScreen() {
             onChangeText={(text: string) => {
               setReportName(text);
             }}
+            testID='input-name'
+            value={reportName}
           />
           <TextInput
             style={styles.textInputStyle}
@@ -190,6 +192,8 @@ function AddReportScreen() {
             onChangeText={(text: string) => {
               setReportDescription(text);
             }}
+            testID='input-description'
+            value={reportDescription}
           />
           {reportType === 'lost' ? (
             <View
@@ -217,17 +221,17 @@ function AddReportScreen() {
                 position: 'static',
               }}>
               <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: 10 }}>
-              <Text style={{ fontSize: 17 }}>Gefunden am:{'\n'}</Text>
-              <View style={{ gap: 5 }}>
-                <DatePicker
-                  is24hourSource={'locale'}
-                  locale={'de'}
-                  date={date}
-                  onDateChange={setDate}
-                  mode="datetime"
-                />
+                <Text style={{ fontSize: 17 }}>Gefunden am:{'\n'}</Text>
+                <View style={{ gap: 5 }}>
+                  <DatePicker
+                    is24hourSource={'locale'}
+                    locale={'de'}
+                    date={date}
+                    onDateChange={setDate}
+                    mode="datetime"
+                  />
+                </View>
               </View>
-            </View>
             </View>
           )}
           <View style={styles.buttonContainer}>
