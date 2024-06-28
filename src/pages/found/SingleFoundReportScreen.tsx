@@ -66,7 +66,8 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
                         center={position}
                         radius={radius}
                         fillColor="rgba(245, 39, 145, 0.3)"
-                        strokeWidth={0} />
+                        strokeWidth={0}
+                        strokeColor="rgba(245, 39, 145, 0.3)" />
                 </MapView>
                 <SpacerVertical size={20} />
                 <View style={styles.buttonsContainer}>
@@ -77,7 +78,7 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
                         <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={() => navigation.goBack()} testID="back-button-2" />
                     </View>
                 </View>
-                <SpacerVertical size={20} />
+                <SpacerVertical size={80}/>
             </ScrollView>
         </View>
     );
