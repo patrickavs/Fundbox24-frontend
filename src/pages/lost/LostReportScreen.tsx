@@ -1,17 +1,17 @@
 import React from 'react';
 
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useLostReports} from '../../hooks/useLostReports';
+import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useLostReports } from '../../hooks/useLostReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
-import {LostReportTheme} from '../../constants/theme.ts';
+import { LostReportTheme } from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import LostReportCard from './LostReportCard.tsx';
-import {category} from '../../data/categories';
-import {useNavigation} from '@react-navigation/native';
+import { category } from '../../data/categories';
+import { useNavigation } from '@react-navigation/native';
 
 function LostReportScreen(): React.JSX.Element {
-  const {lostReports} = useLostReports();
+  const { lostReports } = useLostReports();
   const navigation = useNavigation();
 
   return (
@@ -29,10 +29,11 @@ function LostReportScreen(): React.JSX.Element {
         <View style={styles.dropdownContainer}>
           <Dropdown
             placeholder="Sortieren"
+            testID='sort-dropdown'
             items={[
-              {label: 'Alphabetisch', value: 'alphabetical'},
-              {label: 'Zuletzt gesehen', value: 'last seen'},
-              {label: 'Entfernung', value: 'distance'},
+              { label: 'Alphabetisch', value: 'alphabetical' },
+              { label: 'Zuletzt gesehen', value: 'last seen' },
+              { label: 'Entfernung', value: 'distance' },
             ]}
             onChange={item => {
               console.log('Benutzer hat sortiert nach: ' + item.value);
@@ -40,9 +41,10 @@ function LostReportScreen(): React.JSX.Element {
           />
           <Dropdown
             placeholder="Filtern"
+            testID='filter-dropdown'
             items={[
-              {label: 'Nur mein Heimatumkreis', value: 'in my region'},
-              {label: 'Nur heute', value: 'only today'},
+              { label: 'Nur mein Heimatumkreis', value: 'in my region' },
+              { label: 'Nur heute', value: 'only today' },
             ]}
             onChange={item => {
               console.log('Benutzer hat gefiltert nach: ' + item.value);
@@ -55,12 +57,12 @@ function LostReportScreen(): React.JSX.Element {
         <FlatList
           style={styles.list}
           data={lostReports}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <LostReportCard
               key={item.id}
               report={item}
               onPress={() =>
-                navigation.navigate('SingleLostReportScreen', {item: item})
+                navigation.navigate('SingleLostReportScreen', { item: item })
               }
               image={
                 category.find(it => it.name === item.category.name)?.image ??

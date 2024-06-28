@@ -3,10 +3,10 @@ import React from 'react';
 import { render, screen, waitFor, act, fireEvent, renderHook } from '@testing-library/react-native';
 import { expect, it, jest, describe } from '@jest/globals';
 import { UserProvider, useUser } from '../../../src/hooks/useUser.tsx';
-import ProfileScreen from '../../../src/pages/profile/ProfileScreen.tsx';
 import { User } from '../../../src/types/user.ts';
 import RegisterScreen from '../../../src/components/auth/RegisterScreen.tsx';
 import { useNavigation } from '@react-navigation/native';
+import * as UserHook from "../../../src/hooks/useUser.tsx"
 
 const registerUserData = {
     email: 'wal@test.de',
@@ -43,9 +43,26 @@ describe('RegisterScreen', () => {
     it('should display the input fields', async () => {
         const view = render(<RegisterScreen />, { wrapper: UserProvider });
 
+        expect(view.getByTestId('input-name').props.value === "").toBeTruthy();
         expect(view.getByTestId('input-email').props.value === "").toBeTruthy();
         expect(view.getByTestId('input-password').props.value === "").toBeTruthy();
         expect(view.getByTestId('input-password-repeat').props.value === "").toBeTruthy();
+    });
+
+    it('should listen to changes in input fields', async () => {
+        const view = render(<RegisterScreen />, { wrapper: UserProvider });
+
+        await act(() => {
+            fireEvent.changeText(view.getByTestId('input-name'), registerUserData.firstName);
+            fireEvent.changeText(view.getByTestId('input-email'), registerUserData.email);
+            fireEvent.changeText(view.getByTestId('input-password'), registerUserData.password);
+            fireEvent.changeText(view.getByTestId('input-password-repeat'), registerUserData.passwordRepeat);
+        });
+
+        expect(view.getByTestId('input-email').props.value === registerUserData.email).toBeTruthy();
+        expect(view.getByTestId('input-name').props.value === registerUserData.firstName).toBeTruthy();
+        expect(view.getByTestId('input-password').props.value === registerUserData.password).toBeTruthy();
+        expect(view.getByTestId('input-password-repeat').props.value === registerUserData.passwordRepeat).toBeTruthy();
     });
 
     it('should register a user', async () => {
@@ -65,5 +82,46 @@ describe('RegisterScreen', () => {
         })
 
         expect(result.current.user).toEqual(receivedUserData);
+    });
+
+    it('should display error messages if the passwords do not match or the fetch failed', async () => {
+
+        jest.spyOn(UserHook, 'useUser').mockImplementation(() => ({
+            isPending: false,
+            user: null,
+            editUser: jest.fn(async (userData: Partial<User>) => { }),
+            isLoggedIn: false,
+            login: jest.fn(async (email: string, password: string) => { }),
+            logout: jest.fn(async () => { }),
+            register: jest.fn(async (userData: any) => { throw new Error("Fetch failed") })
+        }
+        ));
+
+        const view = render(<RegisterScreen />, { wrapper: UserProvider });
+
+        // Wait for useEffects
+        await act(() => {
+        });
+
+        await act(() => {
+            fireEvent.changeText(view.getByTestId('input-password'), '1234');
+            fireEvent.changeText(view.getByTestId('input-password-repeat'), '12345');
+        })
+
+        await act(() => {
+            fireEvent.press(view.getByTestId('button-register'));
+        });
+
+        expect(view.getByText("Die Passwörter sind nicht gleich")).toBeTruthy();
+
+        await act(() => {
+            fireEvent.changeText(view.getByTestId('input-password-repeat'), '1234');
+        });
+
+        await act(() => {
+            fireEvent.press(view.getByTestId('button-register'));
+        });
+
+        expect(view.queryByText("Fetch failed")).toBeTruthy();
     });
 })

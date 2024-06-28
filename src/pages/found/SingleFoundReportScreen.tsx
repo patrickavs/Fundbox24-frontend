@@ -1,49 +1,51 @@
-import React, {useEffect} from 'react';
-import {BackHandler, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useFoundReports} from '../../hooks/useFoundReports';
-import {FoundReportTheme} from '../../constants/theme';
-import MapView, {Circle, LatLng} from 'react-native-maps';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { BackHandler, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useFoundReports } from '../../hooks/useFoundReports';
+import { FoundReportTheme } from '../../constants/theme';
+import MapView, { Circle, LatLng } from 'react-native-maps';
 import SpacerVertical from './SpacerVertical';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../components/CustomButton';
 import moment from 'moment';
-import {category} from '../../data/categories';
-import {useRoute} from '@react-navigation/native';
+import { category } from '../../data/categories';
+import { useRoute } from '@react-navigation/native';
 
 
-function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
+function SingleFoundReportScreen({ navigation }): React.JSX.Element {
 
-    const {foundReports} = useFoundReports();
+    const { foundReports } = useFoundReports();
+
+    const route = useRoute();
+    const { id } = route.params;
+
+    const foundReport = useMemo(() =>
+        foundReports.find((report) => report.id === id),
+        [foundReports])
+
+    const position = useMemo(() => foundReport?.foundLocation ?? null, [foundReport])
+    const radius = 1000;
+
     useEffect(() => {
         navigation.setOptions({
             ...navigation.options,
         });
     }, [navigation]);
 
-    const route = useRoute();
-    const { id } = route.params;
-    const [foundReport] = React.useState(foundReports.find((report) => report.id === id));
-
-
-    const [position] = React.useState<LatLng>(foundReport?.foundLocation ?? null);
-
-    const [radius] = React.useState<number>(1000);
-
     return (
         <View style={styles.screenContainer} testID={'single-lost-report-screen'}>
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={category.find((item) => item.name === foundReport?.category.name)?.image ?? category[category.length - 1].image } />
+                    <Image style={styles.image} source={category.find((item) => item.name === foundReport?.category.name)?.image ?? category[category.length - 1].image} />
                 </View>
                 <View style={styles.detailsContainer}>
                     <Text style={styles.title}>{foundReport?.title ?? 'Titel'}</Text>
                     <Text style={styles.text}>{foundReport?.description ?? 'Beschreibung'}</Text>
                     <View style={styles.textIconContainer}>
-                        <Ionicons name={'time'} style={styles.icon}/>
+                        <Ionicons name={'time'} style={styles.icon} />
                         <Text style={styles.text}>Gefunden am {moment(foundReport?.foundDate).format('DD.MM.YYYY, HH:mm') ?? 'Datum'}</Text>
                     </View>
                     <View style={styles.textIconContainer}>
-                        <Ionicons name={'location'} style={styles.icon}/>
+                        <Ionicons name={'location'} style={styles.icon} />
                         <Text style={styles.text}>Umkreis des Fundortes:</Text>
                     </View>
                 </View>
@@ -59,18 +61,18 @@ function SingleFoundReportScreen( {navigation} ): React.JSX.Element {
                         center={position}
                         radius={radius}
                         fillColor="rgba(245, 39, 145, 0.3)"
-                        strokeWidth={0}/>
+                        strokeWidth={0} />
                 </MapView>
-                <SpacerVertical size={20}/>
+                <SpacerVertical size={20} />
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Frage stellen" onPress={() => navigation.goBack()} />
+                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Frage stellen" onPress={() => navigation.goBack()} testID='back-button-1' />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={() => navigation.goBack()} />
+                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={() => navigation.goBack()} testID='back-button-2' />
                     </View>
                 </View>
-                <SpacerVertical size={20}/>
+                <SpacerVertical size={20} />
             </ScrollView>
         </View>
     );
