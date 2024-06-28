@@ -20,6 +20,7 @@ const getTabBarOptions = () => ({
   tabBarActiveTintColor: 'black',
   tabBarInactiveTintColor: 'gray',
   tabBarHideOnKeyboard: true,
+  lazy: false,
   tabBarStyle: {
       backgroundColor: 'white',
       height: 85,
