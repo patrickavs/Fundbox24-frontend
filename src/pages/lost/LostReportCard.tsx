@@ -20,7 +20,7 @@ export default function LostReportCard(props: ReportCardProps) {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
-          <Text style={styles.text} numberOfLines={1}>{props.report.description}</Text>
+          <Text style={styles.text} numberOfLines={1}>{props.report.category.name}</Text>
           <Text style={styles.text} numberOfLines={1}>{moment(props.report.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
         </View>
         </TouchableOpacity>
