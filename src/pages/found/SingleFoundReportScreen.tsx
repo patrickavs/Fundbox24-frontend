@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { BackHandler, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, {useEffect, useMemo } from 'react';
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { useFoundReports } from '../../hooks/useFoundReports';
 import { FoundReportTheme } from '../../constants/theme';
-import MapView, { Circle, LatLng } from 'react-native-maps';
+import MapView, { Circle} from 'react-native-maps';
 import SpacerVertical from './SpacerVertical';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../components/CustomButton';
@@ -13,6 +13,17 @@ import { useRoute } from '@react-navigation/native';
 
 function SingleFoundReportScreen({ navigation }): React.JSX.Element {
 
+    useEffect(() => {
+        navigation.setOptions({
+            ...navigation.options,
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                    <Ionicons name={'arrow-back'} size={30} color={'black'} />
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
+
     const { foundReports } = useFoundReports();
 
     const route = useRoute();
@@ -20,16 +31,10 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
 
     const foundReport = useMemo(() =>
         foundReports.find((report) => report.id === id),
-        [foundReports])
+        [foundReports]);
 
-    const position = useMemo(() => foundReport?.foundLocation ?? null, [foundReport])
+    const position = useMemo(() => foundReport?.foundLocation ?? null, [foundReport]);
     const radius = 1000;
-
-    useEffect(() => {
-        navigation.setOptions({
-            ...navigation.options,
-        });
-    }, [navigation]);
 
     return (
         <View style={styles.screenContainer} testID={'single-lost-report-screen'}>
@@ -66,10 +71,10 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
                 <SpacerVertical size={20} />
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Frage stellen" onPress={() => navigation.goBack()} testID='back-button-1' />
+                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Frage stellen" onPress={() => navigation.goBack()} testID="back-button-1" />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={() => navigation.goBack()} testID='back-button-2' />
+                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={() => navigation.goBack()} testID="back-button-2" />
                     </View>
                 </View>
                 <SpacerVertical size={20} />
@@ -145,5 +150,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         paddingTop: 2,
         paddingRight: 6,
+    },
+    backButton: {
+        padding: 8,
+        backgroundColor: 'white',
+        borderRadius: 10,
     },
 });

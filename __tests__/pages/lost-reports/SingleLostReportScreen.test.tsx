@@ -13,6 +13,11 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 test('renders correctly with route params', () => {
+
+    const navigation = {
+        setOptions: jest.fn(),
+    };
+
     const mockRouteParams = {
         item: {
             id: 2,
@@ -29,7 +34,7 @@ test('renders correctly with route params', () => {
 
     (useRoute as jest.Mock).mockReturnValue({ params: mockRouteParams });
 
-    const { getByText } = render(<SingleLostReportScreen navigation={{}} />);
+    const { getByText } = render(<SingleLostReportScreen navigation={navigation} />);
 
     expect(getByText('Test Lost Item')).toBeTruthy();
 });
