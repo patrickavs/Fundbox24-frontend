@@ -9,7 +9,6 @@ import {
   useCallback,
 } from 'react';
 import { CHAT_URL, MESSAGE_URL } from '../routes';
-import { FetchType, fetchAdapter } from '../mockups/fetching.ts';
 
 type ChatContextType = {
   chats: Array<Chat>;
@@ -28,9 +27,6 @@ type ChatContextType = {
 };
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
-
-// Warning: Fetcher should be in injected in higher level component
-const fetch: FetchType = fetchAdapter;
 
 export const useChat = (userToken: string) => {
   const context = useContext(ChatContext);
@@ -52,13 +48,13 @@ export const useChat = (userToken: string) => {
 
   useEffect(() => {
     startTransition(() => {
-      fetch({ method: 'get', url: CHAT_URL }).then(response => {
-        if (response.success) {
-          setChats(response.data);
-        } else {
-          setError(response.error);
-        }
-      });
+      // fetch({ method: 'get', url: CHAT_URL }).then(response => {
+      //   if (response.success) {
+      //     setChats(response.data);
+      //   } else {
+      //     setError(response.error);
+      //   }
+      // });
     });
   }, []);
 
@@ -77,24 +73,24 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       initialMessage: NewMessage,
     ) => {
       startTransition(() => {
-        fetch({
-          method: 'post',
-          url: CHAT_URL,
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userToken}`,
-          },
-          data: {
-            contactedUser,
-            initialMessage,
-          },
-        }).then(response => {
-          if (response.success) {
-            setChats(prev => [...prev, response.data as Chat]);
-          } else {
-            setError(response.error);
-          }
-        });
+        // fetch({
+        //   method: 'post',
+        //   url: CHAT_URL,
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     Authorization: `Bearer ${userToken}`,
+        //   },
+        //   data: {
+        //     contactedUser,
+        //     initialMessage,
+        //   },
+        // }).then(response => {
+        //   if (response.success) {
+        //     setChats(prev => [...prev, response.data as Chat]);
+        //   } else {
+        //     setError(response.error);
+        //   }
+        // });
       });
     },
     [],
@@ -103,25 +99,25 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const addMessage = useCallback(
     async () => (userToken: string, chatId: string, message: NewMessage) => {
       startTransition(() => {
-        fetch({
-          method: 'post',
-          url: MESSAGE_URL(chatId),
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userToken}`,
-          },
-          data: message,
-        }).then(response => {
-          if (response.success) {
-            chats
-              .filter(chat => chat.id === chatId)[0]
-              ?.messages.push(response.data);
-            // Force reload
-            setChats(prev => [...prev]);
-          } else {
-            setError(response.error);
-          }
-        });
+        // fetch({
+        //   method: 'post',
+        //   url: MESSAGE_URL(chatId),
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     Authorization: `Bearer ${userToken}`,
+        //   },
+        //   data: message,
+        // }).then(response => {
+        //   if (response.success) {
+        //     chats
+        //       .filter(chat => chat.id === chatId)[0]
+        //       ?.messages.push(response.data);
+        //     // Force reload
+        //     setChats(prev => [...prev]);
+        //   } else {
+        //     setError(response.error);
+        //   }
+        // });
       });
     },
     [],
@@ -129,22 +125,22 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
   const removeChat = useCallback(async (userToken: string, chatId: string) => {
     startTransition(() => {
-      fetch({
-        method: 'delete',
-        url: CHAT_URL,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
-        .then(response => {
-          if (response.success) {
-            setChats(prev => prev.filter(chat => chat.id === chatId));
-          } else {
-            setError(response.error);
-          }
-        })
-        .catch(error => setError(JSON.stringify(error)));
+      // fetch({
+      //   method: 'delete',
+      //   url: CHAT_URL,
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${userToken}`,
+      //   },
+      // })
+      //   .then(response => {
+      //     if (response.success) {
+      //       setChats(prev => prev.filter(chat => chat.id === chatId));
+      //     } else {
+      //       setError(response.error);
+      //     }
+      //   })
+      //   .catch(error => setError(JSON.stringify(error)));
     });
   }, []);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import IconButton from '../../components/IconButton.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import { Switch } from 'react-native';
@@ -23,8 +23,22 @@ const ProfileStyleSheet = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 14,
   },
+  inputIOS: {
+    paddingVertical: 8,
+  },
+  horizontalContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 5,
+  },
   label: {
     color: 'black',
+  },
+  labelInputNonEditable: {
+    marginBottom: 5,
+    marginTop: 10,
   },
   container: {
     paddingHorizontal: 25,
@@ -54,6 +68,13 @@ const ProfileStyleSheet = StyleSheet.create({
     borderRadius: 8,
     textAlign: 'left',
   },
+  notEditable: {
+    color: 'darkgray',
+    backgroundColor: '#eaeaea',
+  },
+  scrollView: {
+    height: '100%',
+  },
 });
 
 function ProfileScreen(): React.JSX.Element {
@@ -67,25 +88,26 @@ function ProfileScreen(): React.JSX.Element {
   return (
     <View>
       <CustomHeader title={'Mein Konto'} />
+      <ScrollView style={ProfileStyleSheet.scrollView}>
       <View style={ProfileStyleSheet.container}>
         <Text style={ProfileStyleSheet.heading}>Persönliche Daten</Text>
         <View>
-          <Text style={ProfileStyleSheet.label}>Email</Text>
+          <Text style={[ProfileStyleSheet.label, ProfileStyleSheet.labelInputNonEditable]}>Email</Text>
           <TextInput
             testID="input-email"
             placeholder={'max.mustermann@gmx.com'}
             value={user?.email}
-            style={ProfileStyleSheet.input}
+            style={[ProfileStyleSheet.input, ProfileStyleSheet.notEditable, Platform.OS === 'android' ? null : ProfileStyleSheet.inputIOS]}
             editable={false}
           />
         </View>
         <View>
-          <Text style={ProfileStyleSheet.label}>Username</Text>
+          <Text style={[ProfileStyleSheet.label, ProfileStyleSheet.labelInputNonEditable]}>Username</Text>
           <TextInput
             testID="input-username"
             placeholder={'lilakuh55'}
             value={user?.username}
-            style={ProfileStyleSheet.input}
+            style={[ProfileStyleSheet.input, ProfileStyleSheet.notEditable, Platform.OS === 'android' ? null : ProfileStyleSheet.inputIOS]}
             editable={false}
           />
         </View>
@@ -98,40 +120,46 @@ function ProfileScreen(): React.JSX.Element {
           <View style={ProfileStyleSheet.switch}>
             <Text style={ProfileStyleSheet.label}>Ton</Text>
             <Switch
+              testID='switch-sound'
               value={settings.sound}
-              onChange={event =>
-                setSettings({ ...settings, sound: !settings.sound })
+              onValueChange={value =>
+                setSettings({ ...settings, sound: value })
               }
             />
           </View>
           <View style={ProfileStyleSheet.switch}>
             <Text style={ProfileStyleSheet.label}>Vibration</Text>
             <Switch
+              testID='switch-vibration'
               value={settings.vibration}
-              onChange={event =>
-                setSettings({ ...settings, vibration: !settings.vibration })
+              onValueChange={value =>
+                setSettings({ ...settings, vibration: value })
               }
             />
           </View>
         </View>
-        <View style={ProfileStyleSheet.input}>
+        <View style={[ProfileStyleSheet.input, ProfileStyleSheet.horizontalContainer]}>
           <Text style={ProfileStyleSheet.label}>Standort verwenden</Text>
           <Switch
+            style={ProfileStyleSheet.switch}
+            testID='switch-location'
             value={settings.location}
-            onChange={event =>
-              setSettings({ ...settings, location: !settings.location })
+            onValueChange={value =>
+              setSettings({ ...settings, location: value })
             }
           />
         </View>
         <View style={{ paddingTop: 20 }}>
           <CustomButton
             label={'Logout'}
+            testID='button-logout'
             onPress={onLogout}
             backgroundColor={AuthTheme.colors.secondaryBackground}
             fontSize={17}
           />
         </View>
       </View>
+      </ScrollView>
     </View>
   );
 }
