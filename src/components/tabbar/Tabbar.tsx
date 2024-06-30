@@ -1,59 +1,63 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
+// import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
 import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
 import FoundReportNavStack from '../../pages/found/FoundReportNavStack';
 import LostReportNavStack from '../../pages/lost/LostReportNavStack';
 import AuthStack from '../auth/AuthStack.tsx';
 import {useUser} from '../../hooks/useUser.tsx';
 import StartScreen from '../../pages/home/StartScreen.tsx';
+// import {createNativeStackNavigator} from '@react-navigation/native-stack';
+// import SetPerimeterScreen from '../map/SetPerimeterScreen.tsx';
+import {AddReportStack} from '../../pages/add/AddReportStack.tsx';
+
 import {Platform} from 'react-native';
 const Tab = createBottomTabNavigator();
 
 // defining tab bar options
 const getTabBarOptions = () => (Platform.OS === 'android' ?
     {     tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: 'gray',
-          tabBarHideOnKeyboard: true,
-          lazy: false,
-          tabBarStyle: {
-              backgroundColor: 'white',
-              position: 'absolute',
-              height: '10%',
-              elevation: 3,
-              borderRadius: 20,
-              borderStyle: 'solid',
-              borderWidth: 0.5,
-              borderColor: 'grey',
-              marginBottom: -15,
-          },
+      tabBarInactiveTintColor: 'gray',
+      tabBarHideOnKeyboard: true,
+      lazy: false,
+      tabBarStyle: {
+        backgroundColor: 'white',
+        position: 'absolute',
+        height: '10%',
+        elevation: 3,
+        borderRadius: 20,
+        borderStyle: 'solid',
+        borderWidth: 0.5,
+        borderColor: 'grey',
+        marginBottom: -15,
+      },
     }
     : {     tabBarActiveTintColor: 'black',
-            tabBarInactiveTintColor: 'gray',
-            tabBarHideOnKeyboard: true,
-            lazy: false,
-            tabBarStyle: {
-                backgroundColor: 'white',
-                position: 'absolute',
-                height: '12%',
-                elevation: 3,
-                borderRadius: 20,
-                borderStyle: 'solid',
-                borderWidth: 0.5,
-                borderColor: 'grey',
-                marginBottom: -15,
-            },
-        }
+      tabBarInactiveTintColor: 'gray',
+      tabBarHideOnKeyboard: true,
+      lazy: false,
+      tabBarStyle: {
+        backgroundColor: 'white',
+        position: 'absolute',
+        height: '12%',
+        elevation: 3,
+        borderRadius: 20,
+        borderStyle: 'solid',
+        borderWidth: 0.5,
+        borderColor: 'grey',
+        marginBottom: -15,
+      },
+    }
 );
 
 // const AuthAlertView = () => {
 //   return <AuthAlert textField={true} />;
 // };
 
-const NewReportView = () => {
-  return <AddReportScreen reportType={'lost'} />;
-};
+// const NewReportView = () => {
+//   return <AddReportScreen reportType={'lost'} />;
+// };
 
 function Tabbar() {
   const {isLoggedIn} = useUser();
@@ -70,7 +74,7 @@ function Tabbar() {
     return <AuthStack />;
   }
   return (
-    <Tab.Navigator screenOptions={getTabBarOptions}>
+    <Tab.Navigator screenOptions={getTabBarOptions} initialRouteName="Start">
       <Tab.Screen
         name="Start"
         component={StartScreen}
@@ -106,7 +110,7 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Plus"
-        component={NewReportView}
+        component={AddReportStack}
         options={{
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => (

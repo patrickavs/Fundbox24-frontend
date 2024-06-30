@@ -1,7 +1,7 @@
 import App from '../src/App';
 
 // Note: import explicitly to use the types shipped with jest.
-import {expect, it, describe} from '@jest/globals';
+import {expect, it, describe, jest} from '@jest/globals';
 import {render, screen} from '@testing-library/react-native';
 
 jest.mock('@react-navigation/native', () => ({

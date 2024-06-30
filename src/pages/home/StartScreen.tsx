@@ -43,9 +43,10 @@ export default function StartScreen( {navigation}): React.JSX.Element {
   // );
 
   return (
-    <ScrollView style={styles.big}>
       <FlatList
         key={'vertical'}
+        data={chats}
+        renderItem={null}
         style={styles.outer}
         ListHeaderComponent={
           <>
@@ -62,7 +63,6 @@ export default function StartScreen( {navigation}): React.JSX.Element {
                       mehr anzeigen
                     </Text>
                   </View>
-                  <ScrollView horizontal>
                     <FlatList
                       key={'horizontal'}
                       horizontal
@@ -84,7 +84,6 @@ export default function StartScreen( {navigation}): React.JSX.Element {
                       )}
                       keyExtractor={(item, index) => index.toString()}
                     />
-                  </ScrollView>
                 </>
               )}
             </View>
@@ -98,7 +97,6 @@ export default function StartScreen( {navigation}): React.JSX.Element {
           </>
         }
       />
-    </ScrollView>
   );
 }
 
