@@ -17,7 +17,7 @@ const LostReportNavStack = () => {
                 <Stack.Screen
                     name="SingleLostReportScreen"
                     component={SingleLostReportScreen}
-                    options={{headerShown: true, headerTitle: '', headerTransparent: true}}
+                    options={{headerShown: false}}
                 />
             </Stack.Navigator>
 );

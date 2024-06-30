@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {BackHandler, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {LostReportTheme} from '../../constants/theme';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,31 +9,25 @@ import SpacerVertical from '../found/SpacerVertical';
 import {category} from '../../data/categories';
 import {useRoute} from '@react-navigation/native';
 import {LostReport} from '../../types/report-lost';
-import CustomHeader from '../../components/CustomHeader';
 
 
 function SingleLostReportScreen( {navigation} ): React.JSX.Element {
 
-    useEffect(() => {
-        navigation.setOptions({
-            ...navigation.options,
-            headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.navigate('LostReportScreen')} style={styles.backButton}>
-                    <Ionicons name={'arrow-back'} size={30} color={'black'} />
-                </TouchableOpacity>
-            ),
-        });
-    });
-
-    const mapRef = React.useRef(null);
-
     const route = useRoute();
     const { item } = route.params as { item: LostReport };
 
-    const [position, setPosition] = React.useState<LatLng>({
-        latitude: item.lostLocation.latitude,
-        longitude: item.lostLocation.longitude,
-    });
+    const [position, setPosition] = React.useState<LatLng>((item.lostLocation as LatLng));
+
+    useEffect(() => {
+        const backAction = () => {
+            navigation.replace('LostReportScreen');
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+        return () => backHandler.remove();
+    }, [navigation]);
+
 
     useEffect(() => {
         setPosition(item.lostLocation as LatLng);
@@ -44,12 +38,10 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
     const navigateToChat = () => {
         console.log('navigate to chat');
         // TODO: navigate to chat
-        navigation.popToTop();
     };
 
     return (
         <View style={styles.screenContainer} testID="single-lost-report-screen">
-            {Platform.OS === 'ios' ? <CustomHeader backgroundColor={'white'} title={''} isSmall/> : <></>}
             <ScrollView>
                 <View style={styles.imageContainer}>
                     <Image style={styles.image} source={category.find((it) => it.name === item?.category.name)?.image ?? category[category.length - 1].image} />
@@ -66,41 +58,30 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                         <Text style={styles.text}>Letzter bekannter Standort:</Text>
                     </View>
                 </View>
-                <View>
-                    <MapView
-                        ref={mapRef}
-                        scrollEnabled={true}
-                        style={styles.map}
-                        initialRegion={{
-                            ...position,
-                            latitudeDelta: 0.035,
-                            longitudeDelta: 0.035}}>
-                        <Circle
-                            center={position}
-                            radius={radius}
-                            fillColor="rgba(245, 39, 145, 0.3)"
-                            strokeWidth={0}
-                            strokeColor="rgba(0, 0, 0, 0)" />
-                    </MapView>
-                    <TouchableOpacity style={styles.button2} onPress={() => {setPosition(item.lostLocation as LatLng);
-                        mapRef.current?.animateToRegion({
-                            ...item.lostLocation,
-                            latitudeDelta: 0.035,
-                            longitudeDelta: 0.035,
-                        }, 1);}} >
-                        <Ionicons name={'location-sharp'} style={styles.iconButton} />
-                    </TouchableOpacity>
-                </View>
-                <SpacerVertical size={10}/>
+                <MapView
+                    scrollEnabled={false}
+                    style={styles.map}
+                    initialRegion={{
+                        ...position,
+                        latitudeDelta: 0.035,
+                        longitudeDelta: 0.035,
+                    }} >
+                    <Circle
+                        center={position}
+                        radius={radius}
+                        fillColor="rgba(245, 39, 145, 0.3)"
+                        strokeWidth={0}/>
+                </MapView>
+                <SpacerVertical size={20}/>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" testID={'chat-button-1'} onPress={navigateToChat} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" onPress={navigateToChat} />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" testID={'chat-button-2'} onPress={navigateToChat} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" onPress={navigateToChat} />
                     </View>
                 </View>
-                <SpacerVertical size={80}/>
+                <SpacerVertical size={20}/>
             </ScrollView>
         </View>
     );
@@ -112,21 +93,13 @@ const styles = StyleSheet.create({
     buttonsContainer: {
         display: 'flex',
         flexDirection: 'row',
-        margin: 20,
-        justifyContent: 'space-between',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
     },
     button: {
-        width: '47%',
+        width: '40%',
         height: 100,
         alignSelf: 'center',
-    },
-    button2: {
-        backgroundColor: LostReportTheme.colors.button,
-        borderRadius: 10,
-        color: 'white',
-        position: 'absolute',
-        right: 20,
-        bottom: 20,
     },
     screenContainer: {
         backgroundColor: LostReportTheme.colors.secondaryAccent,
@@ -181,19 +154,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         paddingTop: 2,
         paddingRight: 6,
-    },
-    backButton: {
-        padding: 8,
-        backgroundColor: 'white',
-        borderRadius: 10,
-    },
-    iconButton: {
-        margin: 5,
-        padding: 8,
-        color: 'white',
-        borderRadius: 10,
-        fontSize: 20,
-        alignSelf: 'center',
     },
 });
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { LostReport } from '../../types/report-lost.ts';
-import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
+import {Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {LostReport} from '../../types/report-lost.ts';
+import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
 import moment from 'moment';
 
 type ReportCardProps = {
@@ -14,16 +14,16 @@ type ReportCardProps = {
 export default function LostReportCard(props: ReportCardProps) {
   return (
     <View key={props.report.id} style={styles.container}>
-      <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID='report-card-press'>
+      <TouchableOpacity onPress={() => props.onPress(props.report.id)}>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={props.image} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
-          <Text style={styles.text} numberOfLines={1}>{props.report.category.name}</Text>
+          <Text style={styles.text} numberOfLines={1}>{props.report.description}</Text>
           <Text style={styles.text} numberOfLines={1}>{moment(props.report.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
         </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
     </View>
   );
 }
@@ -38,9 +38,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    backgroundColor: 'white',
+    borderRadius: 8,
     borderColor: 'lightgray',
     borderWidth: 3,
     padding: 20,

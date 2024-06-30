@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Button, FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useFoundReports} from '../../hooks/useFoundReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {FoundReportTheme} from '../../constants/theme.ts';
@@ -56,7 +56,7 @@ function FoundReportScreen({navigation}): React.JSX.Element {
             <FoundReportCard
               key={item.id}
               report={item}
-              onPress={() => navigation.navigate('SingleFoundReportScreen', {item: item})}
+              onPress={(id) => navigation.navigate('SingleFoundReportScreen', {id: id})}
               image={category.find((it) => it.name === item.category.name)?.image ?? category[category.length - 1].image }
             />
           )}

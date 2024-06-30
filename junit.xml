@@ -1,61 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="19" failures="0" errors="0" time="3.926">
-  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:37" time="0.848" tests="3">
-    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.288">
+<testsuites name="jest tests" tests="9" failures="0" errors="0" time="3.437">
+  <testsuite name="RegisterScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-22T08:32:33" time="0.811" tests="2">
+    <testcase classname="RegisterScreen should display the input fields" name="RegisterScreen should display the input fields" time="0.257">
     </testcase>
-    <testcase classname="ProfileScreen should change values of the switches" name="ProfileScreen should change values of the switches" time="0.017">
-    </testcase>
-    <testcase classname="ProfileScreen should logout" name="ProfileScreen should logout" time="0.006">
+    <testcase classname="RegisterScreen should register a user" name="RegisterScreen should register a user" time="0.034">
     </testcase>
   </testsuite>
-  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:38" time="0.654" tests="1">
-    <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.046">
+  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-06-22T08:32:34" time="0.649" tests="1">
+    <testcase classname="App should display &quot;Noch keinen Account bei uns?&quot;" name="App should display &quot;Noch keinen Account bei uns?&quot;" time="0.045">
     </testcase>
   </testsuite>
-  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:39" time="0.377" tests="1">
-    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.113">
+  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-22T08:32:35" time="0.36" tests="1">
+    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.101">
     </testcase>
   </testsuite>
-  <testsuite name="RegisterScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:39" time="0.326" tests="4">
-    <testcase classname="RegisterScreen should display the input fields" name="RegisterScreen should display the input fields" time="0.118">
-    </testcase>
-    <testcase classname="RegisterScreen should listen to changes in input fields" name="RegisterScreen should listen to changes in input fields" time="0.021">
-    </testcase>
-    <testcase classname="RegisterScreen should register a user" name="RegisterScreen should register a user" time="0.004">
-    </testcase>
-    <testcase classname="RegisterScreen should display error messages if the passwords do not match or the fetch failed" name="RegisterScreen should display error messages if the passwords do not match or the fetch failed" time="0.046">
-    </testcase>
-  </testsuite>
-  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:39" time="0.294" tests="1">
+  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-22T08:32:35" time="0.298" tests="1">
     <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.077">
     </testcase>
   </testsuite>
-  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:40" time="0.282" tests="1">
-    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.024">
+  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-22T08:32:36" time="0.316" tests="1">
+    <testcase classname="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" name="StartScreen renders find text &quot;Du bist nicht angemeldet&quot;" time="0.021">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:40" time="0.285" tests="1">
-    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.097">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-06-22T08:32:36" time="0.236" tests="1">
+    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.083">
     </testcase>
   </testsuite>
-  <testsuite name="LostReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:40" time="0.148" tests="3">
-    <testcase classname="LostReport-Hook should fetch the relevant data the first time it is called" name="LostReport-Hook should fetch the relevant data the first time it is called" time="0.011">
-    </testcase>
-    <testcase classname="LostReport-Hook should create a new lost report" name="LostReport-Hook should create a new lost report" time="0.008">
-    </testcase>
-    <testcase classname="LostReport-Hook should edit an existing lost report" name="LostReport-Hook should edit an existing lost report" time="0.004">
+  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-06-22T08:32:36" time="0.236" tests="1">
+    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.116">
     </testcase>
   </testsuite>
-  <testsuite name="FoundReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:40" time="0.148" tests="3">
-    <testcase classname="FoundReport-Hook should fetch the relevant data the first time it is called" name="FoundReport-Hook should fetch the relevant data the first time it is called" time="0.019">
-    </testcase>
-    <testcase classname="FoundReport-Hook should create a new found report" name="FoundReport-Hook should create a new found report" time="0.004">
-    </testcase>
-    <testcase classname="FoundReport-Hook should edit an existing found report" name="FoundReport-Hook should edit an existing found report" time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-26T11:13:40" time="0.141" tests="1">
-    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.021">
+  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-06-22T08:32:36" time="0.12" tests="1">
+    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.015">
     </testcase>
   </testsuite>
 </testsuites>
