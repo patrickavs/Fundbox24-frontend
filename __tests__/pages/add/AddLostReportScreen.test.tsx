@@ -1,11 +1,12 @@
 import React from 'react';
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import { describe, expect, it, jest } from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import * as LostReportHook from '../../../src/hooks/useLostReports';
-import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
-import { LostReport, NewLostReport } from '../../../src/types/report-lost';
+import { FoundReport } from '../../../src/types/report-found';
+import { LostReport } from '../../../src/types/report-lost';
 import AddReportScreen from '../../../src/pages/add/AddReportScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const fakeFoundReport: FoundReport =
 {
@@ -48,26 +49,36 @@ const fakeLostReports: LostReport =
     isFinished: false,
 };
 
+const mockedNavigate = jest.fn();
+
 jest.mock('@react-navigation/native', () => {
     return {
-        useNavigation: jest.fn(),
+        useNavigation: () => ({
+            navigate: mockedNavigate,
+        }),
         useRoute: jest.fn(() => ({
             params: { reportType: 'lost', fetchedCategories: [] },
-            key: "",
-            name: ""
+            key: '',
+            name: '',
         })),
     };
 });
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+    getItem: jest.fn(),
+}));
 
 describe('AddReportScreen lost', () => {
 
-    it('should render with "lost" as reportType properly', async () => {
+    it('should add a lost report correctly', async () => {
+        const mockCreateLostReport = jest.fn();
+        const mockCreateFoundReport = jest.fn();
 
         jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
             isPending: false,
             foundReports: [fakeFoundReport],
             error: null,
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            createFoundReport: mockCreateFoundReport,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
@@ -75,9 +86,11 @@ describe('AddReportScreen lost', () => {
             isPending: false,
             lostReports: [fakeLostReports],
             error: null,
-            createLostReport: (userToken: string, report: NewLostReport) => null,
+            createLostReport: mockCreateLostReport,
             editLostReport: (userToken: string, report: LostReport) => null,
         }));
+
+        AsyncStorage.getItem.mockResolvedValue('lost-token');
 
         const view = render(<AddReportScreen />);
 
@@ -97,57 +110,43 @@ describe('AddReportScreen lost', () => {
 
         expect(view.getByTestId('input-description').props.value).toBe('Ein Schlüsselbund');
 
-    });
-});
-
-jest.mock('@react-navigation/native', () => {
-    return {
-        useNavigation: jest.fn(),
-        useRoute: jest.fn(() => ({
-            params: { reportType: 'lost', fetchedCategories: [] },
-            key: "",
-            name: ""
-        })),
-    };
-});
-
-describe('AddReportScreen found', () => {
-
-    it('should render with "found" as reportType properly', async () => {
-
-        jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
-            isPending: false,
-            foundReports: [fakeFoundReport],
-            error: null,
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null,
-        }));
-
-        jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-            isPending: false,
-            lostReports: [fakeLostReports],
-            error: null,
-            createLostReport: (userToken: string, report: NewLostReport) => null,
-            editLostReport: (userToken: string, report: LostReport) => null,
-        }));
-
-        const view = render(<AddReportScreen />);
-
-        await act(async () => { });
-
-        expect(view.getByText('Neue Suchanzeige')).toBeTruthy();
-
         await act(async () => {
-            fireEvent.changeText(view.getByTestId('input-name'), 'Thomas');
+            fireEvent.press(view.getByText('Suchanzeige speichern'));
         });
 
-        expect(view.getByTestId('input-name').props.value).toBe('Thomas');
-
-        await act(async () => {
-            fireEvent.changeText(view.getByTestId('input-description'), 'Ein Schlüsselbund');
+        await waitFor(() => {
+            expect(AsyncStorage.getItem).toHaveBeenCalledWith('basicAuthCredentials');
+            expect(mockCreateLostReport).toHaveBeenCalledWith(
+              'lost-token',
+              expect.objectContaining({
+                  title: 'Thomas',
+                  description: 'Ein Schlüsselbund',
+                  isFinished: false,
+              })
+            );
         });
 
-        expect(view.getByTestId('input-description').props.value).toBe('Ein Schlüsselbund');
+        const dropdown = view.getByTestId('dropdown');
 
+        await act(async () => {
+            fireEvent.press(dropdown);
+        });
+
+        await act(async () => {
+            fireEvent.press(view.getByText('Schmuck'));
+        });
+
+        await waitFor(() => {
+            expect(view.getByText('Schmuck')).toBeTruthy();
+            expect(view.queryByText('Original Category')).toBeNull();
+        });
+
+        await act(async () => {
+            fireEvent.press(view.getByText('Letzte bekannte Position angeben'));
+        });
+
+        await waitFor(() => {
+            expect(mockedNavigate).toHaveBeenCalledWith('Map');
+        });
     });
 });

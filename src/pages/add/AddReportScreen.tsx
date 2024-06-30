@@ -118,7 +118,7 @@ function AddReportScreen() {
         }),
     };
 
-    console.log('New Report: ', newReport);
+    //console.log('New Report: ', newReport);
 
     try {
       const token = await AsyncStorage.getItem('basicAuthCredentials');
@@ -174,6 +174,7 @@ function AddReportScreen() {
                 console.log('Image: ', typeof categoryDrop?.image);
                 console.log(`Category: ${reportCategory.name}`);
               }}
+              testID={'dropdown'}
             />
           </View>
           <TextInput
@@ -182,7 +183,7 @@ function AddReportScreen() {
             onChangeText={(text: string) => {
               setReportName(text);
             }}
-            testID='input-name'
+            testID="input-name"
             value={reportName}
           />
           <TextInput
@@ -192,7 +193,7 @@ function AddReportScreen() {
             onChangeText={(text: string) => {
               setReportDescription(text);
             }}
-            testID='input-description'
+            testID="input-description"
             value={reportDescription}
           />
           {reportType === 'lost' ? (
