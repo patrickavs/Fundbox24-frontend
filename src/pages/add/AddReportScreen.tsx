@@ -148,7 +148,7 @@ function AddReportScreen() {
         <Image
           borderRadius={15}
           resizeMethod={'scale'}
-          src={reportImage}
+          source={reportImage}
           style={styles.imageContainer}
         />
         <View style={styles.inputContainer}>
