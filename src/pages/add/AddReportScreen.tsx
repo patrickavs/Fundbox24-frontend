@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -8,20 +8,18 @@ import {
   View,
 } from 'react-native';
 import CustomHeader from '../../components/CustomHeader.tsx';
-import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
-import { useLostReports } from '../../hooks/useLostReports.tsx';
-import { useFoundReports } from '../../hooks/useFoundReports.tsx';
+import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
+import {useLostReports} from '../../hooks/useLostReports.tsx';
+import {useFoundReports} from '../../hooks/useFoundReports.tsx';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import CustomButton from '../../components/CustomButton.tsx';
-import { NewLostReport } from '../../types/report-lost.ts';
-import { NewFoundReport } from '../../types/report-found.ts';
+import {NewLostReport} from '../../types/report-lost.ts';
+import {NewFoundReport} from '../../types/report-found.ts';
 
-function AddReportScreen({ reportType }: { reportType: string }) {
-
-  // TODO: All states relevant to the added data in only one state object
-  const { lostReports } = useLostReports();
-  const { foundReports } = useFoundReports();
+function AddReportScreen({reportType}: {reportType: string}) {
+  const {lostReports} = useLostReports();
+  const {foundReports} = useFoundReports();
   const [reportImage, setReportImage] = useState<string>('');
   const [checkedMiddle, setCheckedMiddle] = useState<boolean>(false);
   const [checkedHigh, setCheckedHigh] = useState<boolean>(false);
@@ -99,8 +97,8 @@ function AddReportScreen({ reportType }: { reportType: string }) {
             fillColor="lightgray"
             unFillColor="#FFFFFF"
             text="Mittel"
-            iconStyle={{ borderColor: 'lightgray', borderRadius: 0 }}
-            innerIconStyle={{ borderRadius: 0 }}
+            iconStyle={{borderColor: 'lightgray', borderRadius: 0}}
+            innerIconStyle={{borderRadius: 0}}
             textStyle={{
               fontFamily: 'JosefinSans-Regular',
               textDecorationLine: 'none',
@@ -110,13 +108,13 @@ function AddReportScreen({ reportType }: { reportType: string }) {
             }}
           />
           <BouncyCheckbox
-            style={{ paddingBottom: 20 }}
+            style={{paddingBottom: 20}}
             size={25}
             fillColor="lightgray"
             unFillColor="#FFFFFF"
             text="High"
-            iconStyle={{ borderColor: 'lightgray', borderRadius: 0 }}
-            innerIconStyle={{ borderRadius: 0 }}
+            iconStyle={{borderColor: 'lightgray', borderRadius: 0}}
+            innerIconStyle={{borderRadius: 0}}
             textStyle={{
               fontFamily: 'JosefinSans-Regular',
               textDecorationLine: 'none',
@@ -127,22 +125,18 @@ function AddReportScreen({ reportType }: { reportType: string }) {
           />
           <TextInput
             style={styles.textInputStyle}
-            testID='input-name'
             placeholder={'Bezeichnung des Gegenstandes'}
             onChangeText={(text: string) => {
               setReportName(text);
             }}
-            value={reportName}
           />
           <TextInput
             style={styles.textInputStyle}
-            testID='input-description'
             multiline={true}
             placeholder={'Beschreibung des Gegenstandes'}
             onChangeText={(text: string) => {
               setReportDescription(text);
             }}
-            value={reportDescription}
           />
           {reportType === 'lost' ? (
             <View
@@ -150,17 +144,16 @@ function AddReportScreen({ reportType }: { reportType: string }) {
                 alignItems: 'center',
                 gap: 15,
               }}>
-              <Text style={{ fontSize: 16 }}>Zuletzt gesehen am:</Text>
-              <View style={{ gap: 5 }}>
+              <Text style={{fontSize: 16}}>Zuletzt gesehen am:</Text>
+              <View style={{gap: 5}}>
                 <TextInput
                   style={styles.textInputStyle}
                   placeholder={'DD.MM.YYYY'}
-                  testID='date-input-lost'
                   onChangeText={(text: string) => setDate(text)}
                   value={date}
                 />
                 {error ? (
-                  <Text style={{ color: 'red', textAlign: 'center' }} testID='error-lost'>
+                  <Text style={{color: 'red', textAlign: 'center'}}>
                     {error}
                   </Text>
                 ) : null}
@@ -174,17 +167,16 @@ function AddReportScreen({ reportType }: { reportType: string }) {
                 justifyContent: 'space-between',
                 position: 'static',
               }}>
-              <Text style={{ fontSize: 16 }}>Gefunden am:</Text>
-              <View style={{ gap: 5 }}>
+              <Text style={{fontSize: 16}}>Gefunden am:</Text>
+              <View style={{gap: 5}}>
                 <TextInput
                   style={styles.textInputStyle}
                   placeholder={'DD.MM.YYYY'}
-                  testID='date-input-found'
                   onChangeText={(text: string) => setDate(text)}
                   value={date}
                 />
                 {error ? (
-                  <Text style={{ color: 'red', textAlign: 'center' }} testID='error-found'>
+                  <Text style={{color: 'red', textAlign: 'center'}}>
                     {error}
                   </Text>
                 ) : null}
@@ -209,7 +201,7 @@ function AddReportScreen({ reportType }: { reportType: string }) {
                 />
               </>
             ) : (
-              <View style={{ gap: 20 }}>
+              <View style={{gap: 20}}>
                 <View
                   style={{
                     flexDirection: 'column',
@@ -228,7 +220,7 @@ function AddReportScreen({ reportType }: { reportType: string }) {
                     fontSize={14}
                   />
                 </View>
-                <Text style={{ textAlign: 'center' }}>
+                <Text style={{textAlign: 'center'}}>
                   Nur der Umkreis des Fundortes ist in der Anzeige sichtbar.
                   Abhol- und Fundort können im Chat mit einem anfragenden Nutzer
                   freigegeben werden.

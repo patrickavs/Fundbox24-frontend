@@ -28,17 +28,12 @@ const defaultRegisterCredentials: RegisterUserCredentials = {
   passwordRepeat: ""
 }
 
-type RegistrationErrorMap = {
-  password?: Error;
-  fetch?: Error;
-}
-
 // TODO: Zeige dem Benutzer alle Fehler mit registerErrorMap an
 function RegisterScreen() {
   const navigation = useNavigation();
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
   const [registerUserData, setRegisterUserData] = useState<RegisterUserCredentials>(defaultRegisterCredentials)
-  const [registerErrorMap, setRegisterErrorMap] = useState<RegistrationErrorMap>({})
+  const [registerErrorMap, setRegisterErrorMap] = useState<Map<string, Error>>(new Map())
   const { register } = useUser();
 
   const registerCallback = useCallback((userCredentials: RegisterUserCredentials) => {
@@ -49,7 +44,7 @@ function RegisterScreen() {
       return;
     }
 
-    register(userCredentials).catch(error => setRegisterErrorMap(prev => ({ ...prev, fetch: error })))
+    register(userCredentials).catch(error => setRegisterErrorMap(prev => ({ ...prev, "fetch": error })))
   }, [])
 
   return (
@@ -81,14 +76,8 @@ function RegisterScreen() {
           Registrieren
         </Text>
 
-        <View>
-          {registerErrorMap.password && <Text>{registerErrorMap.password?.message}</Text>}
-          {registerErrorMap.fetch && <Text>{registerErrorMap.fetch?.message}</Text>}
-        </View>
-
         <InputField
           placeholder={'Name'}
-          testID='input-name'
           icon={<Ionicons name="person-outline" size={20} color="#666" />}
           value={registerUserData.name}
           onChangeText={(name) => setRegisterUserData(prev => ({ ...prev, name }))}
@@ -172,7 +161,6 @@ function RegisterScreen() {
 
         <CustomButton
           label={'Register'}
-          testID='button-register'
           onPress={() => registerCallback(registerUserData)}
           backgroundColor={AuthTheme.colors.secondaryBackground}
           fontSize={16}
