@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useLostReports } from '../../hooks/useLostReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
@@ -29,7 +28,7 @@ function LostReportScreen(): React.JSX.Element {
         <View style={styles.dropdownContainer}>
           <Dropdown
             placeholder="Sortieren"
-            testID='sort-dropdown'
+            testID="sort-dropdown"
             items={[
               { label: 'Alphabetisch', value: 'alphabetical' },
               { label: 'Zuletzt gesehen', value: 'last seen' },
@@ -41,7 +40,7 @@ function LostReportScreen(): React.JSX.Element {
           />
           <Dropdown
             placeholder="Filtern"
-            testID='filter-dropdown'
+            testID="filter-dropdown"
             items={[
               { label: 'Nur mein Heimatumkreis', value: 'in my region' },
               { label: 'Nur heute', value: 'only today' },

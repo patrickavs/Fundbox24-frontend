@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {BackHandler, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {LostReportTheme} from '../../constants/theme';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -34,7 +34,6 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
         latitude: item.lostLocation.latitude,
         longitude: item.lostLocation.longitude,
     });
-
 
     useEffect(() => {
         setPosition(item.lostLocation as LatLng);
@@ -80,8 +79,7 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                             radius={radius}
                             fillColor="rgba(245, 39, 145, 0.3)"
                             strokeWidth={0}
-                            strokeColor="rgba(245, 39, 145, 0.3)"
-                        />
+                            strokeColor="rgba(0, 0, 0, 0)" />
                     </MapView>
                     <TouchableOpacity style={styles.button2} onPress={() => {setPosition(item.lostLocation as LatLng);
                         mapRef.current?.animateToRegion({
