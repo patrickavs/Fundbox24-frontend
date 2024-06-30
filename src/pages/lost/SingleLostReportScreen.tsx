@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {BackHandler, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {LostReportTheme} from '../../constants/theme';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -35,7 +35,6 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
         longitude: item.lostLocation.longitude,
     });
 
-
     useEffect(() => {
         setPosition(item.lostLocation as LatLng);
     }, [item, position]);
@@ -45,6 +44,7 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
     const navigateToChat = () => {
         console.log('navigate to chat');
         // TODO: navigate to chat
+        navigation.popToTop();
     };
 
     return (
@@ -80,8 +80,7 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                             radius={radius}
                             fillColor="rgba(245, 39, 145, 0.3)"
                             strokeWidth={0}
-                            strokeColor="rgba(245, 39, 145, 0.3)"
-                        />
+                            strokeColor="rgba(0, 0, 0, 0)" />
                     </MapView>
                     <TouchableOpacity style={styles.button2} onPress={() => {setPosition(item.lostLocation as LatLng);
                         mapRef.current?.animateToRegion({
@@ -95,10 +94,10 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                 <SpacerVertical size={10}/>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" onPress={navigateToChat} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" testID={'chat-button-1'} onPress={navigateToChat} />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" onPress={navigateToChat} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" testID={'chat-button-2'} onPress={navigateToChat} />
                     </View>
                 </View>
                 <SpacerVertical size={80}/>
