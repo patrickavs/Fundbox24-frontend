@@ -44,6 +44,7 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
     const navigateToChat = () => {
         console.log('navigate to chat');
         // TODO: navigate to chat
+        navigation.popToTop();
     };
 
     return (
@@ -93,10 +94,10 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                 <SpacerVertical size={10}/>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" onPress={navigateToChat} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Frage stellen" testID={'chat-button-1'} onPress={navigateToChat} />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" onPress={navigateToChat} />
+                        <CustomButton color={LostReportTheme.colors.button} label="Gefunden!" testID={'chat-button-2'} onPress={navigateToChat} />
                     </View>
                 </View>
                 <SpacerVertical size={80}/>

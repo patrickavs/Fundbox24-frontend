@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {FoundReportTheme, LostReportTheme} from '../../constants/theme';
+import {FoundReportTheme} from '../../constants/theme';
 import MapView, {Circle, LatLng} from 'react-native-maps';
 import SpacerVertical from './SpacerVertical';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -18,7 +18,7 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
         navigation.setOptions({
             ...navigation.options,
             headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                <TouchableOpacity testID={'back-button'} onPress={() => navigation.goBack()} style={styles.backButton}>
                     <Ionicons name={'arrow-back'} size={30} color={'black'} />
                 </TouchableOpacity>
             ),
@@ -39,12 +39,13 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
 
     useEffect(() => {
         setPosition(item.foundLocation as LatLng);
-    }, [item, position]);
+    }, []);
 
     const [radius] = React.useState<number>(1000);
 
     const navigateToChat = () => {
         console.log('navigate to chat');
+        navigation.goBack();
         // TODO: navigate to chat
     };
 
@@ -95,10 +96,10 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
                 <SpacerVertical size={10} />
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Frage stellen" onPress={navigateToChat} testID="back-button-1" />
+                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Frage stellen" onPress={navigateToChat} testID="chat-button-1" />
                     </View>
                     <View style={styles.button}>
-                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={navigateToChat} testID="back-button-2" />
+                        <CustomButton backgroundColor={FoundReportTheme.colors.button2} label="Gehört mir!" onPress={navigateToChat} testID="chat-button-2" />
                     </View>
                 </View>
                 <SpacerVertical size={80}/>
