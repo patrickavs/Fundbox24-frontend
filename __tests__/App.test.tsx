@@ -5,15 +5,13 @@ import {expect, it, describe, jest} from '@jest/globals';
 import {render, screen} from '@testing-library/react-native';
 
 jest.mock('@react-navigation/native', () => {
-  const actualNav = jest.requireActual('@react-navigation/native');
   return {
-    ...(typeof actualNav === 'object' ? actualNav : {}),
     NavigationContainer: ({children}: {children: React.ReactNode}) => children,
   };
 });
 
 jest.mock('../src/components/tabbar/Tabbar.tsx', () => {
-  return () => <div>Tabbar Component</div>;
+  return () => 'Tabbar Component';
 });
 
 jest.mock('../src/hooks/useChat.tsx', () => ({
@@ -40,8 +38,8 @@ describe('App', () => {
   it('renders correctly and contains the Tabbar component', () => {
     render(<App />);
 
-    // Check if the Tabbar component is rendered
-    expect(screen.getByText('Tabbar Component')).toBeTruthy();
+    // Check if Tabbar gets rendered
+    expect(screen.toJSON()).toStrictEqual('Tabbar Component');
   });
 
   it('should ignore specific log warnings', () => {
