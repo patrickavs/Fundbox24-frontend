@@ -4,24 +4,57 @@ import App from '../src/App';
 import {expect, it, describe, jest} from '@jest/globals';
 import {render, screen} from '@testing-library/react-native';
 
-jest.mock('@react-navigation/native', () => ({
-  ...jest.requireActual('@react-navigation/native'),
+jest.mock('@react-navigation/native', () => {
+  const actualNav = jest.requireActual('@react-navigation/native');
+  return {
+    ...(typeof actualNav === 'object' ? actualNav : {}),
+    NavigationContainer: ({children}: {children: React.ReactNode}) => children,
+  };
+});
+
+jest.mock('../src/components/tabbar/Tabbar.tsx', () => {
+  return () => <div>Tabbar Component</div>;
+});
+
+jest.mock('../src/hooks/useChat.tsx', () => ({
+  ChatProvider: ({children}: {children: React.ReactNode}) => children,
 }));
 
-jest.mock('@react-navigation/native', () => ({
-  ...jest.requireActual('@react-navigation/native'),
+jest.mock('../src/hooks/useUser.tsx', () => ({
+  UserProvider: ({children}: {children: React.ReactNode}) => children,
+}));
+
+jest.mock('../src/hooks/useLostReports.tsx', () => ({
+  LostReportProvider: ({children}: {children: React.ReactNode}) => children,
+}));
+
+jest.mock('../src/hooks/useFoundReports.tsx', () => ({
+  FoundReportProvider: ({children}: {children: React.ReactNode}) => children,
+}));
+
+jest.mock('../src/constants/theme.ts', () => ({
+  AuthTheme: {},
 }));
 
 describe('App', () => {
-  it('should display "Noch keinen Account bei uns?"', () => {
+  it('renders correctly and contains the Tabbar component', () => {
     render(<App />);
 
-    expect(screen.getByText('Noch keinen Account bei uns?')).toBeTruthy();
+    // Check if the Tabbar component is rendered
+    expect(screen.getByText('Tabbar Component')).toBeTruthy();
+  });
+
+  it('should ignore specific log warnings', () => {
+    const logSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(<App />);
+
+    expect(logSpy).not.toHaveBeenCalledWith(
+      expect.stringContaining(
+        'TextInputComponent: Support for defaultProps will be removed',
+      ),
+    );
+
+    logSpy.mockRestore();
   });
 });
-
-// it('renderer App has 2 child', () => {
-//   const tree = renderer.create(<App />).toJSON();
-//   //console.log(JSON.stringify(tree));
-//   expect(tree.children.length).toBe(2);
-// });

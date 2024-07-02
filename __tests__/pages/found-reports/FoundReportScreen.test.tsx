@@ -33,7 +33,10 @@ const fakeFoundReport: FoundReport =
 jest.mock('@react-navigation/native', () => ({
     useNavigation: jest.fn(() => ({
         goBack: jest.fn(),
-    }),)
+    }),),
+    useFocusEffect: jest.fn(() => ({
+        useCallback: jest.fn(),
+    })),
 }));
 
 describe('FoundReportScreen', () => {
@@ -44,7 +47,7 @@ describe('FoundReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             createFoundReport: (userToken: string, report: NewFoundReport) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null
+            editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
         const view = render(<FoundReportScreen navigation={null} />);
@@ -68,7 +71,7 @@ describe('FoundReportScreen', () => {
     // });
 
     it('should execute the onPress callback function', async () => {
-        const pressCallback = jest.fn((id: string) => { })
+        const pressCallback = jest.fn((id: string) => { });
 
         // @ts-ignore
         const view = render(<FoundReportCard report={fakeFoundReport} onPress={pressCallback} />);
@@ -78,6 +81,6 @@ describe('FoundReportScreen', () => {
         });
 
         expect(pressCallback).toBeCalled();
-    })
+    });
 
 });

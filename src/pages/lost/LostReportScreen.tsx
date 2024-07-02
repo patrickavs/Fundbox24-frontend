@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useLostReports } from '../../hooks/useLostReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
@@ -7,11 +7,15 @@ import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import LostReportCard from './LostReportCard.tsx';
 import { category } from '../../data/categories';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 function LostReportScreen(): React.JSX.Element {
-  const { lostReports } = useLostReports();
+  const { lostReports , refresh} = useLostReports();
   const navigation = useNavigation();
+
+  useFocusEffect(useCallback(() => {
+    refresh();
+  }, [refresh]));
 
   return (
     <View testID={'lost-report-screen'}>

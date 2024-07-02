@@ -14,6 +14,7 @@ type LostReportContextType = {
   isPending: boolean;
   lostReports: Array<LostReport>;
   setLostReports: React.Dispatch<React.SetStateAction<Array<LostReport>>>;
+  refresh: () => void,
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   createLostReport: (userToken: string, report: NewLostReport) => void;
@@ -31,6 +32,7 @@ export function useLostReports() {
     isPending,
     startTransition,
     lostReports,
+    refresh,
     setLostReports,
     setError,
     createLostReport,
@@ -73,13 +75,44 @@ export function useLostReports() {
     });
   }, [startTransition, setLostReports, setError]);
 
-  return { isPending, lostReports, error, createLostReport, editLostReport };
+  return { isPending, lostReports, error, createLostReport, editLostReport, refresh };
 }
 
 export function LostReportProvider({ children }: { children: React.ReactNode }) {
   const [lostReports, setLostReports] = useState<Array<LostReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  const refresh = useCallback(() => {
+      startTransition(() => {
+        AsyncStorage?.getItem('basicAuthCredentials').then(
+          basicAuthCredentials => {
+            if (!basicAuthCredentials) {
+              throw 'No Basic Auth Header! Please login.';
+            }
+
+            fetch(ALL_LOST_REPORTS_URL, {
+              method: 'GET',
+              headers: {
+                Authorization: `Basic ${basicAuthCredentials}`,
+              },
+            })
+              .then(async response => {
+                const data = await response.json();
+                if (response.status === 200) {
+                  setLostReports(data);
+                } else {
+                  setError(data);
+                }
+              })
+              .catch(fetchError => {
+                console.log(fetchError);
+              });
+          },
+        );
+      });
+    }, []
+  );
 
   const createLostReport = useCallback(
     (userToken: string, report: NewLostReport) => {
@@ -135,6 +168,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
       value={{
         isPending,
         lostReports,
+        refresh: refresh,
         setLostReports: setLostReports,
         error,
         setError,

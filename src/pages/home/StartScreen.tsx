@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useUser} from '../../hooks/useUser';
 import {useLostReports} from '../../hooks/useLostReports';
@@ -7,10 +7,11 @@ import CustomHeader from '../../components/CustomHeader.tsx';
 import LostReportCard from '../lost/LostReportCard.tsx';
 import {category} from '../../data/categories.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function StartScreen( {navigation}): React.JSX.Element {
   const {isPending: isPendingUser, user} = useUser();
-  const {isPending: isPendingLostReport, lostReports} = useLostReports();
+  const {isPending: isPendingLostReport, lostReports, refresh} = useLostReports();
   const {isPending: isPendingChat, chats} = useChat(''); // TODO: Pass userToken here
 
   const isPending = isPendingUser || isPendingLostReport || isPendingChat;
@@ -22,6 +23,11 @@ export default function StartScreen( {navigation}): React.JSX.Element {
       </View>
     );
   }
+
+  useFocusEffect(useCallback(() => {
+    if (isPending && !user) {return;}
+    refresh();
+  }, [isPending, refresh, user]));
 
   // const latestChats = useMemo(() =>
   //   chats
@@ -133,7 +139,6 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 0,
-    paddingLeft: 20,
   },
   text: {
     color: 'black',

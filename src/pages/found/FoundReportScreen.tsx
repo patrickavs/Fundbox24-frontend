@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useFoundReports} from '../../hooks/useFoundReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
@@ -7,9 +7,14 @@ import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import FoundReportCard from './FoundReportCard.tsx';
 import {category} from '../../data/categories';
+import { useFocusEffect } from '@react-navigation/native';
 
 function FoundReportScreen({navigation}): React.JSX.Element {
-  const {foundReports} = useFoundReports();
+  const {foundReports, refresh} = useFoundReports();
+
+useFocusEffect(useCallback(() => {
+  refresh();
+}, [refresh]));
 
   return (
     <View>

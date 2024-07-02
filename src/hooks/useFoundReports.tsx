@@ -14,6 +14,7 @@ type FoundReportsContextType = {
   isPending: boolean;
   foundReports: Array<FoundReport>;
   setFoundReports: React.Dispatch<React.SetStateAction<Array<FoundReport>>>;
+  refresh: () => void,
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   createFoundReport: (userToken: string, report: NewFoundReport) => void;
@@ -32,6 +33,7 @@ export function useFoundReports() {
     startTransition,
     createFoundReport,
     setFoundReports,
+    refresh,
     setError,
     foundReports,
     error,
@@ -75,13 +77,43 @@ export function useFoundReports() {
     });
   }, [startTransition, setFoundReports, setError]);
 
-  return { isPending, error, foundReports, createFoundReport, editFoundReport };
+  return { isPending, error, foundReports, createFoundReport, editFoundReport, refresh };
 }
 
 export function FoundReportProvider({ children }: { children: React.ReactNode }) {
   const [foundReports, setFoundReports] = useState<Array<FoundReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  const refresh = useCallback(() => {
+    startTransition(() => {
+      AsyncStorage?.getItem('basicAuthCredentials').then(
+        basicAuthCredentials => {
+          if (!basicAuthCredentials) {
+            throw 'No Basic Auth Credentials! Please login.';
+          }
+
+          fetch(ALL_FOUND_REPORTS_URL, {
+            method: 'GET',
+            headers: {
+              Authorization: `Basic ${basicAuthCredentials}`,
+            },
+          })
+            .then(async response => {
+              const data = await response.json();
+              if (response.status === 200) {
+                setFoundReports(data);
+              } else {
+                setError(data);
+              }
+            })
+            .catch(fetchError => {
+              console.log(fetchError);
+            });
+        },
+      );
+    });
+  }, []);
 
   const createFoundReport = useCallback(
     (userToken: string, report: NewFoundReport) => {
@@ -138,6 +170,7 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
         isPending,
         foundReports,
         setFoundReports,
+        refresh,
         error,
         setError,
         startTransition,
