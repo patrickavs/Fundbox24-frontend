@@ -41,15 +41,9 @@ const newLostReportMockupData: NewLostReport = {
     latitude: 34,
   },
   lostRadius: 20,
-  category: {
-    id: '',
-    value: '',
-    name: 'SDFDSF',
-    image: '/url/bild',
-  },
-  placeOfDiscovery: 'Man langsam nervts',
-  placeOfDelivery: 'kndsf',
-  myChats: [],
+  categoryId: 1,
+  isFinished: false,
+  imagePath: '',
 };
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -84,7 +78,7 @@ describe('LostReport-Hook', () => {
     expect(result.current.lostReports).toMatchObject([lostReportMockupData]);
   });
 
-  it('should create a new lost report', async () => {
+  it('should create a new lost report and refresh lost reports', async () => {
     jest
       .spyOn(global, 'fetch')
       .mockImplementationOnce(
@@ -102,6 +96,15 @@ describe('LostReport-Hook', () => {
             ok: true,
             status: 201,
           }) as Promise<Response>,
+      )
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () =>
+              Promise.resolve([lostReportMockupData, lostReportMockupData]),
+            ok: true,
+            status: 200,
+          }) as Promise<Response>,
       );
 
     const {result} = renderHook(useLostReports, {
@@ -113,6 +116,10 @@ describe('LostReport-Hook', () => {
 
     await act(() => {
       result.current.createLostReport('dXNlcjpwYXNz', newLostReportMockupData);
+    });
+
+    await act(() => {
+      result.current.refresh();
     });
 
     expect(result.current.lostReports).toMatchObject([
