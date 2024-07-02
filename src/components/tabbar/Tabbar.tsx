@@ -16,40 +16,42 @@ import {Platform} from 'react-native';
 const Tab = createBottomTabNavigator();
 
 // defining tab bar options
-const getTabBarOptions = () => (Platform.OS === 'android' ?
-    {     tabBarActiveTintColor: 'black',
-      tabBarInactiveTintColor: 'gray',
-      tabBarHideOnKeyboard: true,
-      lazy: false,
-      tabBarStyle: {
-        backgroundColor: 'white',
-        position: 'absolute',
-        height: '10%',
-        elevation: 3,
-        borderRadius: 20,
-        borderStyle: 'solid',
-        borderWidth: 0.5,
-        borderColor: 'grey',
-        marginBottom: -15,
-      },
-    }
-    : {     tabBarActiveTintColor: 'black',
-      tabBarInactiveTintColor: 'gray',
-      tabBarHideOnKeyboard: true,
-      lazy: false,
-      tabBarStyle: {
-        backgroundColor: 'white',
-        position: 'absolute',
-        height: '12%',
-        elevation: 3,
-        borderRadius: 20,
-        borderStyle: 'solid',
-        borderWidth: 0.5,
-        borderColor: 'grey',
-        marginBottom: -15,
-      },
-    }
-);
+const getTabBarOptions = () =>
+  Platform.OS === 'android'
+    ? {
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'gray',
+        tabBarHideOnKeyboard: true,
+        lazy: false,
+        tabBarStyle: {
+          backgroundColor: 'white',
+          position: 'absolute',
+          height: '10%',
+          elevation: 3,
+          borderRadius: 20,
+          borderStyle: 'solid',
+          borderWidth: 0.5,
+          borderColor: 'grey',
+          marginBottom: -15,
+        },
+      }
+    : {
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'gray',
+        tabBarHideOnKeyboard: true,
+        lazy: false,
+        tabBarStyle: {
+          backgroundColor: 'white',
+          position: 'absolute',
+          height: '12%',
+          elevation: 3,
+          borderRadius: 20,
+          borderStyle: 'solid',
+          borderWidth: 0.5,
+          borderColor: 'grey',
+          marginBottom: -15,
+        },
+      };
 
 // const AuthAlertView = () => {
 //   return <AuthAlert textField={true} />;
@@ -62,19 +64,22 @@ const getTabBarOptions = () => (Platform.OS === 'android' ?
 function Tabbar() {
   const {isLoggedIn} = useUser();
 
-    const renderIcon = (focused, color, size, iconName, iconNameOutline) => (
-        <Ionicons
-            name={focused ? iconName : iconNameOutline}
-            size={size}
-            color={color}
-        />
-    );
+  const renderIcon = (focused, color, size, iconName, iconNameOutline) => (
+    <Ionicons
+      name={focused ? iconName : iconNameOutline}
+      size={size}
+      color={color}
+    />
+  );
 
   if (!isLoggedIn) {
     return <AuthStack />;
   }
   return (
-    <Tab.Navigator screenOptions={getTabBarOptions} initialRouteName="Start">
+    <Tab.Navigator
+      screenOptions={getTabBarOptions}
+      initialRouteName="Start"
+      testID="tabbar">
       <Tab.Screen
         name="Start"
         component={StartScreen}
@@ -88,9 +93,9 @@ function Tabbar() {
           ),
           headerShown: false,
           tabBarItemStyle: {
-              paddingBottom: 5,
-              paddingTop: 17,
-              marginBottom: 20,
+            paddingBottom: 5,
+            paddingTop: 17,
+            marginBottom: 20,
           },
         }}
       />
@@ -99,12 +104,18 @@ function Tabbar() {
         component={LostReportNavStack}
         options={{
           headerShown: false,
-          tabBarIcon: ({focused, color, size}) => (
-              renderIcon(focused, color, size, 'bag-remove', 'bag-remove-outline')),
+          tabBarIcon: ({focused, color, size}) =>
+            renderIcon(
+              focused,
+              color,
+              size,
+              'bag-remove',
+              'bag-remove-outline',
+            ),
           tabBarItemStyle: {
-              paddingBottom: 5,
-              paddingTop: 17,
-              marginBottom: 20,
+            paddingBottom: 5,
+            paddingTop: 17,
+            marginBottom: 20,
           },
         }}
       />
@@ -113,9 +124,8 @@ function Tabbar() {
         component={AddReportStack}
         options={{
           headerShown: false,
-          tabBarIcon: ({focused, color, size}) => (
-            renderIcon(focused, color, size, 'add', 'add-outline')
-          ),
+          tabBarIcon: ({focused, color, size}) =>
+            renderIcon(focused, color, size, 'add', 'add-outline'),
           tabBarItemStyle: {
             bottom: 40,
             backgroundColor: 'white',
@@ -139,13 +149,12 @@ function Tabbar() {
         component={FoundReportNavStack}
         options={{
           headerShown: false,
-          tabBarIcon: ({focused, color, size}) => (
-            renderIcon(focused, color, size, 'bag-check', 'bag-check-outline')
-          ),
+          tabBarIcon: ({focused, color, size}) =>
+            renderIcon(focused, color, size, 'bag-check', 'bag-check-outline'),
           tabBarItemStyle: {
-              paddingBottom: 5,
-              paddingTop: 17,
-              marginBottom: 20,
+            paddingBottom: 5,
+            paddingTop: 17,
+            marginBottom: 20,
           },
         }}
       />
@@ -153,14 +162,19 @@ function Tabbar() {
         name="Profil"
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
-            renderIcon(focused, color, size, 'person-circle', 'person-circle-outline')
-          ),
+          tabBarIcon: ({focused, color, size}) =>
+            renderIcon(
+              focused,
+              color,
+              size,
+              'person-circle',
+              'person-circle-outline',
+            ),
           headerShown: false,
           tabBarItemStyle: {
-              paddingBottom: 5,
-              paddingTop: 17,
-              marginBottom: 20,
+            paddingBottom: 5,
+            paddingTop: 17,
+            marginBottom: 20,
           },
         }}
       />
