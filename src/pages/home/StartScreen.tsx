@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React from 'react';
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useUser} from '../../hooks/useUser';
 import {useLostReports} from '../../hooks/useLostReports';
@@ -7,11 +7,15 @@ import CustomHeader from '../../components/CustomHeader.tsx';
 import LostReportCard from '../lost/LostReportCard.tsx';
 import {category} from '../../data/categories.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
-export default function StartScreen( {navigation}): React.JSX.Element {
+export default function StartScreen({navigation}): React.JSX.Element {
   const {isPending: isPendingUser, user} = useUser();
-  const {isPending: isPendingLostReport, lostReports, refresh} = useLostReports();
+  const {
+    isPending: isPendingLostReport,
+    lostReports,
+    refresh,
+  } = useLostReports();
   const {isPending: isPendingChat, chats} = useChat(''); // TODO: Pass userToken here
 
   const isPending = isPendingUser || isPendingLostReport || isPendingChat;
@@ -23,11 +27,6 @@ export default function StartScreen( {navigation}): React.JSX.Element {
       </View>
     );
   }
-
-  useFocusEffect(useCallback(() => {
-    if (isPending && !user) {return;}
-    refresh();
-  }, [isPending, refresh, user]));
 
   // const latestChats = useMemo(() =>
   //   chats
@@ -47,62 +46,74 @@ export default function StartScreen( {navigation}): React.JSX.Element {
   //       .slice(0, 4),
   //   [chats],
   // );
+  useFocusEffect(() => {
+    if (isPending && !user) {
+      return;
+    }
+    refresh();
+  });
 
   return (
-      <FlatList
-        key={'vertical'}
-        data={chats}
-        renderItem={null}
-        style={styles.outer}
-        ListHeaderComponent={
-          <>
-            <View style={styles.container}>
-              {isPending && <Text>Es lädt...</Text>}
-              {!isPending && (
-                <>
-                  <CustomHeader title={`Willkommen, ${user?.username}`} />
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.text}>Gesucht in deinem Umkreis</Text>
-                    <Text
-                      style={styles.text2}
-                      onPress={() => navigation.navigate('Verloren', { screen: 'LostReportScreen'})}>
-                      mehr anzeigen
-                    </Text>
-                  </View>
-                    <FlatList
-                      key={'horizontal'}
-                      horizontal
-                      style={styles.list}
-                      data={lostReports}
-                      renderItem={({item, index}) => (
-                        <LostReportCard
-                          key={index}
-                          report={item}
-                          onPress={() =>
-                            navigation.navigate('Verloren', { screen: 'SingleLostReportScreen', params:
-                                  {item: item}})
-                          }
-                          image={
-                            category.find(it => it.name === item.category.name)
-                              ?.image ?? category[category.length - 1].image
-                          }
-                        />
-                      )}
-                      keyExtractor={(item, index) => index.toString()}
+    <FlatList
+      key={'vertical'}
+      data={chats}
+      renderItem={null}
+      style={styles.outer}
+      ListHeaderComponent={
+        <>
+          <View style={styles.container}>
+            {isPending && <Text>Es lädt...</Text>}
+            {!isPending && (
+              <>
+                <CustomHeader title={`Willkommen, ${user?.username}`} />
+                <View style={styles.titleContainer}>
+                  <Text style={styles.text}>Gesucht in deinem Umkreis</Text>
+                  <Text
+                    style={styles.text2}
+                    onPress={() =>
+                      navigation.navigate('Verloren', {
+                        screen: 'LostReportScreen',
+                      })
+                    }>
+                    mehr anzeigen
+                  </Text>
+                </View>
+                <FlatList
+                  key={'horizontal'}
+                  horizontal
+                  style={styles.list}
+                  data={lostReports}
+                  renderItem={({item, index}) => (
+                    <LostReportCard
+                      key={index}
+                      report={item}
+                      onPress={() =>
+                        navigation.navigate('Verloren', {
+                          screen: 'SingleLostReportScreen',
+                          params: {item: item},
+                        })
+                      }
+                      image={
+                        category.find(it => it.name === item.category.name)
+                          ?.image ?? category[category.length - 1].image
+                      }
                     />
-                </>
-              )}
+                  )}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              </>
+            )}
+          </View>
+          <View style={styles.titleContainer3}>
+            <View style={styles.titleContainer2}>
+              <Text style={styles.text}>Deine letzten Nachrichten</Text>
+              <Text style={styles.text2}>mehr anzeigen</Text>
             </View>
-            <View style={styles.titleContainer3}>
-              <View style={styles.titleContainer2}>
-                <Text style={styles.text}>Deine letzten Nachrichten</Text>
-                <Text style={styles.text2}>mehr anzeigen</Text>
-              </View>
-              <ChatList />
-            </View>
-          </>
-        }
-      />
+            <ChatList />
+          </View>
+        </>
+      }
+    />
   );
 }
 
