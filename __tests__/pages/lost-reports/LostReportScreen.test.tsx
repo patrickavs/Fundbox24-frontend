@@ -35,7 +35,10 @@ const fakeLostReports: LostReport =
 jest.mock('@react-navigation/native', () => ({
     useNavigation: jest.fn(() => ({
         goBack: jest.fn(),
-    }),)
+    }),),
+    useFocusEffect: jest.fn(() => ({
+        useCallback: jest.fn(),
+    })),
 }));
 
 describe('LostReportScreen', () => {
@@ -45,7 +48,7 @@ describe('LostReportScreen', () => {
             lostReports: [fakeLostReports],
             error: null,
             createLostReport: (userToken: string, report: NewLostReport) => null,
-            editLostReport: (userToken: string, report: LostReport) => null
+            editLostReport: (userToken: string, report: LostReport) => null,
         }));
 
         const { getByTestId } = render(
@@ -65,7 +68,7 @@ describe('LostReportScreen', () => {
             lostReports: [fakeLostReports],
             error: null,
             createLostReport: (userToken: string, report: NewLostReport) => null,
-            editLostReport: (userToken: string, report: LostReport) => null
+            editLostReport: (userToken: string, report: LostReport) => null,
         }));
 
         const view = render(<LostReportScreen />);
@@ -89,7 +92,7 @@ describe('LostReportScreen', () => {
     // });
 
     it('should execute the onPress callback function', async () => {
-        const pressCallback = jest.fn((id: string) => { })
+        const pressCallback = jest.fn((id: string) => { });
 
         // @ts-ignore
         const view = render(<LostReportCard report={fakeLostReports} onPress={pressCallback} />);
@@ -99,6 +102,6 @@ describe('LostReportScreen', () => {
         });
 
         expect(pressCallback).toBeCalled();
-    })
+    });
 
 });

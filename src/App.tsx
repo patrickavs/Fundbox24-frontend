@@ -19,7 +19,19 @@ function App(): React.JSX.Element {
       <LostReportProvider>
         <FoundReportProvider>
           <ChatProvider>
-            <NavigationContainer theme={AuthTheme}>
+            <NavigationContainer
+              theme={{
+                ...AuthTheme,
+                dark: false,
+                colors: {
+                  ...AuthTheme.colors,
+                  primary: '',
+                  background: '',
+                  card: '',
+                  border: '',
+                  notification: '',
+                },
+              }}>
               <Tabbar />
             </NavigationContainer>
           </ChatProvider>
