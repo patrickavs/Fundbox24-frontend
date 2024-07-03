@@ -302,7 +302,7 @@ function AddReportScreen() {
                       <Ionicons name={'map'} style={styles.iconButton} testID={'collect'} />
                     </TouchableOpacity>
                   </View>
-                <Text style={{ textAlign: 'center' }}>
+                <Text style={{ textAlign: 'center'}}>
                   Nur der Umkreis des Fundortes ist in der Anzeige sichtbar.
                   Abhol- und Fundort können im Chat mit einem anfragenden Nutzer
                   freigegeben werden.
@@ -342,6 +342,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: '80%',
     alignItems: 'center',
+    elevation: 1,
+    borderColor: 'lightgray',
+    borderWidth: 0.5,
   },
   image: {
     height: 200,
@@ -358,13 +361,14 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 17,
+    color: 'black',
   },
   textInputStyle: {
     display: 'flex',
     flexDirection: 'row',
-    borderColor: 'lightgray',
-    borderWidth: 3,
     borderRadius: 8,
+    borderWidth: 2,
+    borderColor: 'lightgray',
     paddingHorizontal: 20,
     textAlign: 'left',
     fontSize: 16,
@@ -387,12 +391,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     color: 'white',
     width: 50,
+    marginTop: 20,
   },
   positionButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 30,
   },
 });
 
