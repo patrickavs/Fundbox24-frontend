@@ -145,12 +145,14 @@ function AddReportScreen() {
               : FoundReportTheme.colors.button1
           }
         />
-        <Image
+        <View style={styles.imageContainer}>
+          <Image
           borderRadius={15}
           resizeMethod={'scale'}
           source={reportImage}
-          style={styles.imageContainer}
+          style={styles.image}
         />
+        </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textStyle}>Kategorie</Text>
           <View style={{ paddingBottom: 30 }}>
@@ -312,9 +314,16 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     marginTop: 50,
-    height: 250,
-    width: 330,
     alignSelf: 'center',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 15,
+    width: '80%',
+    alignItems: 'center',
+  },
+  image: {
+    height: 200,
+    aspectRatio: 1,
   },
   inputContainer: {
     paddingTop: 40,
