@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderWidth: 3,
     borderRadius: 8,
-    padding: 10,
+    padding: 8,
+    paddingStart: 20,
   },
   placeholderStyle: {
     fontSize: 16,
