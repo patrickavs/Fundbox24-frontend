@@ -40,8 +40,9 @@ const styles = StyleSheet.create({
     width: 50,
     zIndex: 5,
     position: 'absolute',
-    top: 20,
-    right: 20,
+    top: 30,
+    right: 30,
+    elevation: 2,
   },
 });
 

@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
-    backgroundColor: 'white',    borderColor: 'lightgray',
-    borderWidth: 3,
+    backgroundColor: 'white',
+    elevation: 6,
     padding: 20,
   },
   lostReportBackgroundColor: {
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
     padding: 10,
+    elevation: 4,
     backgroundColor: FoundReportTheme.colors.button1,
   },
   title: {

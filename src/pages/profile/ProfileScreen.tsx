@@ -48,7 +48,7 @@ const ProfileStyleSheet = StyleSheet.create({
     gap: 10,
   },
   heading: {
-    fontSize: 16,
+    fontSize: 17,
   },
   switch: {
     display: 'flex',

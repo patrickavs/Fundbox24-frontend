@@ -25,7 +25,7 @@ export default function StartScreen({navigation}): React.JSX.Element {
 
   if (!isPending && !user) {
     return (
-      <View>
+      <View style={{alignItems: 'center', marginTop: '50%'}}>
         <Text>Du bist nicht angemeldet</Text>
       </View>
     );
@@ -138,6 +138,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'white',
+    paddingBottom: 20,
+    paddingLeft: 32,
     padding: 30,
     zIndex: 1,
   },
@@ -152,9 +154,11 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 0,
+    paddingLeft: 10,
+    marginRight: 15,
   },
   text: {
-    color: 'black',
+    color: '#152238',
     fontSize: 18,
   },
   text2: {
