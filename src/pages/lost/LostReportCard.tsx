@@ -32,7 +32,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1 / 2,
     padding: 10,
-    width: 200,
+    width: 175,
+    marginLeft: 2,
+    marginTop: 0,
+    margin: 1,
   },
   imageContainer: {
     display: 'flex',
@@ -41,8 +44,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     backgroundColor: 'white',
-    borderColor: 'lightgray',
-    borderWidth: 3,
+    elevation: 6,
     padding: 20,
   },
   lostReportBackgroundColor: {
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 8,
     padding: 10,
     backgroundColor: LostReportTheme.colors.secondaryAccent,
+    elevation: 4,
   },
   title: {
     color: FoundReportTheme.colors.text,

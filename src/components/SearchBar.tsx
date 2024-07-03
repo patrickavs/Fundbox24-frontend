@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 8,
     borderColor: 'lightgray',
-    borderWidth: 3,
+    borderWidth: 2,
+    elevation: 5,
   },
 });
