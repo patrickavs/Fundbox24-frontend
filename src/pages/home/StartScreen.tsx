@@ -46,12 +46,10 @@ export default function StartScreen({navigation}): React.JSX.Element {
   //       .slice(0, 4),
   //   [chats],
   // );
-  useFocusEffect(() => {
-    if (isPending && !user) {
-      return;
-    }
-    refresh();
-  });
+  if (isPending && !user) {
+    return <Text>Lade ...</Text>;
+  }
+  refresh();
 
   return (
     <FlatList
