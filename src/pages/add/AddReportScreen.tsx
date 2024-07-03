@@ -266,7 +266,7 @@ function AddReportScreen() {
                       //@ts-ignore
                       navigation.navigate('Map')
                   } >
-                    <Ionicons name={'map'} style={styles.iconButton} />
+                    <Ionicons name={'map'} style={styles.iconButton} testID={'map'} />
                   </TouchableOpacity>
                 </View>
                 <CustomButton
@@ -288,7 +288,7 @@ function AddReportScreen() {
                             //@ts-ignore
                             navigation.navigate('Map')
                         } >
-                      <Ionicons name={'map'} style={styles.iconButton} />
+                      <Ionicons name={'map'} style={styles.iconButton} testID={'found'} />
                     </TouchableOpacity>
                   </View>
                   <View style={styles.positionButtonContainer}>
@@ -299,7 +299,7 @@ function AddReportScreen() {
                             //@ts-ignore
                             navigation.navigate('Map')
                         } >
-                      <Ionicons name={'map'} style={styles.iconButton} />
+                      <Ionicons name={'map'} style={styles.iconButton} testID={'collect'} />
                     </TouchableOpacity>
                   </View>
                 <Text style={{ textAlign: 'center' }}>
