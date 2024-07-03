@@ -157,7 +157,7 @@ function AddReportScreen() {
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textStyle}>Kategorie</Text>
-          <View style={{ paddingBottom: 30 }}>
+          <View style={{ paddingBottom: 20 }}>
             <Dropdown
               items={categories}
               placeholder={category[0].name}
