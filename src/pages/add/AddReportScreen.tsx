@@ -271,7 +271,7 @@ function AddReportScreen() {
                   backgroundColor={
                     LostReportTheme.colors.button
                   }
-                  fontSize={14}
+                  fontSize={16}
                 />
               </>
             ) : (
@@ -304,12 +304,12 @@ function AddReportScreen() {
                   freigegeben werden.
                 </Text>
                 <CustomButton
-                  label={'Fundanzeige erstellen'}
+                  label={'Fundanzeige speichern'}
                   onPress={handleSubmit}
                   backgroundColor={
                     FoundReportTheme.colors.button2
                   }
-                  fontSize={14}
+                  fontSize={16}
                 />
               </View>
             )}
