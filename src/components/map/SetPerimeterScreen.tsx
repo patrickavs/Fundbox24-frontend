@@ -76,7 +76,7 @@ export default function SetPerimeterScreen({navigation}): React.JSX.Element {
           <Text style={styles.diameterText}>{getFormattedDiameter()}</Text>
           <Text style={styles.diameterLabel}>Umkreis</Text>
         </View>
-        <Slider value={0.5} onValueChange={value => onChangeRadius(value[0])} />
+        <Slider value={0} onValueChange={value => onChangeRadius(value[0])} />
           <TouchableOpacity
               style={styles.iconButtonContainer}
               onPress={() =>

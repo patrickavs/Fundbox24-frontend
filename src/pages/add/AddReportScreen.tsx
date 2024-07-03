@@ -94,6 +94,9 @@ function AddReportScreen() {
     }
   };
 
+  // TODO: check if title and description are not empty
+  // TODO: limit date and time to current date-time
+
   const handleSubmit = async () => {
     const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
     const isoDate = utcDate.toISOString();
@@ -128,6 +131,7 @@ function AddReportScreen() {
         reportType === 'lost'
           ? createLostReport(token, newReport as NewLostReport)
           : createFoundReport(token, newReport as NewFoundReport);
+        navigation.popToTop();
       }
     } catch (sendError) {
       console.error('Error creating report:', sendError);
