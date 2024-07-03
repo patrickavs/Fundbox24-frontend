@@ -25,7 +25,7 @@ export default function StartScreen({navigation}): React.JSX.Element {
 
   if (!isPending && !user) {
     return (
-      <View>
+      <View style={{alignItems: 'center', marginTop: '50%'}}>
         <Text>Du bist nicht angemeldet</Text>
       </View>
     );
