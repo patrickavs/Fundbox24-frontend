@@ -54,12 +54,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   dropdown: {
-    height: 65,
+    height: 55,
     borderColor: 'lightgray',
     borderWidth: 2,
     borderRadius: 8,
     padding: 8,
     paddingStart: 20,
+    marginTop: 0,
   },
   placeholderStyle: {
     fontSize: 16,

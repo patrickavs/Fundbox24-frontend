@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: AuthTheme.colors.accentPrimary,
     paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingVertical: 1.5,
     borderRadius: 8,
     borderColor: 'lightgray',
     borderWidth: 2,
