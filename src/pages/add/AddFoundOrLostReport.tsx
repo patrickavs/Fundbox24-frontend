@@ -43,18 +43,6 @@ const AddFoundOrLostReport = () => {
       </Text>
       <View style={styles.buttonContainer}>
         <CustomButton
-          label={'Fundanzeige'}
-          onPress={() =>
-            // @ts-ignore
-            navigation.navigate('NewReport', {
-              reportType: 'found',
-              fetchedCategories: allCategories,
-            })
-          }
-          fontSize={17}
-          backgroundColor={FoundReportTheme.colors.button2}
-        />
-        <CustomButton
           label={'Suchanzeige'}
           onPress={() =>
             // @ts-ignore
@@ -65,6 +53,18 @@ const AddFoundOrLostReport = () => {
           }
           fontSize={17}
           backgroundColor={LostReportTheme.colors.button}
+        />
+        <CustomButton
+            label={'Fundanzeige'}
+            onPress={() =>
+                // @ts-ignore
+                navigation.navigate('NewReport', {
+                  reportType: 'found',
+                  fetchedCategories: allCategories,
+                })
+            }
+            fontSize={17}
+            backgroundColor={FoundReportTheme.colors.button2}
         />
       </View>
     </View>

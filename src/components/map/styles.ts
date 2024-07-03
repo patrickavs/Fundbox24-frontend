@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {LostReportTheme} from '../../constants/theme';
 
 const styles = StyleSheet.create({
   diameterLabel: {
@@ -21,7 +22,26 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   marginToTabBar: {
-    marginBottom: 50,
+    marginBottom: 80,
+  },
+  iconButton: {
+    margin: 5,
+    padding: 4,
+    color: 'black',
+    borderRadius: 10,
+    fontSize: 30,
+    fontWeight: 'bolder',
+    alignSelf: 'center',
+  },
+  iconButtonContainer: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    color: 'white',
+    width: 50,
+    zIndex: 5,
+    position: 'absolute',
+    top: 20,
+    right: 20,
   },
 });
 

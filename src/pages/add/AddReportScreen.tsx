@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
+  TextInput, TouchableOpacity,
   View,
 } from 'react-native';
 import CustomHeader from '../../components/CustomHeader.tsx';
@@ -27,6 +27,8 @@ import eventEmitter from '../../components/eventEmitter.ts';
 import { category } from '../../data/categories.ts';
 import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
+import VectorImage from 'react-native-vector-image';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function AddReportScreen() {
   const route = useRoute<any>();
@@ -92,6 +94,9 @@ function AddReportScreen() {
     }
   };
 
+  // TODO: check if title and description are not empty
+  // TODO: limit date and time to current date-time
+
   const handleSubmit = async () => {
     const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
     const isoDate = utcDate.toISOString();
@@ -126,6 +131,7 @@ function AddReportScreen() {
         reportType === 'lost'
           ? createLostReport(token, newReport as NewLostReport)
           : createFoundReport(token, newReport as NewFoundReport);
+        navigation.popToTop();
       }
     } catch (sendError) {
       console.error('Error creating report:', sendError);
@@ -145,15 +151,17 @@ function AddReportScreen() {
               : FoundReportTheme.colors.button1
           }
         />
-        <Image
+        <View style={styles.imageContainer}>
+          <Image
           borderRadius={15}
           resizeMethod={'scale'}
           source={reportImage}
-          style={styles.imageContainer}
+          style={styles.image}
         />
+        </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textStyle}>Kategorie</Text>
-          <View style={{ paddingBottom: 30 }}>
+          <View style={{ paddingBottom: 20 }}>
             <Dropdown
               items={categories}
               placeholder={category[0].name}
@@ -177,9 +185,11 @@ function AddReportScreen() {
               testID={'dropdown'}
             />
           </View>
+          <Text style={styles.textStyle}>Beschreibung</Text>
           <TextInput
             style={styles.textInputStyle}
             placeholder={'Bezeichnung des Gegenstandes'}
+            placeholderTextColor={'gray'}
             onChangeText={(text: string) => {
               setReportName(text);
             }}
@@ -187,8 +197,10 @@ function AddReportScreen() {
             value={reportName}
           />
           <TextInput
-            style={styles.textInputStyle}
+            style={[styles.textInputStyle, styles.textInputMultiline]}
             multiline={true}
+            numberOfLines={7}
+            placeholderTextColor={'gray'}
             placeholder={'Beschreibung des Gegenstandes'}
             onChangeText={(text: string) => {
               setReportDescription(text);
@@ -197,32 +209,15 @@ function AddReportScreen() {
             value={reportDescription}
           />
           {reportType === 'lost' ? (
-            <View
-              style={{
-                alignItems: 'center',
-                gap: 15,
-              }}>
-              <Text style={{ fontSize: 16 }}>Zuletzt gesehen am:</Text>
-              <View style={{ gap: 5 }}>
-                <DatePicker
-                  is24hourSource={'locale'}
-                  locale={'de'}
-                  date={date}
-                  onDateChange={setDate}
-                  mode="datetime"
-                />
+            <View>
+              <View style={{ alignItems: 'left' }}>
+                <Text style={styles.textStyle}>Zuletzt gesehen am:</Text>
               </View>
-            </View>
-          ) : (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                position: 'static',
-              }}>
-              <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: 10 }}>
-                <Text style={{ fontSize: 17 }}>Gefunden am:{'\n'}</Text>
+              <View
+                style={{
+                  alignItems: 'center',
+                  gap: 15,
+                }}>
                 <View style={{ gap: 5 }}>
                   <DatePicker
                     is24hourSource={'locale'}
@@ -234,62 +229,91 @@ function AddReportScreen() {
                 </View>
               </View>
             </View>
+          ) : (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                position: 'static',
+              }}>
+              <View>
+                <View style={{ alignItems: 'left' }}>
+                  <Text style={styles.textStyle}>Gefunden am:</Text>
+                </View>
+                <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: 10 }}>
+                <View style={{ gap: 5 }}>
+                  <DatePicker
+                    is24hourSource={'locale'}
+                    locale={'de'}
+                    date={date}
+                    onDateChange={setDate}
+                    mode="datetime"
+                  />
+                </View>
+              </View>
+            </View>
+            </View>
           )}
           <View style={styles.buttonContainer}>
             {reportType === 'lost' ? (
               <>
-                <CustomButton
-                  label={'Letzte bekannte Position angeben'}
-                  onPress={() =>
-                    //@ts-ignore
-                    navigation.navigate('Map')
-                  }
-                  backgroundColor={LostReportTheme.colors.secondaryBackground}
-                  fontSize={14}
-                />
+                <View style={styles.positionButtonContainer}>
+                  <Text style={styles.textStyle}>Letzte bekannte Position:</Text>
+                  <TouchableOpacity
+                      style={styles.button2}
+                      onPress={() =>
+                      //@ts-ignore
+                      navigation.navigate('Map')
+                  } >
+                    <Ionicons name={'map'} style={styles.iconButton} testID={'map'} />
+                  </TouchableOpacity>
+                </View>
                 <CustomButton
                   label={'Suchanzeige speichern'}
                   onPress={handleSubmit}
                   backgroundColor={
-                    LostReportTheme.colors.secondaryBackground
+                    LostReportTheme.colors.button
                   }
-                  fontSize={14}
+                  fontSize={16}
                 />
               </>
             ) : (
               <View style={{ gap: 20 }}>
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                  }}>
-                  <CustomButton
-                    label={'Fundort angeben'}
-                    //@ts-ignore
-                    onPress={() => navigation.navigate('Map')}
-                    backgroundColor={FoundReportTheme.colors.button2}
-                    fontSize={14}
-                  />
-                  <CustomButton
-                    label={'Abholort angeben'}
-                    //@ts-ignore
-                    onPress={() => navigation.navigate('Map')}
-                    backgroundColor={FoundReportTheme.colors.button2}
-                    fontSize={14}
-                  />
-                </View>
+                  <View style={styles.positionButtonContainer}>
+                    <Text style={styles.textStyle}>Fundort des Gegenstands:</Text>
+                    <TouchableOpacity
+                        style={[styles.button2, { backgroundColor: FoundReportTheme.colors.button2 }]}
+                        onPress={() =>
+                            //@ts-ignore
+                            navigation.navigate('Map')
+                        } >
+                      <Ionicons name={'map'} style={styles.iconButton} testID={'found'} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.positionButtonContainer}>
+                    <Text style={styles.textStyle}>Ort der Abholung:</Text>
+                    <TouchableOpacity
+                        style={[styles.button2, { backgroundColor: FoundReportTheme.colors.button2 }]}
+                        onPress={() =>
+                            //@ts-ignore
+                            navigation.navigate('Map')
+                        } >
+                      <Ionicons name={'map'} style={styles.iconButton} testID={'collect'} />
+                    </TouchableOpacity>
+                  </View>
                 <Text style={{ textAlign: 'center' }}>
                   Nur der Umkreis des Fundortes ist in der Anzeige sichtbar.
                   Abhol- und Fundort können im Chat mit einem anfragenden Nutzer
                   freigegeben werden.
                 </Text>
                 <CustomButton
-                  label={'Fundanzeige erstellen'}
+                  label={'Fundanzeige speichern'}
                   onPress={handleSubmit}
                   backgroundColor={
                     FoundReportTheme.colors.button2
                   }
-                  fontSize={14}
+                  fontSize={16}
                 />
               </View>
             )}
@@ -312,9 +336,16 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     marginTop: 50,
-    height: 250,
-    width: 330,
     alignSelf: 'center',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 15,
+    width: '80%',
+    alignItems: 'center',
+  },
+  image: {
+    height: 200,
+    aspectRatio: 1,
   },
   inputContainer: {
     paddingTop: 40,
@@ -332,9 +363,36 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     borderColor: 'lightgray',
-    borderWidth: 1,
+    borderWidth: 3,
     borderRadius: 8,
-    paddingHorizontal: 60,
+    paddingHorizontal: 20,
+    textAlign: 'left',
+    fontSize: 16,
+  },
+  textInputMultiline: {
+    height: 150,
+    textAlignVertical: 'top',
+    marginBottom: 20,
+  },
+  iconButton: {
+    margin: 5,
+    padding: 8,
+    color: 'white',
+    borderRadius: 10,
+    fontSize: 20,
+    alignSelf: 'center',
+  },
+  button2: {
+    backgroundColor: LostReportTheme.colors.button,
+    borderRadius: 10,
+    color: 'white',
+    width: 50,
+  },
+  positionButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
 });
 

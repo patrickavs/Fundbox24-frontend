@@ -1,14 +1,15 @@
 import React from 'react';
 import MapView, { Circle, LatLng } from 'react-native-maps';
-import { Text, View } from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import { Slider } from '@miblanchard/react-native-slider';
 import mapConstants from '../../constants/map.ts';
 import styles from './styles.ts';
 import eventEmitter from '../eventEmitter.ts';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const numberFormat = Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
 
-export default function SetPerimeterScreen(): React.JSX.Element {
+export default function SetPerimeterScreen({navigation}): React.JSX.Element {
   const [position, setPosition] = React.useState<LatLng>(
     mapConstants.initialMapPosition,
   );
@@ -75,7 +76,15 @@ export default function SetPerimeterScreen(): React.JSX.Element {
           <Text style={styles.diameterText}>{getFormattedDiameter()}</Text>
           <Text style={styles.diameterLabel}>Umkreis</Text>
         </View>
-        <Slider value={0.5} onValueChange={value => onChangeRadius(value[0])} />
+        <Slider value={0} onValueChange={value => onChangeRadius(value[0])} />
+          <TouchableOpacity
+              style={styles.iconButtonContainer}
+              onPress={() =>
+                  //@ts-ignore
+                  navigation.goBack()
+              } >
+              <Ionicons name={'checkmark-outline'} style={styles.iconButton} />
+          </TouchableOpacity>
       </View>
     </View>
   );
