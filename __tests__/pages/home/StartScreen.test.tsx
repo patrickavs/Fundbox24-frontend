@@ -1,5 +1,5 @@
 import 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {act, render, screen, waitFor} from '@testing-library/react-native';
 import {expect, it, jest, describe} from '@jest/globals';
 import StartScreen from '../../../src/pages/home/StartScreen.tsx';
@@ -50,7 +50,7 @@ const fakeLostReports: LostReport[] = [
 ];
 
 jest.mock('@react-navigation/native', () => ({
-  useFocusEffect: jest.fn(),
+  useEffect: jest.fn(),
   useUser: jest.fn(),
   useLostReports: jest.fn(),
   useChat: jest.fn(),
@@ -83,6 +83,7 @@ describe('StartScreen', () => {
       editUser: (u: Partial<User>) => Promise.resolve(),
       isLoggedIn: false,
       login: (email: string, password: string) => Promise.resolve(),
+      refreshUser: () => Promise.resolve(),
       logout: () => Promise.resolve(),
       register: (userData: any) => Promise.resolve(),
     }));
@@ -139,6 +140,7 @@ describe('StartScreen', () => {
       editUser: (u: Partial<User>) => Promise.resolve(),
       isLoggedIn: true,
       login: (email: string, password: string) => Promise.resolve(),
+      refreshUser: () => Promise.resolve(),
       logout: () => Promise.resolve(),
       register: (userData: any) => Promise.resolve(),
     }));
@@ -156,6 +158,7 @@ describe('StartScreen', () => {
     (useUser as jest.Mock).mockReturnValue({
       isPending: false,
       user: {username: 'TestUser'},
+      refreshUser: () => Promise.resolve(),
     });
     (useLostReports as jest.Mock).mockReturnValue({
       isPending: false,
@@ -164,17 +167,7 @@ describe('StartScreen', () => {
     });
     (useChat as jest.Mock).mockReturnValue({isPending: false, chats: []});
 
-    let focusEffectCallback: any;
-    (useFocusEffect as jest.Mock).mockImplementation(callback => {
-      focusEffectCallback = callback;
-    });
-
     render(<StartScreen navigation={{navigate: jest.fn()}} />);
-
-    // FocusEffect simulieren
-    await act(async () => {
-      if (focusEffectCallback) focusEffectCallback();
-    });
 
     expect(refreshMock).toHaveBeenCalled();
   });

@@ -1,4 +1,4 @@
-import { RegisterUserCredentials, User } from '../types/user';
+import {RegisterUserCredentials, User} from '../types/user';
 import {
   createContext,
   ReactNode,
@@ -8,7 +8,7 @@ import {
   useState,
   useTransition,
 } from 'react';
-import { LOGIN_URL, REGISTER_URL, USER_URL } from '../routes';
+import {LOGIN_URL, REGISTER_URL, USER_URL} from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useStorage from './useStorage';
 
@@ -16,6 +16,7 @@ type UserContextType = {
   isPending: boolean;
   user: User | null;
   editUser: (u: Partial<User>) => Promise<void>;
+  refreshUser: () => void;
   isLoggedIn: boolean;
   login: (email: string, password: string) => void;
   logout: () => Promise<void>;
@@ -32,24 +33,31 @@ export function useUser() {
   return context;
 }
 
-export function UserProvider({ children }: { children: ReactNode }) {
+export function UserProvider({children}: {children: ReactNode}) {
   const [user, setUser] = useStorage<User | null>('user-crendentials', null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  useEffect(() => {
-    async function checkSavedBasicAuthCredentials() {
-      const basicAuthCredentials = await AsyncStorage?.getItem(
-        'basicAuthCredentials',
-      );
-
-      if (!basicAuthCredentials) {
+  const refreshUser = () => {
+    checkSavedBasicAuthCredentials().then(credentials => {
+      if (!credentials) {
         return;
       }
+      startTransition(() => {
+        fetch(USER_URL, {
+          method: 'get',
+          headers: {
+            Authorization: `Basic ${credentials}`,
+          },
+        })
+          .then(response => response.json())
+          .then(setUser)
+          .catch(console.log);
+      });
+    });
+  };
 
-      return loginWithBasicAuth(basicAuthCredentials);
-    }
-
+  useEffect(() => {
     checkSavedBasicAuthCredentials().then(credentials => {
       if (!credentials) {
         return;
@@ -67,6 +75,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
       });
     });
   }, []);
+
+  async function checkSavedBasicAuthCredentials() {
+    const basicAuthCredentials = await AsyncStorage?.getItem(
+      'basicAuthCredentials',
+    );
+
+    if (!basicAuthCredentials) {
+      return;
+    }
+
+    return loginWithBasicAuth(basicAuthCredentials);
+  }
 
   async function login(email: string, password: string) {
     // Credentials as Base64
@@ -86,7 +106,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   ): Promise<string> {
     const response = await fetch(LOGIN_URL, {
       method: 'POST',
-      headers: { Authorization: `Basic ${basicAuthCredentials}` },
+      headers: {Authorization: `Basic ${basicAuthCredentials}`},
     });
 
     if (response.ok) {
@@ -127,7 +147,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
           .then(response => response.json())
           .then(async response => {
             await login(response.email, userCredentials.password);
-            return { ...response, password: userCredentials.password };
+            return {...response, password: userCredentials.password};
           })
           .then(setUser)
           .catch(error => console.log(error));
@@ -142,6 +162,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         isPending,
         user: user,
         editUser,
+        refreshUser,
         isLoggedIn,
         login,
         logout,

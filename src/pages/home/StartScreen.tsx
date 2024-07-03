@@ -1,5 +1,5 @@
-import React from 'react';
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useUser} from '../../hooks/useUser';
 import {useLostReports} from '../../hooks/useLostReports';
 import {useChat} from '../../hooks/useChat';
@@ -7,10 +7,9 @@ import CustomHeader from '../../components/CustomHeader.tsx';
 import LostReportCard from '../lost/LostReportCard.tsx';
 import {category} from '../../data/categories.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
-import {useFocusEffect} from '@react-navigation/native';
 
 export default function StartScreen({navigation}): React.JSX.Element {
-  const {isPending: isPendingUser, user} = useUser();
+  const {isPending: isPendingUser, refreshUser, user} = useUser();
   const {
     isPending: isPendingLostReport,
     lostReports,
@@ -19,6 +18,10 @@ export default function StartScreen({navigation}): React.JSX.Element {
   const {isPending: isPendingChat, chats} = useChat(''); // TODO: Pass userToken here
 
   const isPending = isPendingUser || isPendingLostReport || isPendingChat;
+
+  useEffect(() => {
+    refreshUser();
+  }, []);
 
   if (!isPending && !user) {
     return (
@@ -53,6 +56,7 @@ export default function StartScreen({navigation}): React.JSX.Element {
 
   return (
     <FlatList
+      refreshing
       key={'vertical'}
       data={chats}
       renderItem={null}
