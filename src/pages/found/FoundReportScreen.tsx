@@ -84,10 +84,11 @@ const styles = StyleSheet.create({
     marginBottom: 200,
   },
   text: {
-    color: 'black',
-    marginTop: 40,
-    marginBottom: 20,
-    fontSize: 17,
+      color: '#152238',
+      marginTop: 40,
+      marginBottom: 20,
+      marginLeft: 15,
+      fontSize: 17,
   },
   scrollContainer: {
     padding: 20,

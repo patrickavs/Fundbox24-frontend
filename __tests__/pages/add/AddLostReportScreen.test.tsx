@@ -78,6 +78,7 @@ describe('AddReportScreen lost', () => {
             isPending: false,
             foundReports: [fakeFoundReport],
             error: null,
+            refresh: () => Promise.resolve(),
             createFoundReport: mockCreateFoundReport,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
@@ -86,6 +87,7 @@ describe('AddReportScreen lost', () => {
             isPending: false,
             lostReports: [fakeLostReports],
             error: null,
+            refresh: () => Promise.resolve(),
             createLostReport: mockCreateLostReport,
             editLostReport: (userToken: string, report: LostReport) => null,
         }));
@@ -141,8 +143,11 @@ describe('AddReportScreen lost', () => {
             expect(view.queryByText('Original Category')).toBeNull();
         });
 
+
+        expect(view.getByText('Letzte bekannte Position:')).toBeTruthy();
+
         await act(async () => {
-            fireEvent.press(view.getByText('Letzte bekannte Position angeben'));
+            fireEvent.press(view.getByTestId('map'));
         });
 
         await waitFor(() => {

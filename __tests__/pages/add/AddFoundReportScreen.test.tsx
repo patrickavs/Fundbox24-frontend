@@ -83,6 +83,7 @@ describe('AddReportScreen found', () => {
       isPending: false,
       foundReports: [fakeFoundReport],
       error: null,
+      refresh: () => Promise.resolve(),
       createFoundReport: mockCreateFoundReport,
       editFoundReport: (userToken: string, report: FoundReport) => null,
     }));
@@ -91,6 +92,7 @@ describe('AddReportScreen found', () => {
       isPending: false,
       lostReports: [fakeLostReports],
       error: null,
+      refresh: () => Promise.resolve(),
       createLostReport: mockCreateLostReport,
       editLostReport: (userToken: string, report: LostReport) => null,
     }));
@@ -116,7 +118,7 @@ describe('AddReportScreen found', () => {
     expect(view.getByTestId('input-description').props.value).toBe('Ein Buch');
 
     await act(async () => {
-      fireEvent.press(view.getByText('Fundanzeige erstellen'));
+      fireEvent.press(view.getByText('Fundanzeige speichern'));
     });
 
     await waitFor(() => {
@@ -146,8 +148,11 @@ describe('AddReportScreen found', () => {
       expect(view.queryByText('Original Category')).toBeNull();
     });
 
+    expect(view.getByText('Fundort des Gegenstands:')).toBeTruthy();
+    expect(view.getByText('Ort der Abholung:')).toBeTruthy();
+
     await act(async () => {
-      fireEvent.press(view.getByText('Fundort angeben'));
+      fireEvent.press(view.getByTestId('found'));
     });
 
     await waitFor(() => {
@@ -155,7 +160,7 @@ describe('AddReportScreen found', () => {
     });
 
     await act(async () => {
-      fireEvent.press(view.getByText('Abholort angeben'));
+      fireEvent.press(view.getByTestId('collect'));
     });
 
     await waitFor(() => {

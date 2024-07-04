@@ -35,11 +35,14 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
         longitude: item.lostLocation.longitude,
     });
 
+    const [radius, setRadius] = React.useState<number>(item.lostRadius ?? 1);
+
+
     useEffect(() => {
         setPosition(item.lostLocation as LatLng);
-    }, [item, position]);
+        setRadius(item.lostRadius);
+    }, [item, position, radius]);
 
-    const [radius] = React.useState<number>(1000);
 
     const navigateToChat = () => {
         console.log('navigate to chat');
@@ -73,8 +76,8 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
                         style={styles.map}
                         initialRegion={{
                             ...position,
-                            latitudeDelta: 0.035,
-                            longitudeDelta: 0.035}}>
+                            latitudeDelta: 0.06,
+                            longitudeDelta: 0.06}}>
                         <Circle
                             center={position}
                             radius={radius}

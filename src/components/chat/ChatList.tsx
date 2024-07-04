@@ -6,24 +6,24 @@ function ChatList() {
   const [chats, setChats] = useState([
     {
       id: '1',
-      name: 'John Doe',
+      name: 'Toby Matthews',
       avatarUri: 'https://randomuser.me/api/portraits/men/36.jpg',
       lastMessage:
-        'Hey, how are you? I was in Istanbul last week and wanted to show you some great pics',
+        'Super, vielen Dank! Ich bin so froh, dass er gefunden wurde.',
       timestamp: '10:00 AM',
     },
     {
       id: '2',
-      name: 'Jane Smith',
+      name: 'Beth Smith',
       avatarUri: 'exame.com/avatar2.jpg',
-      lastMessage: 'Just checking in!',
+      lastMessage: 'Die Farbe ist etwas ausgewaschen. Es sieht fast aus wie Pink.',
       timestamp: 'Yesterday',
     },
     {
       id: '3',
-      name: 'Group Chat',
+      name: 'Rick Sanchez',
       avatarUri: 'hiahe',
-      lastMessage: 'New message from Alice!',
+      lastMessage: 'Hey, ich glaube, ich habe deine Tasche gefunden. Kannst du mal schauen?',
       timestamp: '2 days ago',
     },
     {
@@ -31,21 +31,21 @@ function ChatList() {
       name: 'John Doe',
       avatarUri: 'https://randomuser.me/api/portraits/men/36.jpg',
       lastMessage:
-        'Hey, how are you? I was in Istanbul last week and wanted to show you some great pics',
+        'Great! I will be there in 10 minutes. Can you please wait for me?',
       timestamp: '10:00 AM',
     },
     {
       id: '5',
       name: 'Jane Smith',
       avatarUri: 'exame.com/avatar2.jpg',
-      lastMessage: 'Just checking in!',
+      lastMessage: 'Does the bag have a red stripe on the side?',
       timestamp: 'Yesterday',
     },
     {
       id: '6',
       name: 'Group Chat',
       avatarUri: 'hiahe',
-      lastMessage: 'New message from Alice!',
+      lastMessage: 'Yes, that is mine! Thank you so much for finding it!',
       timestamp: '2 days ago',
     },
     {
@@ -53,21 +53,21 @@ function ChatList() {
       name: 'John Doe',
       avatarUri: 'https://randomuser.me/api/portraits/men/36.jpg',
       lastMessage:
-        'Hey, how are you? I was in Istanbul last week and wanted to show you some great pics',
+        'You can pick it up at the post office at this address. I will leave it there for you.',
       timestamp: '10:00 AM',
     },
     {
       id: '8',
       name: 'Jane Smith',
       avatarUri: 'exame.com/avatar2.jpg',
-      lastMessage: 'Just checking in!',
+      lastMessage: 'Great! I will pick it up tomorrow. Thank you so much!',
       timestamp: 'Yesterday',
     },
     {
       id: '9',
       name: 'Group Chat',
       avatarUri: 'hiahe',
-      lastMessage: 'New message from Alice!',
+      lastMessage: 'My pleasure! Have a great day!',
       timestamp: '2 days ago',
     },
     {
@@ -75,7 +75,7 @@ function ChatList() {
       name: 'John Doe',
       avatarUri: 'https://randomuser.me/api/portraits/men/36.jpg',
       lastMessage:
-        'Hey, how are you? I was in Istanbul last week and wanted to show you some great pics',
+        'Can you tell me the name on the credit card inside the wallet?',
       timestamp: '10:00 AM',
     },
     {

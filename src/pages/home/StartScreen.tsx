@@ -1,5 +1,5 @@
-import React from 'react';
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useUser} from '../../hooks/useUser';
 import {useLostReports} from '../../hooks/useLostReports';
 import {useChat} from '../../hooks/useChat';
@@ -7,10 +7,9 @@ import CustomHeader from '../../components/CustomHeader.tsx';
 import LostReportCard from '../lost/LostReportCard.tsx';
 import {category} from '../../data/categories.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
-import {useFocusEffect} from '@react-navigation/native';
 
 export default function StartScreen({navigation}): React.JSX.Element {
-  const {isPending: isPendingUser, user} = useUser();
+  const {isPending: isPendingUser, refreshUser, user} = useUser();
   const {
     isPending: isPendingLostReport,
     lostReports,
@@ -20,9 +19,13 @@ export default function StartScreen({navigation}): React.JSX.Element {
 
   const isPending = isPendingUser || isPendingLostReport || isPendingChat;
 
+  useEffect(() => {
+    refreshUser();
+  }, []);
+
   if (!isPending && !user) {
     return (
-      <View>
+      <View style={{alignItems: 'center', marginTop: '50%'}}>
         <Text>Du bist nicht angemeldet</Text>
       </View>
     );
@@ -46,15 +49,14 @@ export default function StartScreen({navigation}): React.JSX.Element {
   //       .slice(0, 4),
   //   [chats],
   // );
-  useFocusEffect(() => {
-    if (isPending && !user) {
-      return;
-    }
-    refresh();
-  });
+  if (isPending && !user) {
+    return <Text>Lade ...</Text>;
+  }
+  refresh();
 
   return (
     <FlatList
+      refreshing
       key={'vertical'}
       data={chats}
       renderItem={null}
@@ -136,6 +138,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'white',
+    paddingBottom: 20,
+    paddingLeft: 32,
     padding: 30,
     zIndex: 1,
   },
@@ -150,9 +154,11 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 0,
+    paddingLeft: 10,
+    marginRight: 15,
   },
   text: {
-    color: 'black',
+    color: '#152238',
     fontSize: 18,
   },
   text2: {
