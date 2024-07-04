@@ -24,12 +24,14 @@ useFocusEffect(useCallback(() => {
       />
       <ScrollView style={styles.scrollContainer}>
         <SearchBar
+          testID={'search-bar-found'}
           onChangeText={text => {
             console.log('Benutzer sucht nach: ' + text);
           }}
         />
         <View style={styles.dropdownContainer}>
           <Dropdown
+            testID={'sort-dropdown-found'}
             placeholder="Sortieren"
             items={[
               {label: 'Alphabetisch', value: 'alphabetical'},
@@ -41,6 +43,7 @@ useFocusEffect(useCallback(() => {
             }}
           />
           <Dropdown
+            testID={'filter-dropdown-found'}
             placeholder="Filtern"
             items={[
               {label: 'Nur mein Heimatumkreis', value: 'in my region'},

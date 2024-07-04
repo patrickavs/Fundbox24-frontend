@@ -5,6 +5,7 @@ import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
 import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
 import SingleFoundReportScreen from '../../../src/pages/found/SingleFoundReportScreen';
+import { Chat } from '../../../src/types/chat.ts';
 
 const fakeFoundReport: FoundReport =
 {
@@ -27,6 +28,7 @@ const fakeFoundReport: FoundReport =
         image: '',
     },
     isFinished: false,
+    imagePath: '',
     myChats: [],
 };
 
@@ -53,7 +55,7 @@ jest.mock('@react-navigation/native', () => ({
                     image: '',
                 },
                 isFinished: false,
-                myChats: [],
+                myChats: [] as Chat[],
             } },
         key: '',
         name: '',
@@ -67,6 +69,7 @@ describe('FoundReportScreen', () => {
             isPending: false,
             foundReports: [fakeFoundReport],
             error: null,
+            refresh: () => Promise.resolve(),
             createFoundReport: (userToken: string, report: NewFoundReport) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
@@ -85,6 +88,7 @@ describe('FoundReportScreen', () => {
             isPending: false,
             foundReports: [fakeFoundReport],
             error: null,
+            refresh: () => Promise.resolve(),
             createFoundReport: (userToken: string, report: NewFoundReport) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));

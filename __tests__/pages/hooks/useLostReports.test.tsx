@@ -42,6 +42,7 @@ const newLostReportMockupData: NewLostReport = {
   },
   lostRadius: 20,
   categoryId: 1,
+  myChats: [],
   isFinished: false,
   imagePath: '',
 };
