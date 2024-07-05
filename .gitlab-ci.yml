@@ -39,7 +39,7 @@ deploy-job: # This job runs only on main branch.
   image: node:22-alpine3.19
   only:
     - main
-    - developer
+    - develop
   before_script:
     - npm i
     - wget https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_linux-x64_bin.tar.gz
