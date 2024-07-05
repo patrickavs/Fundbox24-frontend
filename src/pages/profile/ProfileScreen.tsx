@@ -36,7 +36,7 @@ const ProfileStyleSheet = StyleSheet.create({
   },
   switchy: {
     margin: 5,
-    marginTop: -30,
+    marginTop: -29,
   },
   container: {
     paddingHorizontal: 25,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ToastAndroid, View } from 'react-native';
+import {Image, StyleSheet, Text, ToastAndroid, View} from 'react-native';
 import CustomButton from '../../components/CustomButton.tsx';
 import { useNavigation } from '@react-navigation/native';
 import CustomDivider from '../../components/CustomDivider.tsx';
@@ -38,10 +38,11 @@ const AddFoundOrLostReport = () => {
         <View style={styles.outerContainer}>
             <View style={styles.container}>
                 <Text style={styles.header}>Neuen Gegenstand anlegen</Text>
-                <CustomDivider width={'90%'} height={1} />
+                <Image style={styles.img} source={require('../../assets/images/givingBack.jpg')} />
                 <Text style={styles.text}>
-                    {'Wähle die Art der Anzeige die du erstellen\n möchtest'}
+                    {'Wähle die Art der Anzeige die\n du erstellen möchtest'}
                 </Text>
+                <CustomDivider width={'90%'} height={1} />
                 <View style={styles.buttonContainer}>
                     <CustomButton
                         label={'Suchanzeige'}
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         padding: 40,
+        marginTop: -30,
         paddingBottom: 20,
         borderRadius: 20,
         backgroundColor: '#fbfbfb',
@@ -98,6 +100,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 20,
         marginTop: 30,
+    },
+    img: {
+        width: 300,
+        height: 250,
+        borderRadius: 15,
     },
     header: {
         fontSize: 18,
