@@ -3,7 +3,6 @@ import {describe, expect, it, jest} from '@jest/globals';
 import {fireEvent, render} from '@testing-library/react-native';
 import SingleLostReportScreen from '../../../src/pages/lost/SingleLostReportScreen';
 import {Location} from '../../../src/types/location';
-import {Category} from '../../../src/types/category';
 import {Chat} from '../../../src/types/chat';
 import {act} from 'react-test-renderer';
 import { LostReport, NewLostReport } from '../../../src/types/report-lost';
@@ -16,7 +15,7 @@ const fakeLostReport: LostReport = {
     lastSeenDate: '2024-06-19T13:13:01.905005',
     lostLocation: {latitude: 0, longitude: 0} as Location,
     lostRadius: 10,
-    category: {id: 1, name: 'Test Category', image: 'test.jpg'} as Category,
+    categoryId: 1,
     lastSeenLocation: {latitude: 0, longitude: 0} as Location,
     myChats: [] as Chat[],
     isFinished: false,

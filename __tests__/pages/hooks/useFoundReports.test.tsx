@@ -133,7 +133,7 @@ describe('FoundReport-Hook', () => {
     jest.spyOn(global, 'fetch').mockImplementationOnce(
       () =>
         Promise.resolve({
-          json: () => Promise.resolve({message: 'Error creating report'}),
+          json: () => Promise.resolve('Error creating report'),
           ok: false,
           status: 400,
         }) as Promise<Response>,

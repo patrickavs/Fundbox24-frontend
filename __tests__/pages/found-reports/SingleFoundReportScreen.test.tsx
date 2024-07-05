@@ -2,7 +2,6 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { describe, expect, it, jest } from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
-import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
 import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
 import SingleFoundReportScreen from '../../../src/pages/found/SingleFoundReportScreen';
 import { Chat } from '../../../src/types/chat.ts';
@@ -21,12 +20,7 @@ const fakeFoundReport: FoundReport =
         longitude: 9.993682,
     },
     foundDate: new Date(Date.now()).toLocaleTimeString(),
-    category: {
-        id: '1',
-        value: '',
-        name: 'Schlüssel',
-        image: '',
-    },
+    categoryId: 1,
     isFinished: false,
     imagePath: '',
     myChats: [],
