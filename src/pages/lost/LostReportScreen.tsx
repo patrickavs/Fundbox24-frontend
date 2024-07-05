@@ -71,7 +71,7 @@ function LostReportScreen(): React.JSX.Element {
                 navigation.navigate('SingleLostReportScreen', {item: item})
               }
               image={
-                category.find(it => it.id === item.categoryId)?.image ??
+                category.find(it => it.name === item.category.name)?.image ??
                 category[category.length - 1].image
               }
             />

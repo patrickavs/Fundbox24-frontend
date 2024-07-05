@@ -5,9 +5,7 @@ import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
 import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
 import FoundReportCard from '../../../src/pages/found/FoundReportCard';
-import * as LostReportHook from '../../../src/hooks/useLostReports.tsx';
-import { LostReport, NewLostReport } from '../../../src/types/report-lost.ts';
-import LostReportScreen from '../../../src/pages/lost/LostReportScreen.tsx';
+import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
 
 const fakeFoundReport: FoundReport =
 {
@@ -24,7 +22,7 @@ const fakeFoundReport: FoundReport =
     },
     foundDate: new Date(Date.now()).toLocaleTimeString(),
     category: {
-        id: '1',
+        id: 1,
         value: '',
         name: 'Schlüssel',
         image: '',
@@ -51,7 +49,7 @@ describe('FoundReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
@@ -81,7 +79,7 @@ describe('FoundReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
@@ -100,7 +98,7 @@ describe('FoundReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
@@ -124,7 +122,7 @@ describe('FoundReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
@@ -148,7 +146,7 @@ describe('FoundReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
@@ -163,7 +161,7 @@ describe('FoundReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 

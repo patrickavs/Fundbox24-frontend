@@ -12,6 +12,7 @@ import {NewMessage} from '../../../src/types/message.ts';
 import {useUser} from '../../../src/hooks/useUser.tsx';
 import {useLostReports} from '../../../src/hooks/useLostReports.tsx';
 import {useChat} from '../../../src/hooks/useChat.tsx';
+import { LostReportRequest } from '../../../src/types/report-lost-request.ts';
 
 const userData: User = {
   id: '1',
@@ -36,7 +37,12 @@ const fakeLostReports: LostReport[] = [
       longitude: 9.993682,
     },
     lostRadius: 100,
-    categoryId: 1,
+    category: {
+      id: 1,
+      value: '',
+      name: 'Schlüssel',
+      image: '',
+    },
     myChats: [],
     isFinished: false,
     imagePath: '',
@@ -66,7 +72,7 @@ describe('StartScreen', () => {
       isPending: false,
       lostReports: fakeLostReports,
       error: null,
-      createLostReport: (userToken: string, report: NewLostReport) => null,
+      createLostReport: (userToken: string, report: LostReportRequest) => null,
       editLostReport: (userToken: string, report: LostReport) => null,
       refresh: () => null,
     }));
@@ -112,7 +118,7 @@ describe('StartScreen', () => {
       isPending: false,
       lostReports: fakeLostReports,
       error: null,
-      createLostReport: (userToken: string, report: NewLostReport) => null,
+      createLostReport: (userToken: string, report: LostReportRequest) => null,
       editLostReport: (userToken: string, report: LostReport) => null,
       refresh: () => null,
     }));

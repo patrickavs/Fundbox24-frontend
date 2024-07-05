@@ -1,9 +1,7 @@
-import {Category} from './category';
 import {Location} from './location.ts';
 import {Chat} from './chat.ts';
 
-export type LostReport = {
-  id: string;
+export type LostReportRequest = {
   title: string;
   description: string;
   isFinished: boolean;
@@ -12,10 +10,6 @@ export type LostReport = {
   lastSeenLocation: Location;
   lostLocation: Location;
   lostRadius: number;
-  category: Category;
-  //placeOfDiscovery: string;
-  //placeOfDelivery?: string;
+  categoryId: number;
   myChats: Chat[];
 };
-
-export type NewLostReport = Omit<LostReport, 'id'>;
