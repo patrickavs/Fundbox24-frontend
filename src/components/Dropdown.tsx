@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Dropdown as ReactNativeDropdown } from 'react-native-element-dropdown';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Dropdown as ReactNativeDropdown} from 'react-native-element-dropdown';
 
 type DropdownItem = {
   label: string;
@@ -12,7 +12,6 @@ type DropdownProps = {
   placeholder?: string;
   items: DropdownItem[];
   onChange: (item: DropdownItem) => void;
-  testID?: string
 };
 
 function Dropdown(props: DropdownProps) {
@@ -22,7 +21,6 @@ function Dropdown(props: DropdownProps) {
   return (
     <View style={styles.container}>
       <ReactNativeDropdown
-        testID={props.testID}
         style={[styles.dropdown, isFocus ? styles.focus : null]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
