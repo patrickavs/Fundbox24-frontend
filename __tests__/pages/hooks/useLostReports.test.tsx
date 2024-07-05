@@ -5,7 +5,6 @@ import {
   LostReportProvider,
   useLostReports,
 } from '../../../src/hooks/useLostReports';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LostReport, NewLostReport} from '../../../src/types/report-lost';
 
 const lostReportMockupData: LostReport = {
