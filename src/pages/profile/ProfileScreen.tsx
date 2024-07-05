@@ -25,6 +25,18 @@ const ProfileStyleSheet = StyleSheet.create({
   },
   label: {
     color: 'black',
+    padding: 8,
+  },
+  switch: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 5,
+  },
+  switchy: {
+    margin: 5,
+    marginTop: -30,
   },
   container: {
     paddingHorizontal: 25,
@@ -35,13 +47,6 @@ const ProfileStyleSheet = StyleSheet.create({
   },
   heading: {
     fontSize: 17,
-  },
-  switch: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    paddingVertical: 5,
   },
   buttonContainer: {
     display: 'flex',
@@ -100,7 +105,7 @@ function ProfileScreen(): React.JSX.Element {
             <Switch
               value={settings.sound}
               onChange={event =>
-                setSettings({ ...settings, sound: !settings.sound })
+              setSettings({ ...settings, sound: !settings.sound })
               }
             />
           </View>
@@ -117,6 +122,7 @@ function ProfileScreen(): React.JSX.Element {
         <View style={ProfileStyleSheet.input}>
           <Text style={ProfileStyleSheet.label}>Standort verwenden</Text>
           <Switch
+            style={ProfileStyleSheet.switchy}
             value={settings.location}
             onChange={event =>
               setSettings({ ...settings, location: !settings.location })
