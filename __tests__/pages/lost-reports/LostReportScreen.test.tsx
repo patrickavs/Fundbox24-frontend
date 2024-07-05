@@ -5,7 +5,6 @@ import * as LostReportHook from '../../../src/hooks/useLostReports';
 import {LostReport, NewLostReport} from '../../../src/types/report-lost';
 import LostReportScreen from '../../../src/pages/lost/LostReportScreen';
 import LostReportCard from '../../../src/pages/lost/LostReportCard';
-import { Image } from 'react-native';
 
 const fakeLostReports: LostReport = {
   id: '1',
@@ -21,12 +20,9 @@ const fakeLostReports: LostReport = {
     longitude: 9.993682,
   },
   lostRadius: 100,
-  category: {
-    id: '1',
-    value: '',
-    name: 'Schlüssel',
-    image: '',
-  },
+  categoryId: 1,
+  isFinished: false,
+  imagePath: '',
   myChats: [],
 };
 
@@ -186,7 +182,7 @@ describe('LostReportScreen', () => {
 
     // @ts-ignore
     const view = render(
-      <LostReportCard report={fakeLostReports} onPress={pressCallback} />,
+      <LostReportCard report={fakeLostReports} onPress={pressCallback} image={0}/>,
     );
 
     await act(() => {
