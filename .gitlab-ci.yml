@@ -3,19 +3,19 @@ default:
     - docker
     - typescript
 
-stages:          # List of stages for jobs, and their order of execution
+stages: # List of stages for jobs, and their order of execution
   - build
   - test
   - deploy
 
-build-job:       # This job runs in every branch.
+build-job: # This job runs in every branch.
   stage: build
   image: node:22-alpine3.19
   script:
     - npm i
 
-ui-test-job:   # This job runs only on main and develop branch.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+ui-test-job: # This job runs only on main and develop branch.
+  stage: test # It only starts when the job in the build stage completes successfully.
   image: node:22-alpine3.19
   only:
     - main
@@ -24,7 +24,7 @@ ui-test-job:   # This job runs only on main and develop branch.
     - npm i
   script:
     - npm run test:ci
-  coverage:  /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     paths:
       - coverage/
@@ -32,3 +32,21 @@ ui-test-job:   # This job runs only on main and develop branch.
     reports:
       junit:
         - junit.xml
+
+deploy-job: # This job runs only on main branch.
+  stage: deploy
+  image: node:22-alpine3.19
+  only:
+    - main
+  before_script:
+    - wget https://download.java.net/java/GA/jdk21.0.1/713526d4f6f34c618f48c5e85c3e2324/9/GPL/openjdk-21.0.1_linux-x64_bin.tar.gz
+    - tar -xvf openjdk-21.0.1_linux-x64_bin.tar.gz
+    - export JAVA_HOME=$PWD/jdk-21.0.1
+    - npm i
+  script:
+    - cd android
+    - ./gradlew assembleDebug
+  artifacts:
+    paths:
+      - android/app/build/outputs/apk/debug/app-debug.apk
+    expire_in: 1 week
