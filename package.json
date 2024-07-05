@@ -27,7 +27,7 @@
     "react-native": "0.74.0",
     "react-native-bouncy-checkbox": "^4.0.1",
     "react-native-config": "^1.5.1",
-    "react-native-date-picker": "^5.0.2",
+    "react-native-date-picker": "https://github.com/tim-w97/react-native-date-picker.git",
     "react-native-element-dropdown": "^2.10.4",
     "react-native-elements": "^3.4.3",
     "react-native-maps": "^1.13.0",

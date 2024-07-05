@@ -7,7 +7,8 @@ export type FoundReport = {
   title: string;
   description: string;
   isFinished: boolean;
-  category: Category;
+  imagePath: string;
+  categoryId: number;
   foundDate: string;
   foundLocation: Location;
   currentLocation: Location;

@@ -7,13 +7,14 @@ import React, {
   useState,
   useTransition,
 } from 'react';
-import { ALL_LOST_REPORTS_URL, LOSTREPORT_URL } from '../routes';
+import { ALL_LOST_REPORTS_URL, CREATE_LOSTREPORT_URL, LOSTREPORT_URL } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LostReportContextType = {
   isPending: boolean;
   lostReports: Array<LostReport>;
   setLostReports: React.Dispatch<React.SetStateAction<Array<LostReport>>>;
+  refresh: () => void,
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   createLostReport: (userToken: string, report: NewLostReport) => void;
@@ -26,11 +27,12 @@ const LostReportContext = createContext<LostReportContextType>(
 );
 
 export function useLostReports() {
-  const context = useContext(LostReportContext)
+  const context = useContext(LostReportContext);
   const {
     isPending,
     startTransition,
     lostReports,
+    refresh,
     setLostReports,
     setError,
     createLostReport,
@@ -73,7 +75,7 @@ export function useLostReports() {
     });
   }, [startTransition, setLostReports, setError]);
 
-  return { isPending, lostReports, error, createLostReport, editLostReport };
+  return { isPending, lostReports, error, createLostReport, editLostReport, refresh };
 }
 
 export function LostReportProvider({ children }: { children: React.ReactNode }) {
@@ -81,14 +83,45 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  const refresh = useCallback(() => {
+      startTransition(() => {
+        AsyncStorage?.getItem('basicAuthCredentials').then(
+          basicAuthCredentials => {
+            if (!basicAuthCredentials) {
+              throw 'No Basic Auth Header! Please login.';
+            }
+
+            fetch(ALL_LOST_REPORTS_URL, {
+              method: 'GET',
+              headers: {
+                Authorization: `Basic ${basicAuthCredentials}`,
+              },
+            })
+              .then(async response => {
+                const data = await response.json();
+                if (response.status === 200) {
+                  setLostReports(data);
+                } else {
+                  setError(data);
+                }
+              })
+              .catch(fetchError => {
+                console.log(fetchError);
+              });
+          },
+        );
+      });
+    }, []
+  );
+
   const createLostReport = useCallback(
     (userToken: string, report: NewLostReport) => {
-      fetch(LOSTREPORT_URL(), {
+      fetch(CREATE_LOSTREPORT_URL(), {
         method: 'POST',
         body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userToken}`,
+          Authorization: `Basic ${userToken}`,
         },
       })
         .then(async response => {
@@ -111,7 +144,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
         body: JSON.stringify(report),
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userToken}`,
+          Authorization: `Basic ${userToken}`,
         },
       })
         .then(async response => {
@@ -135,6 +168,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
       value={{
         isPending,
         lostReports,
+        refresh: refresh,
         setLostReports: setLostReports,
         error,
         setError,

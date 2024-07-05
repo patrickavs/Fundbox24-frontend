@@ -1,71 +1,84 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import {describe, expect, it, jest} from '@jest/globals';
+import {fireEvent, render} from '@testing-library/react-native';
 import SingleLostReportScreen from '../../../src/pages/lost/SingleLostReportScreen';
-import { useRoute } from '@react-navigation/native';
 import {Location} from '../../../src/types/location';
-import {Category} from '../../../src/types/category';
 import {Chat} from '../../../src/types/chat';
-import {expect} from '@jest/globals';
+import {act} from 'react-test-renderer';
+import { LostReport, NewLostReport } from '../../../src/types/report-lost';
+import * as LostReportHook from '../../../src/hooks/useLostReports';
+
+const fakeLostReport: LostReport = {
+    id: '2',
+    title: 'Test Lost Item',
+    description: 'blablabla',
+    lastSeenDate: '2024-06-19T13:13:01.905005',
+    lostLocation: {latitude: 0, longitude: 0} as Location,
+    lostRadius: 10,
+    categoryId: 1,
+    lastSeenLocation: {latitude: 0, longitude: 0} as Location,
+    myChats: [] as Chat[],
+    isFinished: false,
+    imagePath: '',
+};
 
 jest.mock('@react-navigation/native', () => ({
-    useRoute: jest.fn(),
-    useNavigation: jest.fn(() => ({ navigate: jest.fn(), goBack: jest.fn(), setOptions: jest.fn() })),
+    useNavigation: jest.fn(),
+    useRoute: jest.fn(() => ({params: {item: fakeLostReport, key: '', name: ''}})),
 }));
 
-test('renders correctly with route params', () => {
-    const mockRouteParams = {
-        item: {
-            id: 2,
-            title: 'Test Lost Item',
-            description: 'blablabla',
-            lastSeenDate: '2024-06-19T13:13:01.905005',
-            lostLocation: {latitude: 0, longitude: 0} as Location,
-            lostRadius: 10,
-            category: {id: 1, name: 'Test Category', image: 'test.jpg'} as Category,
-            lastSeenLocation: {latitude: 0, longitude: 0} as Location,
-            myChats: [] as Chat[],
-        },
-    };
+describe('SingleLostReportScreen',() => {
+    it('renders correctly with route params',async () => {
+        jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
+            isPending: false,
+            lostReports: [fakeLostReport],
+            error: null,
+            refresh: () => Promise.resolve(),
+            createLostReport: (userToken: string, report: NewLostReport) => null,
+            editLostReport: (userToken: string, report: LostReport) => null,
+        }));
 
-    (useRoute as jest.Mock).mockReturnValue({ params: mockRouteParams });
+        const navigation = {
+            setOptions: jest.fn(),
+        };
 
-    const { getByText } = render(<SingleLostReportScreen navigation={{}} />);
+        const { getByText } = render(<SingleLostReportScreen navigation={navigation} />);
 
-    expect(getByText('Test Lost Item')).toBeTruthy();
-});
-
-
-/*import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import { useRoute } from '@react-navigation/native';
-import {describe, expect} from '@jest/globals';
-import SingleLostReportScreen from '../../../src/pages/lost/SingleLostReportScreen';
-import {Location} from '../../../src/types/location';
-import {Category} from '../../../src/types/category';
-import {Chat} from '../../../src/types/chat';
-
-
-describe('renders correctly with route params', () => {
-    const routeParams = { item: { id: 2,
-            title: 'Test Lost Item',
-            description: 'blablabla',
-            lastSeenDate: '2024-06-19T13:13:01.905005',
-            lostLocation: {latitude: 0, longitude: 0} as Location,
-            lostRadius: 10,
-            category: {id: 1, name: 'Test Category', image: 'test.jpg'} as Category,
-            placeOfDiscovery: 'Test Place',
-            placeOfDelivery: {latitude: 0, longitude: 0} as Location,
-            myChats: [] as Chat[],
-        },
-    };
-
-    jest.spyOn(require('@react-navigation/native'), 'useRoute').mockReturnValue({
-        params: routeParams,
+        expect(getByText('Test Lost Item')).toBeTruthy();
     });
 
-    const { getByText } = render(<SingleLostReportScreen />);
+    it('should call navigateToChat when chat-buttons clicked', async () => {
+        jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
+            isPending: false,
+            lostReports: [fakeLostReport],
+            error: null,
+            refresh: () => Promise.resolve(),
+            createLostReport: (userToken: string, report: NewLostReport) => null,
+            editLostReport: (userToken: string, report: LostReport) => null,
+        }));
 
-    expect(getByText('Test Lost Item')).toBeTruthy();
+        const navigation = {
+            setOptions: jest.fn(),
+            popToTop: jest.fn(),
+        };
+
+        const view = render(<SingleLostReportScreen navigation={navigation} />);
+
+        await act(async () => {
+            fireEvent.press(view.getByTestId('chat-button-1'));
+        });
+
+        // TODO: change after implementing navigate to chat
+        expect(navigation.popToTop).toBeCalled();
+
+        await act(async () => {
+            fireEvent.press(view.getByTestId('chat-button-2'));
+        });
+
+        // TODO: change after implementing navigate to chat
+        expect(navigation.popToTop).toBeCalledTimes(2);
+    });
 });
 
-*/
+
+
