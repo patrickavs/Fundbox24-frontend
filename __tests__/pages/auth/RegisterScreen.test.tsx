@@ -122,6 +122,7 @@ describe('RegisterScreen', () => {
       user: null,
       editUser: jest.fn(async (userData: Partial<User>) => {}),
       isLoggedIn: false,
+      refreshUser: () => Promise.resolve(),
       login: jest.fn(async (email: string, password: string) => {}),
       logout: jest.fn(async () => {}),
       register: jest.fn(async (userData: any) => {

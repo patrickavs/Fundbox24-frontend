@@ -96,7 +96,7 @@ export default function StartScreen({navigation}): React.JSX.Element {
                         })
                       }
                       image={
-                        category.find(it => it.name === item.category.name)
+                        category.find(it => it.id === item.categoryId)
                           ?.image ?? category[category.length - 1].image
                       }
                     />

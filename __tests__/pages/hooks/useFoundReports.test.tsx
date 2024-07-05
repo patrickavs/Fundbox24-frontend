@@ -5,7 +5,6 @@ import {
   FoundReportProvider,
   useFoundReports,
 } from '../../../src/hooks/useFoundReports';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FoundReport, NewFoundReport} from '../../../src/types/report-found';
 
 const foundReportMockupData: FoundReport = {
@@ -28,7 +27,6 @@ const foundReportMockupData: FoundReport = {
 };
 
 const newFoundReportMockupData: NewFoundReport = {
-  id: 3,
   title: 'du da',
   description: 'Super duper Sache',
   isFinished: false,
@@ -42,6 +40,7 @@ const newFoundReportMockupData: NewFoundReport = {
   },
   foundDate: new Date().toLocaleDateString(),
   categoryId: 1,
+  myChats: [],
   imagePath: '',
 };
 
@@ -134,7 +133,7 @@ describe('FoundReport-Hook', () => {
     jest.spyOn(global, 'fetch').mockImplementationOnce(
       () =>
         Promise.resolve({
-          json: () => Promise.resolve({message: 'Error creating report'}),
+          json: () => Promise.resolve('Error creating report'),
           ok: false,
           status: 400,
         }) as Promise<Response>,
