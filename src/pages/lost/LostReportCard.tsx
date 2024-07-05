@@ -1,9 +1,10 @@
 import React from 'react';
 
-import {Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {LostReport} from '../../types/report-lost.ts';
-import {FoundReportTheme, LostReportTheme} from '../../constants/theme.ts';
+import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { LostReport } from '../../types/report-lost.ts';
+import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import moment from 'moment';
+import { category } from '../../data/categories.ts';
 
 type ReportCardProps = {
   report: LostReport;
@@ -12,18 +13,19 @@ type ReportCardProps = {
 };
 
 export default function LostReportCard(props: ReportCardProps) {
+  const matchedCategory = category.find(c => c.id === props.report.categoryId);
   return (
     <View key={props.report.id} style={styles.container}>
-      <TouchableOpacity onPress={() => props.onPress(props.report.id)}>
+      <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID="report-card-press">
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={props.image} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
-          <Text style={styles.text} numberOfLines={1}>{props.report.description}</Text>
+          <Text style={styles.text} numberOfLines={1}>{matchedCategory?.name || 'Default'}</Text>
           <Text style={styles.text} numberOfLines={1}>{moment(props.report.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
         </View>
-        </TouchableOpacity>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -32,15 +34,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1 / 2,
     padding: 10,
-    width: 200,
+    width: 175,
+    marginLeft: 2,
+    marginTop: 0,
+    margin: 1,
   },
   imageContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 8,
-    borderColor: 'lightgray',
-    borderWidth: 3,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    backgroundColor: 'white',
+    elevation: 6,
     padding: 20,
   },
   lostReportBackgroundColor: {
@@ -54,6 +60,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 8,
     padding: 10,
     backgroundColor: LostReportTheme.colors.secondaryAccent,
+    elevation: 4,
   },
   title: {
     color: FoundReportTheme.colors.text,

@@ -30,6 +30,7 @@ export default function CustomButton({
         borderRadius: 10,
         marginBottom: 30,
         minWidth: 140,
+          elevation: 4,
       }}>
       <Text
         style={{

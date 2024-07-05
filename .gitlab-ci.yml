@@ -4,16 +4,20 @@ default:
     - typescript
 
 stages: # List of stages for jobs, and their order of execution
+stages: # List of stages for jobs, and their order of execution
   - build
   - test
   - deploy
 
+build-job: # This job runs in every branch.
 build-job: # This job runs in every branch.
   stage: build
   image: node:22-alpine3.19
   script:
     - npm i
 
+ui-test-job: # This job runs only on main and develop branch.
+  stage: test # It only starts when the job in the build stage completes successfully.
 ui-test-job: # This job runs only on main and develop branch.
   stage: test # It only starts when the job in the build stage completes successfully.
   image: node:22-alpine3.19
@@ -25,10 +29,12 @@ ui-test-job: # This job runs only on main and develop branch.
   script:
     - npm run test:ci
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     paths:
       - coverage/
     when: always # TODO: Lookup
+    expire_in: 1 week
     reports:
       junit:
         - junit.xml

@@ -1,18 +1,21 @@
 import React from 'react';
-import MapView, {Circle, LatLng} from 'react-native-maps';
-import {Text, View} from 'react-native';
-import {Slider} from '@miblanchard/react-native-slider';
+import MapView, { Circle, LatLng } from 'react-native-maps';
+import {Text, TouchableOpacity, View} from 'react-native';
+import { Slider } from '@miblanchard/react-native-slider';
 import mapConstants from '../../constants/map.ts';
 import styles from './styles.ts';
+import eventEmitter from '../eventEmitter.ts';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const numberFormat = Intl.NumberFormat('de-DE', {maximumFractionDigits: 1});
+const numberFormat = Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
 
-export default function SetPerimeterScreen(): React.JSX.Element {
+export default function SetPerimeterScreen({navigation}): React.JSX.Element {
   const [position, setPosition] = React.useState<LatLng>(
     mapConstants.initialMapPosition,
   );
 
   const [radius, setRadius] = React.useState<number>(mapConstants.minRadius);
+  //const [locationName, setLocationName] = React.useState<string>('');
 
   function getFormattedDiameter(): string {
     const radiusInKM = radius / 1000;
@@ -25,10 +28,29 @@ export default function SetPerimeterScreen(): React.JSX.Element {
       sliderValue * (mapConstants.maxRadius - mapConstants.minRadius);
 
     setRadius(newRadius);
+    eventEmitter.emit('reportRadiusChange', newRadius);
   }
 
-  function onChangePosition(newPosition: LatLng) {
+  async function onChangePosition(newPosition: LatLng) {
     setPosition(newPosition);
+    eventEmitter.emit('reportPositionChange', newPosition);
+
+    /*try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${newPosition.latitude}&lon=${newPosition.longitude}&format=json`);
+      const data = await response.json();
+
+      if (data && data.address) {
+        const { city, town, village, hamlet, locality } = data.address;
+        const name = city || town || village || hamlet || locality || 'Kein Ort gefunden';
+        setLocationName(name);
+        eventEmitter.emit('reportLocationNameChange', locationName);
+      } else {
+        setLocationName('Kein Ort gefunden');
+      }
+    } catch (error) {
+      console.error(error);
+      setLocationName('Fehler beim Abrufen des Ortsnamens');
+    }*/
   }
 
   return (
@@ -54,7 +76,15 @@ export default function SetPerimeterScreen(): React.JSX.Element {
           <Text style={styles.diameterText}>{getFormattedDiameter()}</Text>
           <Text style={styles.diameterLabel}>Umkreis</Text>
         </View>
-        <Slider value={0.5} onValueChange={value => onChangeRadius(value[0])} />
+        <Slider value={0} onValueChange={value => onChangeRadius(value[0])} />
+          <TouchableOpacity
+              style={styles.iconButtonContainer}
+              onPress={() =>
+                  //@ts-ignore
+                  navigation.goBack()
+              } >
+              <Ionicons name={'checkmark-outline'} style={styles.iconButton} />
+          </TouchableOpacity>
       </View>
     </View>
   );

@@ -8,6 +8,7 @@ function CustomHeader({
 }: {
   title: string;
   backgroundColor?: string;
+  isSmall?: boolean;
 }): React.JSX.Element {
   return (
     <>

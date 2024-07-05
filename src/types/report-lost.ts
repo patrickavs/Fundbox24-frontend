@@ -6,13 +6,15 @@ export type LostReport = {
   id: string;
   title: string;
   description: string;
+  isFinished: boolean;
+  imagePath: string;
   lastSeenDate: string;
   lastSeenLocation: Location;
   lostLocation: Location;
   lostRadius: number;
-  category: Category;
-  placeOfDiscovery: string;
-  placeOfDelivery?: string;
+  categoryId: number;
+  //placeOfDiscovery: string;
+  //placeOfDelivery?: string;
   myChats: Chat[];
 };
 

@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, {useCallback} from 'react';
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useLostReports} from '../../hooks/useLostReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
@@ -8,11 +7,17 @@ import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import LostReportCard from './LostReportCard.tsx';
 import {category} from '../../data/categories';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 function LostReportScreen(): React.JSX.Element {
-  const {lostReports} = useLostReports();
+  const {lostReports, refresh} = useLostReports();
   const navigation = useNavigation();
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh]),
+  );
 
   return (
     <View testID={'lost-report-screen'}>
@@ -25,10 +30,12 @@ function LostReportScreen(): React.JSX.Element {
           onChangeText={text => {
             console.log('Benutzer sucht nach: ' + text);
           }}
+          testID="search-bar"
         />
         <View style={styles.dropdownContainer}>
           <Dropdown
             placeholder="Sortieren"
+            testID="sort-dropdown"
             items={[
               {label: 'Alphabetisch', value: 'alphabetical'},
               {label: 'Zuletzt gesehen', value: 'last seen'},
@@ -40,6 +47,7 @@ function LostReportScreen(): React.JSX.Element {
           />
           <Dropdown
             placeholder="Filtern"
+            testID="filter-dropdown"
             items={[
               {label: 'Nur mein Heimatumkreis', value: 'in my region'},
               {label: 'Nur heute', value: 'only today'},
@@ -63,7 +71,7 @@ function LostReportScreen(): React.JSX.Element {
                 navigation.navigate('SingleLostReportScreen', {item: item})
               }
               image={
-                category.find(it => it.name === item.category.name)?.image ??
+                category.find(it => it.id === item.categoryId)?.image ??
                 category[category.length - 1].image
               }
             />
@@ -84,9 +92,10 @@ const styles = StyleSheet.create({
     marginBottom: 200,
   },
   text: {
-    color: 'black',
+    color: '#152238',
     marginTop: 40,
     marginBottom: 20,
+    marginLeft: 15,
     fontSize: 17,
   },
   scrollContainer: {

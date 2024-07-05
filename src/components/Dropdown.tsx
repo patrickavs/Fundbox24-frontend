@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Dropdown as ReactNativeDropdown} from 'react-native-element-dropdown';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Dropdown as ReactNativeDropdown } from 'react-native-element-dropdown';
 
 type DropdownItem = {
   label: string;
@@ -11,6 +11,7 @@ type DropdownProps = {
   style?: any;
   placeholder?: string;
   items: DropdownItem[];
+  testID: string;
   onChange: (item: DropdownItem) => void;
 };
 
@@ -25,6 +26,7 @@ function Dropdown(props: DropdownProps) {
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
+        testID={props.testID}
         data={props.items}
         search
         labelField="label"
@@ -52,11 +54,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   dropdown: {
-    height: 65,
+    height: 55,
     borderColor: 'lightgray',
-    borderWidth: 3,
+    borderWidth: 2,
     borderRadius: 8,
-    padding: 10,
+    padding: 8,
+    paddingStart: 20,
+    marginTop: 0,
   },
   placeholderStyle: {
     fontSize: 16,
