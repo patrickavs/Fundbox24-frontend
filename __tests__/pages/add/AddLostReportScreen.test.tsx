@@ -151,7 +151,7 @@ describe('AddReportScreen lost', () => {
         });
 
         await waitFor(() => {
-            expect(mockedNavigate).toHaveBeenCalledWith('Map');
+            expect(mockedNavigate).toHaveBeenCalledWith('Map', {'type': 'lost'});
         });
     });
 });

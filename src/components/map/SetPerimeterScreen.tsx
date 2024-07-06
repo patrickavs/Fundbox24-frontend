@@ -6,10 +6,13 @@ import mapConstants from '../../constants/map.ts';
 import styles from './styles.ts';
 import eventEmitter from '../eventEmitter.ts';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useRoute } from '@react-navigation/native';
 
 const numberFormat = Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
 
 export default function SetPerimeterScreen({navigation}): React.JSX.Element {
+  const route = useRoute<any>();
+  const { type } = route.params;
   const [position, setPosition] = React.useState<LatLng>(
     mapConstants.initialMapPosition,
   );
@@ -33,7 +36,13 @@ export default function SetPerimeterScreen({navigation}): React.JSX.Element {
 
   async function onChangePosition(newPosition: LatLng) {
     setPosition(newPosition);
-    eventEmitter.emit('reportPositionChange', newPosition);
+    if(type === 'found') {
+      eventEmitter.emit('foundReportPositionChange', newPosition);
+    } else if (type === 'collect') {
+      eventEmitter.emit('collectReportPositionChange', newPosition);
+    } else if (type === 'lost') {
+      eventEmitter.emit('lostReportPositionChange', newPosition);
+    }
 
     /*try {
       const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${newPosition.latitude}&lon=${newPosition.longitude}&format=json`);

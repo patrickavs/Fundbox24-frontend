@@ -156,7 +156,7 @@ describe('AddReportScreen found', () => {
     });
 
     await waitFor(() => {
-      expect(mockedNavigate).toHaveBeenCalledWith('Map');
+      expect(mockedNavigate).toHaveBeenCalledWith('Map', {'type': 'found'});
     });
 
     await act(async () => {
@@ -164,7 +164,7 @@ describe('AddReportScreen found', () => {
     });
 
     await waitFor(() => {
-      expect(mockedNavigate).toHaveBeenCalledWith('Map');
+      expect(mockedNavigate).toHaveBeenCalledWith('Map', {'type': 'collect'});
     });
   });
 });
