@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useFoundReports} from '../../hooks/useFoundReports';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import {FoundReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
@@ -8,13 +7,49 @@ import Dropdown from '../../components/Dropdown.tsx';
 import FoundReportCard from './FoundReportCard.tsx';
 import {category} from '../../data/categories';
 import { useFocusEffect } from '@react-navigation/native';
+import {ALL_FOUND_REPORTS_URL} from '../../routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function FoundReportScreen({navigation}): React.JSX.Element {
-  const {foundReports, refresh} = useFoundReports();
 
-useFocusEffect(useCallback(() => {
-  refresh();
-}, [refresh]));
+  const [foundReports, setFoundReports] = useState([]);
+  const [query, setQuery] = useState('');
+  const [sort, setSort] = useState('');
+  //const [foundReports, setFoundReports] = useState([]);
+
+  const fetchURL = async (queryString:string, sortString:string):Promise<void> => {
+      let auth = await AsyncStorage?.getItem('basicAuthCredentials');
+      if (!auth) {throw 'No Basic Auth Credentials! Please login.';}
+
+      const response:Response = await fetch(ALL_FOUND_REPORTS_URL + '?q=' + queryString + '&sort=' + sortString, {
+          method: 'GET',
+          headers: {
+              Authorization: `Basic ${auth}`,
+          },
+      });
+
+      let data;
+      try{
+          data = await response.json();
+          if (response.status === 200) {setFoundReports(data);}
+          else {throw 'Error fetching found reports: ' + data + ' with status code ' + response.status + '!';}
+      } catch(error) {
+          console.log(error);
+      }
+  };
+
+  useEffect(() => {
+      fetchURL(query, sort);
+  }, [query, sort]);
+
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchURL(query, sort);
+    }, [query, sort]),
+  );
+
+
 
   return (
     <View>
@@ -26,7 +61,7 @@ useFocusEffect(useCallback(() => {
         <SearchBar
           testID={'search-bar-found'}
           onChangeText={text => {
-            console.log('Benutzer sucht nach: ' + text);
+            setQuery(text);
           }}
         />
         <View style={styles.dropdownContainer}>
@@ -35,16 +70,15 @@ useFocusEffect(useCallback(() => {
             placeholder="Sortieren"
             items={[
               {label: 'Alphabetisch', value: 'alphabetical'},
-              {label: 'Zuletzt gesehen', value: 'last seen'},
-              {label: 'Entfernung', value: 'distance'},
+              {label: 'Funddatum', value: 'found-date'},
             ]}
             onChange={item => {
-              console.log('Benutzer hat sortiert nach: ' + item.value);
+              setSort(item.value);
             }}
           />
           <Dropdown
             testID={'filter-dropdown-found'}
-            placeholder="Filtern"
+            placeholder="Kategorie"
             items={[
               {label: 'Nur mein Heimatumkreis', value: 'in my region'},
               {label: 'Nur heute', value: 'only today'},

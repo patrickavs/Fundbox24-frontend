@@ -100,9 +100,9 @@ function AddReportScreen() {
     const isoDate = utcDate.toISOString();
     console.log(isoDate);
 
-    const newReport: LostReportRequest | FoundReportRequest = {
-      title: reportName || 'Default',
-      description: reportDescription || 'default',
+    const newReport: NewLostReport | NewFoundReport = {
+      title: reportName || 'Kein Name',
+      description: reportDescription || 'keine Beschreibung',
       categoryId: reportCategory.id,
       imagePath: getImage(Number(reportImage)) || '',
       isFinished: false,
