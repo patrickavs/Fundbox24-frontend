@@ -31,8 +31,6 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
     const route = useRoute();
     const { item } = route.params as { item: FoundReport };
 
-    const matchedCategory = category.find(c => c.id === item.categoryId);
-
     const [position, setPosition] = React.useState<LatLng>({
         latitude: item.foundLocation.latitude,
         longitude: item.foundLocation.longitude,
@@ -55,7 +53,7 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
             {Platform.OS === 'ios' ? <CustomHeader backgroundColor={'white'} title={''} isSmall/> : <></>}
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={category.find((it) => it.id === matchedCategory?.id)?.image ?? category[category.length - 1].image} />
+                    <Image style={styles.image} source={category.find((it) => it.name === item.category?.name)?.image ?? category[category.length - 1].image} />
                 </View>
                 <View style={styles.detailsContainer}>
                     <Text style={styles.title}>{item?.title ?? 'Titel'}</Text>

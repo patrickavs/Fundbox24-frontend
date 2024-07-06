@@ -4,7 +4,6 @@ import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } 
 import { LostReport } from '../../types/report-lost.ts';
 import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import moment from 'moment';
-import { category } from '../../data/categories.ts';
 
 type ReportCardProps = {
   report: LostReport;
@@ -13,7 +12,6 @@ type ReportCardProps = {
 };
 
 export default function LostReportCard(props: ReportCardProps) {
-  const matchedCategory = category.find(c => c.id === props.report.categoryId);
   return (
     <View key={props.report.id} style={styles.container}>
       <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID="report-card-press">
@@ -22,7 +20,7 @@ export default function LostReportCard(props: ReportCardProps) {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
-          <Text style={styles.text} numberOfLines={1}>{matchedCategory?.name || 'Default'}</Text>
+          <Text style={styles.text} numberOfLines={1}>{props.report.category?.name || 'Default'}</Text>
           <Text style={styles.text} numberOfLines={1}>{moment(props.report.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
         </View>
       </TouchableOpacity>
