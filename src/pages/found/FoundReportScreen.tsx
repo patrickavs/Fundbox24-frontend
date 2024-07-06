@@ -15,13 +15,22 @@ function FoundReportScreen({navigation}): React.JSX.Element {
   const [foundReports, setFoundReports] = useState([]);
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState('');
-  //const [foundReports, setFoundReports] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState('');
 
-  const fetchURL = async (queryString:string, sortString:string):Promise<void> => {
+
+  const getItems = () => {
+    let items = [{label: 'Alle', value: ''}];
+    category.forEach((element) => {
+      items.push({label: element.name, value: element.id.toString()});
+    });
+    return items;
+  };
+
+  const fetchURL = async (queryString:string, sortString:string, categoryString:string):Promise<void> => {
       let auth = await AsyncStorage?.getItem('basicAuthCredentials');
       if (!auth) {throw 'No Basic Auth Credentials! Please login.';}
 
-      const response:Response = await fetch(ALL_FOUND_REPORTS_URL + '?q=' + queryString + '&sort=' + sortString, {
+      const response:Response = await fetch(ALL_FOUND_REPORTS_URL + '?q=' + queryString + '&category=' + categoryString + '&sort=' + sortString, {
           method: 'GET',
           headers: {
               Authorization: `Basic ${auth}`,
@@ -39,14 +48,14 @@ function FoundReportScreen({navigation}): React.JSX.Element {
   };
 
   useEffect(() => {
-      fetchURL(query, sort);
-  }, [query, sort]);
+      fetchURL(query, sort, categoryFilter);
+  }, [query, sort, categoryFilter]);
 
 
   useFocusEffect(
     useCallback(() => {
-      fetchURL(query, sort);
-    }, [query, sort]),
+      fetchURL(query, sort, categoryFilter);
+    }, [query, sort, categoryFilter]),
   );
 
 
@@ -79,12 +88,9 @@ function FoundReportScreen({navigation}): React.JSX.Element {
           <Dropdown
             testID={'filter-dropdown-found'}
             placeholder="Kategorie"
-            items={[
-              {label: 'Nur mein Heimatumkreis', value: 'in my region'},
-              {label: 'Nur heute', value: 'only today'},
-            ]}
+            items={getItems()}
             onChange={item => {
-              console.log('Benutzer hat gefiltert nach: ' + item.value);
+              setCategoryFilter(item.value);
             }}
           />
         </View>

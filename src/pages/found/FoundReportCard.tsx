@@ -14,12 +14,12 @@ type ReportCardProps = {
 export default function FoundReportCard(props: ReportCardProps): React.JSX.Element {
   return (
     <View key={props.report.id} style={styles.container}>
-      <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID='report-card-press'>
+      <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID="report-card-press">
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={props.image} />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.title} numberOfLines={2}>{props.report.title}</Text>
+          <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
           <Text style={styles.text} numberOfLines={1}>{props.report.category.name}</Text>
           <Text style={styles.text}>{moment(props.report.foundDate).format('DD.MM.YYYY, HH:mm')}</Text>
         </View>
