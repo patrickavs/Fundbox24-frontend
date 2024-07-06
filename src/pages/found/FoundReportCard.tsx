@@ -13,7 +13,7 @@ type ReportCardProps = {
 
 export default function FoundReportCard(props: ReportCardProps): React.JSX.Element {
   return (
-    <View key={props.report.id} style={styles.container}>
+    <View key={props.report.id} style={styles.container} testID={'found-report-card'}>
       <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID="report-card-press">
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={props.image} />

@@ -71,6 +71,7 @@ function FoundReportScreen({navigation}): React.JSX.Element {
           testID={'search-bar-found'}
           onChangeText={text => {
             setQuery(text);
+            console.log('Benutzer sucht nach: ' + text);
           }}
         />
         <View style={styles.dropdownContainer}>
@@ -83,6 +84,7 @@ function FoundReportScreen({navigation}): React.JSX.Element {
             ]}
             onChange={item => {
               setSort(item.value);
+              console.log('Benutzer hat sortiert nach: ' + item.value);
             }}
           />
           <Dropdown
@@ -91,6 +93,7 @@ function FoundReportScreen({navigation}): React.JSX.Element {
             items={getItems()}
             onChange={item => {
               setCategoryFilter(item.value);
+                console.log('Benutzer hat gefiltert nach: ' + item.value);
             }}
           />
         </View>

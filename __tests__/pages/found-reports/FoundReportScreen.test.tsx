@@ -1,11 +1,12 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import { describe, expect, it, jest } from '@jest/globals';
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react-native';
+import { describe, expect, it } from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
 import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
 import FoundReportCard from '../../../src/pages/found/FoundReportCard';
 import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
+import {User} from '../../../src/types/user';
 
 const fakeFoundReport: FoundReport =
 {
@@ -32,6 +33,26 @@ const fakeFoundReport: FoundReport =
     myChats: [],
 };
 
+const userData: User = {
+    id: '1',
+    email: 'wal@test.de',
+    firstName: 'Walter',
+    lastName: 'White',
+    username: 'walterwhite',
+};
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+    getItem: jest.fn((key: string) => {
+        if (key === 'user-credentials') {
+            return Promise.resolve(JSON.stringify(userData));
+        } else if (key === 'basicAuthCredentials') {
+            return Promise.resolve('dXNlcjpwYXNz');
+        }
+        return Promise.resolve(null);
+    }),
+    setItem: jest.fn((key: string, value: string) => Promise.resolve()),
+}));
+
 jest.mock('@react-navigation/native', () => ({
     useNavigation: jest.fn(() => ({
         goBack: jest.fn(),
@@ -41,22 +62,28 @@ jest.mock('@react-navigation/native', () => ({
     })),
 }));
 
+
 describe('FoundReportScreen', () => {
 
-    it('should renders single FoundReportCards', async () => {
-        jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
-            isPending: false,
-            foundReports: [fakeFoundReport],
-            error: null,
-            refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null,
-        }));
+    it('should render single FoundReportCard', async () => {
 
-        const view = render(<FoundReportScreen navigation={null} />);
+        // Mock fetchURL implementation
 
-        expect(view.getByText(fakeFoundReport.title)).toBeTruthy();
+        // Render the component
+        const { getByText, debug } = render(<FoundReportScreen navigation={null} />);
+
+        // Debug the output
+        debug();
+
+        // Assert that the fake data is rendered
+        await waitFor(() => {
+            expect(getByText(fakeFoundReport.title)).toBeTruthy();
+        });
     });
+});
+
+describe('FoundReportScreen', () => {
+
 
     // it('should render the dropdowns', async () => {
     //     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
@@ -89,18 +116,10 @@ describe('FoundReportScreen', () => {
         expect(view.getByTestId('filter-dropdown-found')).toBeTruthy();
         expect(screen.getByText('Gefunden in deinem Umkreis')).toBeTruthy();
         expect(screen.getByText('Sortieren')).toBeTruthy();
-        expect(screen.getByText('Filtern')).toBeTruthy();
+        expect(screen.getByText('Kategorie')).toBeTruthy();
     });
 
     it('should execute the sort dropdown onChange callback', async () => {
-        jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
-            isPending: false,
-            foundReports: [fakeFoundReport],
-            error: null,
-            refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null,
-        }));
 
         const view = render(<FoundReportScreen navigation={null} />);
         const sortDropdown = view.getByTestId('sort-dropdown-found');
@@ -117,14 +136,6 @@ describe('FoundReportScreen', () => {
     });
 
     it('should execute the filter dropdown onChange callback', async () => {
-        jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
-            isPending: false,
-            foundReports: [fakeFoundReport],
-            error: null,
-            refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null,
-        }));
 
         const view = render(<FoundReportScreen navigation={null} />);
         const filterDropdown = view.getByTestId('filter-dropdown-found');
@@ -132,23 +143,15 @@ describe('FoundReportScreen', () => {
         const logSpy = jest.spyOn(console, 'log');
 
         act(() => {
-            fireEvent(filterDropdown, 'onChange', {value: 'in my region'});
+            fireEvent(filterDropdown, 'onChange', {value: 'Geldbörse'});
         });
 
-        expect(logSpy).toHaveBeenCalledWith('Benutzer hat gefiltert nach: in my region');
+        expect(logSpy).toHaveBeenCalledWith('Benutzer hat gefiltert nach: Geldbörse');
 
         logSpy.mockRestore();
     });
 
     it('should render the SearchBar component', async () => {
-        jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
-            isPending: false,
-            foundReports: [fakeFoundReport],
-            error: null,
-            refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null,
-        }));
 
         const view = render(<FoundReportScreen navigation={null} />);
 
@@ -156,14 +159,6 @@ describe('FoundReportScreen', () => {
     });
 
     it('should execute SearchBar onChangeText callback', async () => {
-        jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
-            isPending: false,
-            foundReports: [fakeFoundReport],
-            error: null,
-            refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null,
-        }));
 
         const searchText = 'Schlüssel';
         const view = render(<FoundReportScreen navigation={null} />);
