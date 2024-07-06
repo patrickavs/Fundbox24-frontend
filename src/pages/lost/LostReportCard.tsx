@@ -9,11 +9,12 @@ type ReportCardProps = {
   report: LostReport;
   image: ImageSourcePropType;
   onPress: (id: string) => void;
+  isMasterViewCard?: boolean;
 };
 
 export default function LostReportCard(props: ReportCardProps) {
   return (
-    <View key={props.report.id} style={styles.container}>
+    <View key={props.report.id} style={[styles.container, props.isMasterViewCard ? styles.masterViewCard : null]}>
       <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID="report-card-press">
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={props.image} />
@@ -33,9 +34,11 @@ const styles = StyleSheet.create({
     flex: 1 / 2,
     padding: 10,
     width: 175,
-    marginLeft: 2,
     marginTop: 0,
     margin: 1,
+  },
+  masterViewCard: {
+      maxWidth: '50%',
   },
   imageContainer: {
     display: 'flex',

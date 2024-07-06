@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useCallback, useEffect} from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useUser } from '../../hooks/useUser';
 import { useLostReports } from '../../hooks/useLostReports';
@@ -49,6 +49,8 @@ export default function StartScreen({navigation}): React.JSX.Element {
   //       .slice(0, 4),
   //   [chats],
   // );
+
+
   if (isPending && !user) {
     return <Text>Lade ...</Text>;
   }

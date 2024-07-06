@@ -104,6 +104,7 @@ function LostReportScreen(): React.JSX.Element {
           data={lostReports}
           renderItem={({item}) => (
             <LostReportCard
+              isMasterViewCard={true}
               key={item.id}
               report={item}
               onPress={() =>

@@ -14,6 +14,13 @@ function App(): React.JSX.Element {
     'TextInputComponent: Support for defaultProps will be removed',
   ]);
 
+    const error = console.error;
+    console.error = (...args: any) => {
+        if (/defaultProps/.test(args[0])) {return;}
+        if (/Warning: Cannot update a component/.test(args[0])) {return;}
+        error(...args);
+    };
+
   return (
     <UserProvider>
       <LostReportProvider>

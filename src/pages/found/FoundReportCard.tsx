@@ -31,6 +31,7 @@ export default function FoundReportCard(props: ReportCardProps): React.JSX.Eleme
 const styles = StyleSheet.create({
   container: {
     flex: 1 / 2,
+    maxWidth: '50%',
     padding: 10,
   },
   imageContainer: {
