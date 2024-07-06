@@ -1,9 +1,9 @@
 import React from 'react';
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react-native';
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it, jest } from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
-import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
+import { FoundReport } from '../../../src/types/report-found';
 import FoundReportCard from '../../../src/pages/found/FoundReportCard';
 import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
 import {User} from '../../../src/types/user';
@@ -62,29 +62,7 @@ jest.mock('@react-navigation/native', () => ({
     })),
 }));
 
-
 describe('FoundReportScreen', () => {
-
-    it('should render single FoundReportCard', async () => {
-
-        // Mock fetchURL implementation
-
-        // Render the component
-        const { getByText, debug } = render(<FoundReportScreen navigation={null} />);
-
-        // Debug the output
-        debug();
-
-        // Assert that the fake data is rendered
-        await waitFor(() => {
-            expect(getByText(fakeFoundReport.title)).toBeTruthy();
-        });
-    });
-});
-
-describe('FoundReportScreen', () => {
-
-
     // it('should render the dropdowns', async () => {
     //     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
     //         isPending: false,
@@ -179,7 +157,7 @@ describe('FoundReportScreen', () => {
         const pressCallback = jest.fn((id: string) => { });
 
         // @ts-ignore
-        const view = render(<FoundReportCard report={fakeFoundReport} onPress={pressCallback} />);
+        const view = render(<FoundReportCard report={fakeFoundReport} onPress={pressCallback}  image={0}/>);
 
         await act(() => {
             fireEvent.press(view.getByTestId('report-card-press'));

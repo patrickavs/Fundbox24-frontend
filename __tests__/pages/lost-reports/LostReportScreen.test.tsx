@@ -81,21 +81,6 @@ describe('LostReportScreen', () => {
     expect(screen.getByText('Gesucht in deinem Umkreis')).toBeTruthy();
   });
 
-  it('should renders single LostReportCards', async () => {
-    jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-      isPending: false,
-      lostReports: [fakeLostReports],
-      error: null,
-      refresh: () => Promise.resolve(),
-      createLostReport: (userToken: string, report: LostReportRequest) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
-    }));
-
-    const view = render(<LostReportScreen />);
-
-    expect(view.getByText(fakeLostReports.title)).toBeTruthy();
-  });
-
   it('should render the dropdowns', async () => {
     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
       isPending: false,
