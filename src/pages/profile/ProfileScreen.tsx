@@ -113,7 +113,7 @@ function ProfileScreen({navigation}): React.JSX.Element {
   const [homeLocation, setHomeLocation] = React.useState<LatLng | null>(settings.position);
   const [homeRadius, setHomeRadius] = React.useState<number | null>(settings.radius);
 
-  const route = useRoute();
+  const route = useRoute<any>();
 
   React.useEffect(() => {
         if (route.params) {

@@ -9,9 +9,9 @@ import {useRoute} from '@react-navigation/native';
 
 const numberFormat = Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
 
-export default function SetHomePerimeterScreen({navigation}): React.JSX.Element {
+export default function SetHomePerimeterScreen({navigation}: {navigation: any}): React.JSX.Element {
 
-  const route = useRoute();
+  const route = useRoute<any>();
 
   const [position, setPosition] = React.useState<LatLng>(
     route.params && route.params.homeLocation ? route.params.homeLocation : mapConstants.initialMapPosition,
