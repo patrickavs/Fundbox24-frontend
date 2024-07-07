@@ -11,12 +11,15 @@ import {AuthTheme, LostReportTheme} from '../../constants/theme.ts';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Slider} from '@miblanchard/react-native-slider';
 import mapConstants from '../../constants/map';
+import { useRoute } from '@react-navigation/native';
+import {LatLng} from 'react-native-maps';
 
 const defaultSettings: Settings = {
   sound: true,
   vibration: true,
   location: true,
   radius: mapConstants.minRadius,
+  position: null,
 };
 
 const ProfileStyleSheet = StyleSheet.create({
@@ -107,7 +110,19 @@ const ProfileStyleSheet = StyleSheet.create({
 function ProfileScreen({navigation}): React.JSX.Element {
   const { user, isPending, logout } = useUser(); //TODO: Implement a edit user function
   const [settings, setSettings] = useStorage('settings', defaultSettings);
+  const [homeLocation, setHomeLocation] = React.useState<LatLng | null>(null);
+  const [homeRadius, setHomeRadius] = React.useState<number | null>(null);
 
+  const route = useRoute();
+
+  React.useEffect(() => {
+        if (route.params) {
+        const { position, radius } = route.params;
+        setHomeLocation(position);
+        setHomeRadius(radius);
+        setSettings({ ...settings, radius: radius, position: position });
+        }
+  }, [route.params]);
 
   const onLogout = async () => {
     await logout();
@@ -212,7 +227,7 @@ function ProfileScreen({navigation}): React.JSX.Element {
                 disabled={settings.location}
                 onPress={ !settings.location ? () =>
                     //@ts-ignore
-                    navigation.navigate('Map') : () => {}
+                    navigation.navigate('Map', {homeRadius: homeRadius, homeLocation: homeLocation}) : () => {}
                 } >
               <Ionicons name={'map'} style={ProfileStyleSheet.iconButton} testID={'map'} />
             </TouchableOpacity>
