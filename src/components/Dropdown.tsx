@@ -25,10 +25,10 @@ function Dropdown(props: DropdownProps) {
         testID={props.testID}
         style={[styles.dropdown, isFocus ? styles.focus : null]}
         placeholderStyle={styles.placeholderStyle}
+        dropDownDirection="bottom"
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         data={props.items}
-        search
         labelField="label"
         valueField="value"
         placeholder={props.placeholder}
