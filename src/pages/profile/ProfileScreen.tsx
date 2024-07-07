@@ -110,8 +110,8 @@ const ProfileStyleSheet = StyleSheet.create({
 function ProfileScreen({navigation}): React.JSX.Element {
   const { user, isPending, logout } = useUser(); //TODO: Implement a edit user function
   const [settings, setSettings] = useStorage('settings', defaultSettings);
-  const [homeLocation, setHomeLocation] = React.useState<LatLng | null>(null);
-  const [homeRadius, setHomeRadius] = React.useState<number | null>(null);
+  const [homeLocation, setHomeLocation] = React.useState<LatLng | null>(settings.position);
+  const [homeRadius, setHomeRadius] = React.useState<number | null>(settings.radius);
 
   const route = useRoute();
 
@@ -123,6 +123,15 @@ function ProfileScreen({navigation}): React.JSX.Element {
         setSettings({ ...settings, radius: radius, position: position });
         }
   }, [route.params]);
+
+  React.useEffect(() => {
+    if (settings.position) {
+      setHomeLocation(settings.position);
+    }
+    if (settings.radius) {
+      setHomeRadius(settings.radius);
+    }
+  }, [settings]);
 
   const onLogout = async () => {
     await logout();
@@ -217,7 +226,7 @@ function ProfileScreen({navigation}): React.JSX.Element {
                   value =>
                   {
                     setSettings(
-                        { ...settings, radius: value } );
+                        { ...settings, radius: value[0] } );
                     }
               } />
           <View style={[ProfileStyleSheet.horizontalContainer]}>

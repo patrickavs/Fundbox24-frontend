@@ -1,11 +1,11 @@
 import React from 'react';
-import MapView, { Circle, LatLng } from 'react-native-maps';
+import MapView, {Circle, LatLng} from 'react-native-maps';
 import {Text, TouchableOpacity, View} from 'react-native';
-import { Slider } from '@miblanchard/react-native-slider';
+import {Slider} from '@miblanchard/react-native-slider';
 import mapConstants from '../../constants/map.ts';
 import styles from './styles.ts';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 
 const numberFormat = Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
 
@@ -34,30 +34,11 @@ export default function SetHomePerimeterScreen({navigation}): React.JSX.Element 
   }
 
   function onChangeRadius(sliderValue: number) {
-    const newRadius = sliderValue;
-
-    setRadius(newRadius);
+      setRadius(sliderValue);
   }
 
   async function onChangePosition(newPosition: LatLng) {
     setPosition(newPosition);
-
-    /*try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${newPosition.latitude}&lon=${newPosition.longitude}&format=json`);
-      const data = await response.json();
-
-      if (data && data.address) {
-        const { city, town, village, hamlet, locality } = data.address;
-        const name = city || town || village || hamlet || locality || 'Kein Ort gefunden';
-        setLocationName(name);
-        eventEmitter.emit('reportLocationNameChange', locationName);
-      } else {
-        setLocationName('Kein Ort gefunden');
-      }
-    } catch (error) {
-      console.error(error);
-      setLocationName('Fehler beim Abrufen des Ortsnamens');
-    }*/
   }
 
   return (
