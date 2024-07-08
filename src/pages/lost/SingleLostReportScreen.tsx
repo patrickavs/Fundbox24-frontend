@@ -12,7 +12,7 @@ import {LostReport} from '../../types/report-lost';
 import CustomHeader from '../../components/CustomHeader';
 
 
-function SingleLostReportScreen( {navigation} ): React.JSX.Element {
+function SingleLostReportScreen({navigation}: {navigation: any}): React.JSX.Element {
 
     useEffect(() => {
         navigation.setOptions({

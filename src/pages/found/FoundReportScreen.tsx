@@ -9,10 +9,11 @@ import {category} from '../../data/categories';
 import { useFocusEffect } from '@react-navigation/native';
 import {ALL_FOUND_REPORTS_URL} from '../../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FoundReport } from '../../types/report-found.ts';
 
-function FoundReportScreen({navigation}): React.JSX.Element {
+function FoundReportScreen({navigation}: {navigation: any}): React.JSX.Element {
 
-  const [foundReports, setFoundReports] = useState([]);
+  const [foundReports, setFoundReports] = useState<FoundReport[]>([]);
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');

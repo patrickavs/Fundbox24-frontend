@@ -12,7 +12,7 @@ import {FoundReport} from '../../types/report-found';
 import CustomHeader from '../../components/CustomHeader';
 
 
-function SingleFoundReportScreen({ navigation }): React.JSX.Element {
+function SingleFoundReportScreen({navigation}: {navigation: any}): React.JSX.Element {
 
     useEffect(() => {
         navigation.setOptions({
@@ -25,7 +25,7 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
         });
     });
 
-    const mapRefFound = React.useRef(null);
+    const mapRefFound = React.useRef<any>(null);
 
 
     const route = useRoute();
@@ -83,7 +83,7 @@ function SingleFoundReportScreen({ navigation }): React.JSX.Element {
                             strokeWidth={0}
                             strokeColor="rgba(0, 0, 0, 0)" />
                     </MapView>
-                    <TouchableOpacity style={styles.button2} onPress={() => {setPosition(item.foundLocation as LatLng);
+                    <TouchableOpacity style={styles.button2} onPress={()=> {setPosition(item.foundLocation as LatLng);
                         mapRefFound.current?.animateToRegion({
                             ...item.foundLocation,
                             latitudeDelta: 0.035,

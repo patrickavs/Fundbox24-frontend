@@ -12,8 +12,8 @@ export default function CustomButton({
 }: {
   label: string;
   onPress: () => void;
-  backgroundColor: string;
-  fontSize: number;
+  backgroundColor?: string;
+  fontSize?: number;
   disabled?: boolean;
   testID?: string;
 }) {

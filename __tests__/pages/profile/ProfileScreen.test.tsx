@@ -1,10 +1,13 @@
 import 'react-native';
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react-native';
-import { expect, it, jest, describe } from '@jest/globals';
-import { UserProvider } from '../../../src/hooks/useUser.tsx';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react-native';
+import { expect, it, jest, describe, beforeEach } from '@jest/globals';
+import { UserProvider, useUser } from '../../../src/hooks/useUser.tsx';
+import useStorage from '../../../src/hooks/useStorage.ts';
 import ProfileScreen from '../../../src/pages/profile/ProfileScreen.tsx';
 import { User } from '../../../src/types/user.ts';
+import { Settings } from '../../../src/types/settings.ts';
+import mapConstants from '../../../src/constants/map.ts';
 
 const userData: User = {
     id: '1',
@@ -12,6 +15,14 @@ const userData: User = {
     firstName: 'Walter',
     lastName: 'White',
     username: 'walterwhite',
+};
+
+const defaultSettings: Settings = {
+    sound: true,
+    vibration: true,
+    location: true,
+    radius: 10,
+    position: mapConstants.initialMapPosition,
 };
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -31,25 +42,140 @@ jest.mock('@react-navigation/native', () => ({
     useRoute: jest.fn(() => ({})),
 }));
 
+jest.mock('../../../src/hooks/useUser.tsx', () => ({
+    useUser: jest.fn(() => ({
+        user: userData,
+        isPending: false,
+        logout: jest.fn(() => Promise.resolve()),
+    })),
+    UserProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
+jest.mock('../../../src/hooks/useStorage.ts', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
+
 describe('ProfileScreen', () => {
-    it('should display "wal@test.de"', async () => {
-        jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
-            Promise.resolve({
-                json: () => Promise.resolve('Jippi!'),
-                ok: true,
-            }) as Promise<Response>
-        ).mockImplementation(() =>
-            Promise.resolve({
-                ok: true,
-                json: () => Promise.resolve(userData),
-            }) as Promise<Response>);
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
 
-        await waitFor(() => render(
+    it('should toggle sound switch', async () => {
+        const setSettingsMock = jest.fn().mockImplementation((newSettings: any) => ({
+            ...defaultSettings,
+            sound: newSettings.sound,
+        }));
+        (useStorage as jest.Mock).mockReturnValue([defaultSettings, setSettingsMock]);
+
+        await waitFor(() =>
+          render(
             <UserProvider>
-                <ProfileScreen />
+                <ProfileScreen navigation={null} />
             </UserProvider>
-        ));
+          )
+        );
 
-        expect(screen.getByTestId('input-email').props.value === userData.email).toBeTruthy();
+        const switchComponent = screen.getByTestId('switch-sound');
+
+        await act(async () => {
+            fireEvent(switchComponent, 'onValueChange', !defaultSettings.sound);
+        });
+
+        expect(setSettingsMock).toHaveBeenCalledWith({
+            ...defaultSettings,
+            sound: false,
+        });
+    });
+
+    it('should toggle vibration switch', async () => {
+        const setSettingsMock = jest.fn().mockImplementation((newSettings: any) => ({
+            ...defaultSettings,
+            vibration: newSettings.vibration,
+        }));
+        (useStorage as jest.Mock).mockReturnValue([defaultSettings, setSettingsMock]);
+
+        await waitFor(() =>
+          render(
+            <UserProvider>
+                <ProfileScreen navigation={null} />
+            </UserProvider>
+          )
+        );
+
+        const vibrationSwitch = screen.getByTestId('switch-vibration');
+
+        await act(async () => {
+            fireEvent(vibrationSwitch, 'valueChange', !defaultSettings.vibration);
+        });
+
+        expect(setSettingsMock).toHaveBeenCalledWith({
+            ...defaultSettings,
+            vibration: !defaultSettings.vibration,
+        });
+    });
+
+    it('should toggle location switch', async () => {
+        const setSettingsMock = jest.fn().mockImplementation((newSettings: any) => ({
+            ...defaultSettings,
+            location: newSettings.location,
+        }));
+        (useStorage as jest.Mock).mockReturnValue([defaultSettings, setSettingsMock]);
+
+        await waitFor(() =>
+          render(
+            <UserProvider>
+                <ProfileScreen navigation={null} />
+            </UserProvider>
+          )
+        );
+
+        const locationSwitch = screen.getByTestId('switch-location');
+
+        await act(() => {
+            fireEvent(locationSwitch, 'valueChange', !defaultSettings.location);
+        });
+
+        expect(setSettingsMock).toHaveBeenCalledWith({
+            ...defaultSettings,
+            location: !defaultSettings.location,
+        });
+    });
+
+    it('should handle logout', async () => {
+        const logoutMock = jest.fn();
+        (useUser as jest.Mock).mockReturnValue({
+            user: userData,
+            isPending: false,
+            logout: logoutMock,
+        });
+
+        await waitFor(() =>
+          render(
+            <UserProvider>
+                <ProfileScreen navigation={null} />
+            </UserProvider>
+          )
+        );
+
+        const logoutButton = screen.getByText('Logout');
+        await act(async () => {
+            fireEvent.press(logoutButton);
+        });
+
+        expect(logoutMock).toHaveBeenCalled();
+    });
+
+    it('should render icon buttons', async () => {
+        await waitFor(() =>
+          render(
+            <UserProvider>
+                <ProfileScreen navigation={null} />
+            </UserProvider>
+          )
+        );
+
+        expect(screen.getByText('Meine Chats')).toBeTruthy();
+        expect(screen.getByText('Meine Anzeigen')).toBeTruthy();
     });
 });

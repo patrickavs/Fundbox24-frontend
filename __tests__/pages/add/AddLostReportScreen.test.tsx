@@ -22,7 +22,12 @@ const fakeFoundReport: FoundReport =
         longitude: 9.993682,
     },
     foundDate: new Date(Date.now()).toLocaleTimeString(),
-    categoryId: 1,
+    category: {
+        id: 1,
+        value: '',
+        name: 'Schlüssel',
+        image: '',
+    },
     imagePath: '',
     isFinished: false,
     myChats: [],
@@ -43,11 +48,20 @@ const fakeLostReports: LostReport =
         longitude: 9.993682,
     },
     lostRadius: 100,
-    categoryId: 1,
+    category: {
+        id: 1,
+        value: '',
+        name: 'Schlüssel',
+        image: '',
+    },
     imagePath: '',
     myChats: [],
     isFinished: false,
 };
+
+jest.mock('react-native-simple-toast', () => ({
+    Toast: jest.fn(),
+}));
 
 const mockedNavigate = jest.fn();
 

@@ -9,10 +9,11 @@ import {category} from '../../data/categories';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ALL_LOST_REPORTS_URL} from '../../routes';
+import { LostReport } from '../../types/report-lost.ts';
 
 function LostReportScreen(): React.JSX.Element {
     const navigation = useNavigation();
-    const [lostReports, setLostReports] = useState([]);
+    const [lostReports, setLostReports] = useState<LostReport[]>([]);
     const [query, setQuery] = useState('');
     const [sort, setSort] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('');
@@ -108,6 +109,7 @@ function LostReportScreen(): React.JSX.Element {
               key={item.id}
               report={item}
               onPress={() =>
+                //@ts-ignore
                 navigation.navigate('SingleLostReportScreen', {item: item})
               }
               image={

@@ -4,9 +4,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput, TouchableOpacity,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import { useLostReports } from '../../hooks/useLostReports.tsx';
@@ -115,8 +117,8 @@ function AddReportScreen() {
     console.log(isoDate);
 
     const newReport: LostReportRequest | FoundReportRequest = {
-      title: reportName || 'Kein Name',
-      description: reportDescription || 'keine Beschreibung',
+      title: reportName,
+      description: reportDescription,
       categoryId: reportCategory.id,
       imagePath: getImage(Number(reportImage)) || '',
       isFinished: false,
@@ -140,6 +142,9 @@ function AddReportScreen() {
     try {
       const token = await AsyncStorage.getItem('basicAuthCredentials');
       if (token) {
+        if (!newReport.title || !newReport.description) {
+          return Toast.show('Ein Titel und eine Beschreibung für den Gegenstand wird benötigt', Toast.SHORT);
+        }
         reportType === 'lost'
           ? createLostReport(token, newReport as LostReportRequest)
           : createFoundReport(token, newReport as FoundReportRequest);
@@ -222,7 +227,7 @@ function AddReportScreen() {
           />
           {reportType === 'lost' ? (
             <View>
-              <View style={{ alignItems: 'left' }}>
+              <View style={{ alignItems: 'flex-start' }}>
                 <Text style={styles.textStyle}>Zuletzt gesehen am:</Text>
               </View>
               <View
@@ -250,7 +255,7 @@ function AddReportScreen() {
                 position: 'static',
               }}>
               <View>
-                <View style={{ alignItems: 'left' }}>
+                <View style={{ alignItems: 'flex-start' }}>
                   <Text style={styles.textStyle}>Gefunden am:</Text>
                 </View>
                 <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: 10 }}>

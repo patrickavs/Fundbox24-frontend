@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useUser } from '../../hooks/useUser';
 import { useLostReports } from '../../hooks/useLostReports';
@@ -8,7 +8,7 @@ import LostReportCard from '../lost/LostReportCard.tsx';
 import { category } from '../../data/categories.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
 
-export default function StartScreen({navigation}): React.JSX.Element {
+export default function StartScreen({navigation}: {navigation: any}): React.JSX.Element {
   const {isPending: isPendingUser, refreshUser, user} = useUser();
   const {
     isPending: isPendingLostReport,
