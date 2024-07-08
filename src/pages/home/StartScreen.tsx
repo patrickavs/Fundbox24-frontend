@@ -111,7 +111,7 @@ export default function StartScreen({navigation}): React.JSX.Element {
               <Text style={styles.text}>Deine letzten Nachrichten</Text>
               <Text style={styles.text2}>mehr anzeigen</Text>
             </View>
-            <ChatList />
+            <ChatList isStartPage={true}/>
           </View>
         </>
       }

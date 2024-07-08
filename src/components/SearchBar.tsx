@@ -34,5 +34,6 @@ export const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderWidth: 2,
     elevation: 5,
+    marginHorizontal: 10,
   },
 });

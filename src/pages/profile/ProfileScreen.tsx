@@ -77,7 +77,7 @@ const ProfileStyleSheet = StyleSheet.create({
   },
 });
 
-function ProfileScreen(): React.JSX.Element {
+function ProfileScreen({navigation}): React.JSX.Element {
   const { user, isPending, logout } = useUser(); //TODO: Implement a edit user function
   const [settings, setSettings] = useStorage('settings', defaultSettings);
 
@@ -112,7 +112,7 @@ function ProfileScreen(): React.JSX.Element {
           />
         </View>
         <View style={ProfileStyleSheet.buttonContainer}>
-          <IconButton title={'Meine Chats'} />
+          <IconButton title={'Meine Chats'} onPress={() => navigation.navigate('MyChats')} />
           <IconButton title={'Meine Anzeigen'} />
         </View>
         <Text style={ProfileStyleSheet.heading}>Benachrichtigungen</Text>
@@ -120,7 +120,7 @@ function ProfileScreen(): React.JSX.Element {
           <View style={ProfileStyleSheet.switch}>
             <Text style={ProfileStyleSheet.label}>Ton</Text>
             <Switch
-              testID='switch-sound'
+              testID="switch-sound"
               value={settings.sound}
               onValueChange={value =>
                 setSettings({ ...settings, sound: value })
@@ -130,7 +130,7 @@ function ProfileScreen(): React.JSX.Element {
           <View style={ProfileStyleSheet.switch}>
             <Text style={ProfileStyleSheet.label}>Vibration</Text>
             <Switch
-              testID='switch-vibration'
+              testID="switch-vibration"
               value={settings.vibration}
               onValueChange={value =>
                 setSettings({ ...settings, vibration: value })
@@ -142,7 +142,7 @@ function ProfileScreen(): React.JSX.Element {
           <Text style={ProfileStyleSheet.label}>Standort verwenden</Text>
           <Switch
             style={ProfileStyleSheet.switch}
-            testID='switch-location'
+            testID="switch-location"
             value={settings.location}
             onValueChange={value =>
               setSettings({ ...settings, location: value })
@@ -152,7 +152,7 @@ function ProfileScreen(): React.JSX.Element {
         <View style={{ paddingTop: 20 }}>
           <CustomButton
             label={'Logout'}
-            testID='button-logout'
+            testID="button-logout"
             onPress={onLogout}
             backgroundColor={AuthTheme.colors.secondaryBackground}
             fontSize={17}
