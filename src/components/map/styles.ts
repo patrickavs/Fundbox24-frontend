@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import {LostReportTheme} from '../../constants/theme';
 
 const styles = StyleSheet.create({
   diameterLabel: {
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
     color: 'black',
     borderRadius: 10,
     fontSize: 30,
-    fontWeight: 'bolder',
+    fontWeight: 'semibold',
     alignSelf: 'center',
   },
   iconButtonContainer: {

@@ -13,6 +13,7 @@ import StartScreen from '../../pages/home/StartScreen.tsx';
 import {AddReportStack} from '../../pages/add/AddReportStack.tsx';
 
 import {Platform} from 'react-native';
+import {ProfileStack} from '../../pages/profile/ProfileStack';
 const Tab = createBottomTabNavigator();
 
 // defining tab bar options
@@ -160,7 +161,7 @@ function Tabbar() {
       />
       <Tab.Screen
         name="Profil"
-        component={ProfileScreen}
+        component={ProfileStack}
         options={{
           tabBarIcon: ({focused, color, size}) =>
             renderIcon(

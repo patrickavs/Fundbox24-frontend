@@ -12,7 +12,7 @@ const userData: User = {
     firstName: 'Walter',
     lastName: 'White',
     username: 'walterwhite',
-}
+};
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
     getItem: jest.fn((key: string) => {
@@ -24,6 +24,11 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
         return Promise.resolve(null);
     }),
     setItem: jest.fn((key: string, value: string) => Promise.resolve()),
+}));
+
+jest.mock('@react-navigation/native', () => ({
+    useNavigation: jest.fn(),
+    useRoute: jest.fn(() => ({})),
 }));
 
 describe('ProfileScreen', () => {
