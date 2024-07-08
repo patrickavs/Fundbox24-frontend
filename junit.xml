@@ -1,109 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="38" failures="0" errors="0" time="1.941">
-  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:26" time="0.468" tests="2">
-    <testcase classname="App renders correctly and contains the Tabbar component" name="App renders correctly and contains the Tabbar component" time="0.169">
+<testsuites name="jest tests" tests="50" failures="0" errors="0" time="13.041">
+  <testsuite name="FoundReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:28" time="2.648" tests="7">
+    <testcase classname="FoundReportScreen should renders single FoundReportCards" name="FoundReportScreen should renders single FoundReportCards" time="0.772">
     </testcase>
-    <testcase classname="App should ignore specific log warnings" name="App should ignore specific log warnings" time="0.016">
+    <testcase classname="FoundReportScreen should render the dropdowns" name="FoundReportScreen should render the dropdowns" time="0.099">
     </testcase>
-  </testsuite>
-  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:26" time="0.207" tests="3">
-    <testcase classname="StartScreen should render &quot;Du bist nicht angemeldet&quot; because there is no userToken" name="StartScreen should render &quot;Du bist nicht angemeldet&quot; because there is no userToken" time="0.005">
+    <testcase classname="FoundReportScreen should execute the sort dropdown onChange callback" name="FoundReportScreen should execute the sort dropdown onChange callback" time="0.03">
     </testcase>
-    <testcase classname="StartScreen should render `Willkommen, ${user?.username}`, which is only displayed if user is logged in" name="StartScreen should render `Willkommen, ${user?.username}`, which is only displayed if user is logged in" time="0.026">
+    <testcase classname="FoundReportScreen should execute the filter dropdown onChange callback" name="FoundReportScreen should execute the filter dropdown onChange callback" time="0.024">
     </testcase>
-    <testcase classname="StartScreen should trigger refresh on focus" name="StartScreen should trigger refresh on focus" time="0.006">
+    <testcase classname="FoundReportScreen should render the SearchBar component" name="FoundReportScreen should render the SearchBar component" time="0.019">
     </testcase>
-  </testsuite>
-  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:26" time="0.174" tests="3">
-    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.026">
+    <testcase classname="FoundReportScreen should execute SearchBar onChangeText callback" name="FoundReportScreen should execute SearchBar onChangeText callback" time="0.03">
     </testcase>
-    <testcase classname="LoginScreen should render email and password input fields" name="LoginScreen should render email and password input fields" time="0.003">
-    </testcase>
-    <testcase classname="LoginScreen should update email and password state on input change" name="LoginScreen should update email and password state on input change" time="0.006">
+    <testcase classname="FoundReportScreen should execute the onPress callback function" name="FoundReportScreen should execute the onPress callback function" time="0.009">
     </testcase>
   </testsuite>
-  <testsuite name="FoundReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.116" tests="2">
-    <testcase classname="FoundReportScreen should render properly" name="FoundReportScreen should render properly" time="0.05">
+  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:30" time="0.929" tests="8">
+    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.355">
     </testcase>
-    <testcase classname="FoundReportScreen should call navigateToChat when chat-buttons clicked" name="FoundReportScreen should call navigateToChat when chat-buttons clicked" time="0.006">
+    <testcase classname="LostReportScreen should renders single LostReportCards" name="LostReportScreen should renders single LostReportCards" time="0.019">
     </testcase>
-  </testsuite>
-  <testsuite name="AddReportScreen found" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.095" tests="1">
-    <testcase classname="AddReportScreen found should add a found report correctly" name="AddReportScreen found should add a found report correctly" time="0.038">
+    <testcase classname="LostReportScreen should render the dropdowns" name="LostReportScreen should render the dropdowns" time="0.028">
     </testcase>
-  </testsuite>
-  <testsuite name="LostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.09" tests="3">
-    <testcase classname="LostReportScreen renders correctly" name="LostReportScreen renders correctly" time="0.048">
+    <testcase classname="LostReportScreen should execute the sort dropdown onChange callback" name="LostReportScreen should execute the sort dropdown onChange callback" time="0.035">
     </testcase>
-    <testcase classname="LostReportScreen should renders single LostReportCards" name="LostReportScreen should renders single LostReportCards" time="0.003">
+    <testcase classname="LostReportScreen should execute the filter dropdown onChange callback" name="LostReportScreen should execute the filter dropdown onChange callback" time="0.03">
     </testcase>
-    <testcase classname="LostReportScreen should execute the onPress callback function" name="LostReportScreen should execute the onPress callback function" time="0.002">
+    <testcase classname="LostReportScreen should render the SearchBar component" name="LostReportScreen should render the SearchBar component" time="0.018">
     </testcase>
-  </testsuite>
-  <testsuite name="FoundReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.076" tests="2">
-    <testcase classname="FoundReportScreen should renders single FoundReportCards" name="FoundReportScreen should renders single FoundReportCards" time="0.037">
+    <testcase classname="LostReportScreen should execute SearchBar onChangeText callback" name="LostReportScreen should execute SearchBar onChangeText callback" time="0.022">
     </testcase>
-    <testcase classname="FoundReportScreen should execute the onPress callback function" name="FoundReportScreen should execute the onPress callback function" time="0.001">
+    <testcase classname="LostReportScreen should execute the onPress callback function" name="LostReportScreen should execute the onPress callback function" time="0.008">
     </testcase>
   </testsuite>
-  <testsuite name="RegisterScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.08" tests="4">
-    <testcase classname="RegisterScreen should display the input fields" name="RegisterScreen should display the input fields" time="0.025">
-    </testcase>
-    <testcase classname="RegisterScreen should listen to changes in input fields" name="RegisterScreen should listen to changes in input fields" time="0.007">
-    </testcase>
-    <testcase classname="RegisterScreen should register a user" name="RegisterScreen should register a user" time="0.002">
-    </testcase>
-    <testcase classname="RegisterScreen should display error messages if the passwords do not match or the fetch failed" name="RegisterScreen should display error messages if the passwords do not match or the fetch failed" time="0.013">
+  <testsuite name="AddReportScreen lost" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:31" time="0.858" tests="1">
+    <testcase classname="AddReportScreen lost should add a lost report correctly" name="AddReportScreen lost should add a lost report correctly" time="0.449">
     </testcase>
   </testsuite>
-  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.067" tests="3">
-    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.026">
-    </testcase>
-    <testcase classname="ProfileScreen should change values of the switches" name="ProfileScreen should change values of the switches" time="0.006">
-    </testcase>
-    <testcase classname="ProfileScreen should logout" name="ProfileScreen should logout" time="0.002">
+  <testsuite name="AddReportScreen found" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:32" time="0.804" tests="1">
+    <testcase classname="AddReportScreen found should add a found report correctly" name="AddReportScreen found should add a found report correctly" time="0.425">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.066" tests="2">
-    <testcase classname=" renders correctly with route params" name=" renders correctly with route params" time="0.019">
+  <testsuite name="StartScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:33" time="1.136" tests="3">
+    <testcase classname="StartScreen should render &quot;Du bist nicht angemeldet&quot; because there is no userToken" name="StartScreen should render &quot;Du bist nicht angemeldet&quot; because there is no userToken" time="0.049">
     </testcase>
-    <testcase classname="SingleLostReportScreen should call navigateToChat when chat-buttons clicked" name="SingleLostReportScreen should call navigateToChat when chat-buttons clicked" time="0.008">
+    <testcase classname="StartScreen should render `Willkommen, ${user?.username}`, which is only displayed if user is logged in" name="StartScreen should render `Willkommen, ${user?.username}`, which is only displayed if user is logged in" time="0.161">
     </testcase>
-  </testsuite>
-  <testsuite name="AddReportScreen lost" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.063" tests="1">
-    <testcase classname="AddReportScreen lost should add a lost report correctly" name="AddReportScreen lost should add a lost report correctly" time="0.029">
+    <testcase classname="StartScreen should trigger refresh on focus" name="StartScreen should trigger refresh on focus" time="0.032">
     </testcase>
   </testsuite>
-  <testsuite name="LostReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.033" tests="5">
-    <testcase classname="LostReport-Hook should fetch the relevant data the first time it is called" name="LostReport-Hook should fetch the relevant data the first time it is called" time="0.002">
+  <testsuite name="FoundReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:34" time="0.791" tests="2">
+    <testcase classname="FoundReportScreen should render properly" name="FoundReportScreen should render properly" time="0.299">
     </testcase>
-    <testcase classname="LostReport-Hook should create a new lost report and refresh lost reports" name="LostReport-Hook should create a new lost report and refresh lost reports" time="0.002">
-    </testcase>
-    <testcase classname="LostReport-Hook should edit an existing lost report" name="LostReport-Hook should edit an existing lost report" time="0.001">
-    </testcase>
-    <testcase classname="LostReport-Hook should handle error when creating a new lost report" name="LostReport-Hook should handle error when creating a new lost report" time="0.001">
-    </testcase>
-    <testcase classname="LostReport-Hook should handle error when editing an existing lost report" name="LostReport-Hook should handle error when editing an existing lost report" time="0.001">
+    <testcase classname="FoundReportScreen should call navigateToChat when chat-buttons clicked" name="FoundReportScreen should call navigateToChat when chat-buttons clicked" time="0.044">
     </testcase>
   </testsuite>
-  <testsuite name="FoundReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.032" tests="5">
-    <testcase classname="FoundReport-Hook should fetch the relevant data the first time it is called" name="FoundReport-Hook should fetch the relevant data the first time it is called" time="0.003">
+  <testsuite name="LoginScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:35" time="1.028" tests="3">
+    <testcase classname="LoginScreen can login with correct credentials" name="LoginScreen can login with correct credentials" time="0.205">
     </testcase>
-    <testcase classname="FoundReport-Hook should create a new found report and refresh found reports" name="FoundReport-Hook should create a new found report and refresh found reports" time="0.002">
+    <testcase classname="LoginScreen should render email and password input fields" name="LoginScreen should render email and password input fields" time="0.017">
     </testcase>
-    <testcase classname="FoundReport-Hook should handle error when creating a new found report" name="FoundReport-Hook should handle error when creating a new found report" time="0.001">
-    </testcase>
-    <testcase classname="FoundReport-Hook should edit an existing found report" name="FoundReport-Hook should edit an existing found report" time="0.001">
-    </testcase>
-    <testcase classname="FoundReport-Hook should handle error when editing an existing found report" name="FoundReport-Hook should handle error when editing an existing found report" time="0.001">
+    <testcase classname="LoginScreen should update email and password state on input change" name="LoginScreen should update email and password state on input change" time="0.035">
     </testcase>
   </testsuite>
-  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.028" tests="1">
-    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.002">
+  <testsuite name="SingleLostReportScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:36" time="0.677" tests="2">
+    <testcase classname="SingleLostReportScreen renders correctly with route params" name="SingleLostReportScreen renders correctly with route params" time="0.222">
+    </testcase>
+    <testcase classname="SingleLostReportScreen should call navigateToChat when chat-buttons clicked" name="SingleLostReportScreen should call navigateToChat when chat-buttons clicked" time="0.05">
     </testcase>
   </testsuite>
-  <testsuite name="Chat-Hook" errors="0" failures="0" skipped="0" timestamp="2024-07-02T16:54:27" time="0.025" tests="1">
-    <testcase classname="Chat-Hook should return the necessary stuff" name="Chat-Hook should return the necessary stuff" time="0.002">
+  <testsuite name="RegisterScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:37" time="0.737" tests="4">
+    <testcase classname="RegisterScreen should display the input fields" name="RegisterScreen should display the input fields" time="0.281">
+    </testcase>
+    <testcase classname="RegisterScreen should listen to changes in input fields" name="RegisterScreen should listen to changes in input fields" time="0.047">
+    </testcase>
+    <testcase classname="RegisterScreen should register a user" name="RegisterScreen should register a user" time="0.01">
+    </testcase>
+    <testcase classname="RegisterScreen should display error messages if the passwords do not match or the fetch failed" name="RegisterScreen should display error messages if the passwords do not match or the fetch failed" time="0.08">
+    </testcase>
+  </testsuite>
+  <testsuite name="App" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:37" time="0.521" tests="2">
+    <testcase classname="App renders correctly and contains the Tabbar component" name="App renders correctly and contains the Tabbar component" time="0.257">
+    </testcase>
+    <testcase classname="App should ignore specific log warnings" name="App should ignore specific log warnings" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="ProfileScreen" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:38" time="0.589" tests="1">
+    <testcase classname="ProfileScreen should display &quot;wal@test.de&quot;" name="ProfileScreen should display &quot;wal@test.de&quot;" time="0.289">
+    </testcase>
+  </testsuite>
+  <testsuite name="Chat-Hook" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:38" time="0.326" tests="5">
+    <testcase classname="Chat-Hook should initialize with an empty chat list" name="Chat-Hook should initialize with an empty chat list" time="0.026">
+    </testcase>
+    <testcase classname="Chat-Hook should handle creating a new chat" name="Chat-Hook should handle creating a new chat" time="0.011">
+    </testcase>
+    <testcase classname="Chat-Hook should handle adding a message to a chat" name="Chat-Hook should handle adding a message to a chat" time="0.006">
+    </testcase>
+    <testcase classname="Chat-Hook should handle removing a chat" name="Chat-Hook should handle removing a chat" time="0.007">
+    </testcase>
+    <testcase classname="Chat-Hook should handle error state correctly" name="Chat-Hook should handle error state correctly" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="FoundReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:39" time="0.341" tests="5">
+    <testcase classname="FoundReport-Hook should fetch the relevant data the first time it is called" name="FoundReport-Hook should fetch the relevant data the first time it is called" time="0.029">
+    </testcase>
+    <testcase classname="FoundReport-Hook should create a new found report and refresh found reports" name="FoundReport-Hook should create a new found report and refresh found reports" time="0.013">
+    </testcase>
+    <testcase classname="FoundReport-Hook should handle error when creating a new found report" name="FoundReport-Hook should handle error when creating a new found report" time="0.008">
+    </testcase>
+    <testcase classname="FoundReport-Hook should edit an existing found report" name="FoundReport-Hook should edit an existing found report" time="0.008">
+    </testcase>
+    <testcase classname="FoundReport-Hook should handle error when editing an existing found report" name="FoundReport-Hook should handle error when editing an existing found report" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="LostReport-Hook" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:39" time="0.335" tests="5">
+    <testcase classname="LostReport-Hook should fetch the relevant data the first time it is called" name="LostReport-Hook should fetch the relevant data the first time it is called" time="0.027">
+    </testcase>
+    <testcase classname="LostReport-Hook should create a new lost report and refresh lost reports" name="LostReport-Hook should create a new lost report and refresh lost reports" time="0.012">
+    </testcase>
+    <testcase classname="LostReport-Hook should edit an existing lost report" name="LostReport-Hook should edit an existing lost report" time="0.017">
+    </testcase>
+    <testcase classname="LostReport-Hook should handle error when creating a new lost report" name="LostReport-Hook should handle error when creating a new lost report" time="0.007">
+    </testcase>
+    <testcase classname="LostReport-Hook should handle error when editing an existing lost report" name="LostReport-Hook should handle error when editing an existing lost report" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="UserProvider logout function" errors="0" failures="0" skipped="0" timestamp="2024-07-05T09:25:40" time="0.295" tests="1">
+    <testcase classname="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" name="UserProvider logout function should remove credentials, set isLoggedIn to false, and reset user state" time="0.037">
     </testcase>
   </testsuite>
 </testsuites>

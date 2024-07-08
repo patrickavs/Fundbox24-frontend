@@ -1,6 +1,6 @@
 import { Chat } from '../types/chat';
-import { Message, NewMessage } from '../types/message';
-import {
+import { NewMessage } from '../types/message';
+import React, {
   useContext,
   createContext,
   useState,
@@ -8,7 +8,6 @@ import {
   useEffect,
   useCallback,
 } from 'react';
-import { CHAT_URL, MESSAGE_URL } from '../routes';
 
 type ChatContextType = {
   chats: Array<Chat>;

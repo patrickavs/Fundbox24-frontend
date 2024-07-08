@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { ALL_FOUND_REPORTS_URL, CREATE_FOUNDREPORT_URL, FOUNDREPORT_URL } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FoundReportRequest } from '../types/report-found-request.ts';
 
 type FoundReportsContextType = {
   isPending: boolean;
@@ -17,7 +18,7 @@ type FoundReportsContextType = {
   refresh: () => void,
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
-  createFoundReport: (userToken: string, report: NewFoundReport) => void;
+  createFoundReport: (userToken: string, report: FoundReportRequest) => void;
   editFoundReport: (userToken: string, report: FoundReport) => void;
   startTransition: React.TransitionStartFunction;
 };
@@ -116,7 +117,7 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
   }, []);
 
   const createFoundReport = useCallback(
-    (userToken: string, report: NewFoundReport) => {
+    (userToken: string, report: FoundReportRequest) => {
       fetch(CREATE_FOUNDREPORT_URL(), {
         method: 'POST',
         body: JSON.stringify(report),

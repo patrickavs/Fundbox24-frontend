@@ -12,8 +12,6 @@ import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import { useLostReports } from '../../hooks/useLostReports.tsx';
 import { useFoundReports } from '../../hooks/useFoundReports.tsx';
 import CustomButton from '../../components/CustomButton.tsx';
-import { NewLostReport } from '../../types/report-lost.ts';
-import { NewFoundReport } from '../../types/report-found.ts';
 import Dropdown from '../../components/Dropdown.tsx';
 import { Category } from '../../types/category.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,10 +23,10 @@ import { LatLng } from 'react-native-maps';
 import mapConstants from '../../constants/map.ts';
 import eventEmitter from '../../components/eventEmitter.ts';
 import { category } from '../../data/categories.ts';
-import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
-import VectorImage from 'react-native-vector-image';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { LostReportRequest } from '../../types/report-lost-request.ts';
+import { FoundReportRequest } from '../../types/report-found-request.ts';
 
 function AddReportScreen() {
   const route = useRoute<any>();
@@ -102,7 +100,7 @@ function AddReportScreen() {
     const isoDate = utcDate.toISOString();
     console.log(isoDate);
 
-    const newReport: NewLostReport | NewFoundReport = {
+    const newReport: LostReportRequest | FoundReportRequest = {
       title: reportName || 'Default',
       description: reportDescription || 'default',
       categoryId: reportCategory.id,
@@ -129,8 +127,8 @@ function AddReportScreen() {
       const token = await AsyncStorage.getItem('basicAuthCredentials');
       if (token) {
         reportType === 'lost'
-          ? createLostReport(token, newReport as NewLostReport)
-          : createFoundReport(token, newReport as NewFoundReport);
+          ? createLostReport(token, newReport as LostReportRequest)
+          : createFoundReport(token, newReport as FoundReportRequest);
         navigation.popToTop();
       }
     } catch (sendError) {

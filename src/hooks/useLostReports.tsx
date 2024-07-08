@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { ALL_LOST_REPORTS_URL, CREATE_LOSTREPORT_URL, LOSTREPORT_URL } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LostReportRequest } from '../types/report-lost-request.ts';
 
 type LostReportContextType = {
   isPending: boolean;
@@ -17,7 +18,7 @@ type LostReportContextType = {
   refresh: () => void,
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
-  createLostReport: (userToken: string, report: NewLostReport) => void;
+  createLostReport: (userToken: string, report: LostReportRequest) => void;
   editLostReport: (userToken: string, report: LostReport) => void;
   startTransition: React.TransitionStartFunction;
 };
@@ -115,7 +116,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
   );
 
   const createLostReport = useCallback(
-    (userToken: string, report: NewLostReport) => {
+    (userToken: string, report: LostReportRequest) => {
       fetch(CREATE_LOSTREPORT_URL(), {
         method: 'POST',
         body: JSON.stringify(report),

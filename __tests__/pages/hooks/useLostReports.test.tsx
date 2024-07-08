@@ -5,7 +5,6 @@ import {
   LostReportProvider,
   useLostReports,
 } from '../../../src/hooks/useLostReports';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LostReport, NewLostReport} from '../../../src/types/report-lost';
 
 const lostReportMockupData: LostReport = {
@@ -42,6 +41,7 @@ const newLostReportMockupData: NewLostReport = {
   },
   lostRadius: 20,
   categoryId: 1,
+  myChats: [],
   isFinished: false,
   imagePath: '',
 };
@@ -174,7 +174,7 @@ describe('LostReport-Hook', () => {
     jest.spyOn(global, 'fetch').mockImplementationOnce(
       () =>
         Promise.resolve({
-          json: () => Promise.resolve({message: 'Error creating report'}),
+          json: () => Promise.resolve('Error creating report'),
           ok: false,
           status: 400,
         }) as Promise<Response>,

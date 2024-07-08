@@ -1,23 +1,18 @@
 import 'react-native';
-import React, {useEffect} from 'react';
-import {act, render, screen, waitFor} from '@testing-library/react-native';
+import React from 'react';
+import {act, render} from '@testing-library/react-native';
 import {expect, it, jest, describe} from '@jest/globals';
 import StartScreen from '../../../src/pages/home/StartScreen.tsx';
-import {UserProvider} from '../../../src/hooks/useUser.tsx';
-import {LostReportProvider} from '../../../src/hooks/useLostReports.tsx';
 import * as LostReportsHook from '../../../src/hooks/useLostReports.tsx';
-import {FoundReportProvider} from '../../../src/hooks/useFoundReports.tsx';
-import {ChatProvider} from '../../../src/hooks/useChat.tsx';
 import * as ChatHook from '../../../src/hooks/useChat.tsx';
 import {LostReport, NewLostReport} from '../../../src/types/report-lost.ts';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {User} from '../../../src/types/user.ts';
 import * as UserHook from '../../../src/hooks/useUser.tsx';
 import {NewMessage} from '../../../src/types/message.ts';
 import {useUser} from '../../../src/hooks/useUser.tsx';
 import {useLostReports} from '../../../src/hooks/useLostReports.tsx';
 import {useChat} from '../../../src/hooks/useChat.tsx';
-import {useFocusEffect} from '@react-navigation/native';
+import { LostReportRequest } from '../../../src/types/report-lost-request.ts';
 
 const userData: User = {
   id: '1',
@@ -42,7 +37,12 @@ const fakeLostReports: LostReport[] = [
       longitude: 9.993682,
     },
     lostRadius: 100,
-    categoryId: 1,
+    category: {
+      id: 1,
+      value: '',
+      name: 'Schlüssel',
+      image: '',
+    },
     myChats: [],
     isFinished: false,
     imagePath: '',
@@ -70,9 +70,9 @@ describe('StartScreen', () => {
 
     jest.spyOn(LostReportsHook, 'useLostReports').mockImplementation(() => ({
       isPending: false,
-      lostReports: [],
+      lostReports: fakeLostReports,
       error: null,
-      createLostReport: (userToken: string, report: NewLostReport) => null,
+      createLostReport: (userToken: string, report: LostReportRequest) => null,
       editLostReport: (userToken: string, report: LostReport) => null,
       refresh: () => null,
     }));
@@ -88,7 +88,7 @@ describe('StartScreen', () => {
       register: (userData: any) => Promise.resolve(),
     }));
 
-    const view = render(<StartScreen navigation={null} />);
+    const view = render(<StartScreen navigation={{navigate: jest.fn()}} />);
 
     await act(async () => {});
 
@@ -116,9 +116,9 @@ describe('StartScreen', () => {
 
     jest.spyOn(LostReportsHook, 'useLostReports').mockImplementation(() => ({
       isPending: false,
-      lostReports: [],
+      lostReports: fakeLostReports,
       error: null,
-      createLostReport: (userToken: string, report: NewLostReport) => null,
+      createLostReport: (userToken: string, report: LostReportRequest) => null,
       editLostReport: (userToken: string, report: LostReport) => null,
       refresh: () => null,
     }));
@@ -145,7 +145,7 @@ describe('StartScreen', () => {
       register: (userData: any) => Promise.resolve(),
     }));
 
-    const view = render(<StartScreen navigation={null} />);
+    const view = render(<StartScreen navigation={{navigate: jest.fn()}} />);
 
     await act(async () => {});
 
@@ -162,7 +162,7 @@ describe('StartScreen', () => {
     });
     (useLostReports as jest.Mock).mockReturnValue({
       isPending: false,
-      lostReports: [],
+      lostReports: fakeLostReports,
       refresh: refreshMock,
     });
     (useChat as jest.Mock).mockReturnValue({isPending: false, chats: []});
