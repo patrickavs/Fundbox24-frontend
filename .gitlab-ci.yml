@@ -19,7 +19,7 @@ ui-test-job: # This job runs only on main and develop branch.
   image: node:22-alpine3.19
   only:
     - main
-    # - develop
+    - develop
   before_script:
     - npm i
   script:
