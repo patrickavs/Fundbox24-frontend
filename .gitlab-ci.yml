@@ -4,42 +4,41 @@ default:
     - typescript
 
 stages: # List of stages for jobs, and their order of execution
-  # - build
-  # - test
+  - build
+  - test
   - deploy
 
-# build-job: # This job runs in every branch.
-#   stage: build
-#   image: node:22-alpine3.19
-#   script:
-#     - npm i
+build-job: # This job runs in every branch.
+  stage: build
+  image: node:22-alpine3.19
+  script:
+    - npm i
 
-# ui-test-job: # This job runs only on main and develop branch.
-#   stage: test # It only starts when the job in the build stage completes successfully.
-#   image: node:22-alpine3.19
-#   only:
-#     - main
-#     # - develop
-#   before_script:
-#     - npm i
-#   script:
-#     - npm run test:ci
-#   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
-#   artifacts:
-#     paths:
-#       - coverage/
-#     when: always # TODO: Lookup
-#     expire_in: 1 week
-#     reports:
-#       junit:
-#         - junit.xml
+ui-test-job: # This job runs only on main and develop branch.
+  stage: test # It only starts when the job in the build stage completes successfully.
+  image: node:22-alpine3.19
+  only:
+    - main
+    # - develop
+  before_script:
+    - npm i
+  script:
+    - npm run test:ci
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    paths:
+      - coverage/
+    when: always # TODO: Lookup
+    expire_in: 1 week
+    reports:
+      junit:
+        - junit.xml
 
 deploy-job: # This job runs only on main branch.
   stage: deploy
   image: reactnativecommunity/react-native-android:v12.0
   only:
-    - main
-    - develop
+    - release
   before_script:
     - npm install -g react-native-cli
     - npm install --legacy-peer-deps
