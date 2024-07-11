@@ -6,7 +6,7 @@ import {LostReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import LostReportCard from './LostReportCard.tsx';
-import {category} from '../../data/categories';
+import {categoriesWithImage} from '../../data/categoriesWithImage.ts';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 function LostReportScreen(): React.JSX.Element {
@@ -71,8 +71,8 @@ function LostReportScreen(): React.JSX.Element {
                 navigation.navigate('SingleLostReportScreen', {item: item})
               }
               image={
-                category.find(it => it.name === item.category.name)?.image ??
-                category[category.length - 1].image
+                categoriesWithImage.find(it => it.name === item.category.name)?.image ??
+                categoriesWithImage[categoriesWithImage.length - 1].image
               }
             />
           )}

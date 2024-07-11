@@ -12,7 +12,6 @@ import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import { useLostReports } from '../../hooks/useLostReports.tsx';
 import { useFoundReports } from '../../hooks/useFoundReports.tsx';
 import CustomButton from '../../components/CustomButton.tsx';
-import Dropdown from '../../components/Dropdown.tsx';
 import { Category } from '../../types/category.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -22,11 +21,12 @@ import {
 import { LatLng } from 'react-native-maps';
 import mapConstants from '../../constants/map.ts';
 import eventEmitter from '../../components/eventEmitter.ts';
-import { category } from '../../data/categories.ts';
+import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 import DatePicker from 'react-native-date-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LostReportRequest } from '../../types/report-lost-request.ts';
 import { FoundReportRequest } from '../../types/report-found-request.ts';
+import CategoryDropdown from './CategoryDropdown.tsx';
 
 function AddReportScreen() {
   const route = useRoute<any>();
@@ -37,12 +37,12 @@ function AddReportScreen() {
   const [reportPosition, setReportPosition] = useState<LatLng>(mapConstants.initialMapPosition);
   const [reportRadius, setReportRadius] = useState<number>(mapConstants.minRadius);
   //const [locationName, setLocationName] = React.useState<string>('');
-  const [reportImage, setReportImage] = useState<string>(category[0].image);
+  const [reportImage, setReportImage] = useState<string>(categoriesWithImage[0].image);
   const [reportName, setReportName] = useState<string>('');
   const [reportDescription, setReportDescription] = useState<string>('');
   const [date, setDate] = useState<Date>(new Date());
   //const [error, setError] = useState<string | null>(null);
-  const [reportCategory, setReportCategory] = useState<Category>(category[0]);
+  const [reportCategory, setReportCategory] = useState<Category>(categoriesWithImage[0]);
   //const [report, setReport] = useState<NewLostReport | NewFoundReport>();
   const categories: any = fetchedCategories.map((c: Category) => ({ label: c.name, value: c.value }));
 
@@ -160,28 +160,13 @@ function AddReportScreen() {
         <View style={styles.inputContainer}>
           <Text style={styles.textStyle}>Kategorie</Text>
           <View style={{ paddingBottom: 20 }}>
-            <Dropdown
-              items={categories}
-              placeholder={category[0].name}
-              onChange={item => {
-                const categoryDrop = category.find(
-                  (c: Category) => c.name === item.label
-                );
-                if (categoryDrop) {
-                  setReportCategory({
-                    id: categoryDrop.id,
-                    image: categoryDrop.image,
-                    name: categoryDrop.name,
-                    value: categoryDrop.value,
-                  });
-                  setReportImage(categoryDrop.image);
-                }
-                console.log(categoryDrop?.id);
-                console.log('Image: ', typeof categoryDrop?.image);
-                console.log(`Category: ${reportCategory.name}`);
-              }}
-              testID={'dropdown'}
-            />
+            <CategoryDropdown placeholder={categoriesWithImage[0].name}
+                              onChange={
+              category => {
+                setReportCategory(category);
+                setReportImage(category.image);
+              }
+            }/>
           </View>
           <Text style={styles.textStyle}>Beschreibung</Text>
           <TextInput

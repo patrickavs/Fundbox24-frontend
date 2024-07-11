@@ -4,7 +4,7 @@ import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } 
 import { LostReport } from '../../types/report-lost.ts';
 import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import moment from 'moment';
-import { category } from '../../data/categories.ts';
+import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 
 type ReportCardProps = {
   report: LostReport;
@@ -13,7 +13,7 @@ type ReportCardProps = {
 };
 
 export default function LostReportCard(props: ReportCardProps) {
-  const matchedCategory = category.find(c => c.id === props.report.categoryId);
+  const matchedCategory = categoriesWithImage.find(c => c.id === props.report.categoryId);
   return (
     <View key={props.report.id} style={styles.container}>
       <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID="report-card-press">

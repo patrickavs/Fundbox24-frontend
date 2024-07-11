@@ -5,7 +5,7 @@ import { useLostReports } from '../../hooks/useLostReports';
 import { useChat } from '../../hooks/useChat';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import LostReportCard from '../lost/LostReportCard.tsx';
-import { category } from '../../data/categories.ts';
+import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
 
 export default function StartScreen({navigation}): React.JSX.Element {
@@ -96,8 +96,8 @@ export default function StartScreen({navigation}): React.JSX.Element {
                         })
                       }
                       image={
-                        category.find(it => it.name === item.category.name)
-                          ?.image ?? category[category.length - 1].image
+                        categoriesWithImage.find(it => it.name === item.category.name)
+                          ?.image ?? categoriesWithImage[categoriesWithImage.length - 1].image
                       }
                     />
                   )}
