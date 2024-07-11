@@ -14,7 +14,6 @@ import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import { useLostReports } from '../../hooks/useLostReports.tsx';
 import { useFoundReports } from '../../hooks/useFoundReports.tsx';
 import CustomButton from '../../components/CustomButton.tsx';
-import Dropdown from '../../components/Dropdown.tsx';
 import { Category } from '../../types/category.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -23,7 +22,6 @@ import {
 } from '@react-navigation/native';
 import { LatLng } from 'react-native-maps';
 import mapConstants from '../../constants/map.ts';
-import eventEmitter from '../../components/eventEmitter.ts';
 import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 import DatePicker from 'react-native-date-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -51,7 +49,6 @@ function AddReportScreen() {
   //const [error, setError] = useState<string | null>(null);
   const [reportCategory, setReportCategory] = useState<Category>(categoriesWithImage[0]);
   //const [report, setReport] = useState<NewLostReport | NewFoundReport>();
-  const categories: any = category.map((c: Category) => ({ label: c.name, value: c.value }));
   const today = useMemo(() => new Date(), []);
   /*useEffect(() => {
     const foundPositionListener = eventEmitter.addListener('foundReportPositionChange', function (position: LatLng) {
@@ -176,22 +173,22 @@ function AddReportScreen() {
         />
         <View style={styles.imageContainer}>
           <Image
-          borderRadius={15}
-          resizeMethod={'scale'}
-          source={reportImage}
-          style={styles.image}
-        />
+            borderRadius={15}
+            resizeMethod={'scale'}
+            source={reportImage}
+            style={styles.image}
+          />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textStyle}>Kategorie</Text>
           <View style={{ paddingBottom: 20 }}>
             <CategoryDropdown placeholder={categoriesWithImage[0].name}
                               onChange={
-              category => {
-                setReportCategory(category);
-                setReportImage(category.image);
-              }
-            }/>
+                                category => {
+                                  setReportCategory(category);
+                                  setReportImage(category.image);
+                                }
+                              } />
           </View>
           <Text style={styles.textStyle}>Beschreibung</Text>
           <TextInput
@@ -251,18 +248,18 @@ function AddReportScreen() {
                   <Text style={styles.textStyle}>Gefunden am:</Text>
                 </View>
                 <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: 10 }}>
-                <View style={{ gap: 5 }}>
-                  <DatePicker
-                    is24hourSource={'locale'}
-                    locale={'de'}
-                    date={date}
-                    onDateChange={setDate}
-                    mode="datetime"
-                    maximumDate={today}
-                  />
+                  <View style={{ gap: 5 }}>
+                    <DatePicker
+                      is24hourSource={'locale'}
+                      locale={'de'}
+                      date={date}
+                      onDateChange={setDate}
+                      mode="datetime"
+                      maximumDate={today}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
             </View>
           )}
           <View style={styles.buttonContainer}>
@@ -271,11 +268,16 @@ function AddReportScreen() {
                 <View style={styles.positionButtonContainer}>
                   <Text style={styles.textStyle}>Letzte bekannte Position:</Text>
                   <TouchableOpacity
-                      style={styles.button2}
-                      onPress={() =>
+                    style={styles.button2}
+                    onPress={() =>
                       //@ts-ignore
-                      navigation.navigate('Map', {lostPosition: lostReportPosition, lostRadius: lostReportRadius, reportType, type: 'found'})
-                  } >
+                      navigation.navigate('Map', {
+                        lostPosition: lostReportPosition,
+                        lostRadius: lostReportRadius,
+                        reportType,
+                        type: 'found',
+                      })
+                    }>
                     <Ionicons name={'map'} style={styles.iconButton} testID={'map'} />
                   </TouchableOpacity>
                 </View>
@@ -290,29 +292,38 @@ function AddReportScreen() {
               </>
             ) : (
               <View style={{ gap: 20 }}>
-                  <View style={styles.positionButtonContainer}>
-                    <Text style={styles.textStyle}>Fundort des Gegenstands:</Text>
-                    <TouchableOpacity
-                        style={[styles.button2, { backgroundColor: FoundReportTheme.colors.button2 }]}
-                        onPress={() =>
-                            //@ts-ignore
-                            navigation.navigate('Map', {foundPosition: foundReportPosition, foundRadius: foundReportRadius, reportType, type: 'collect'})
-                        } >
-                      <Ionicons name={'map'} style={styles.iconButton} testID={'found'} />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.positionButtonContainer}>
-                    <Text style={styles.textStyle}>Ort der Abholung:</Text>
-                    <TouchableOpacity
-                        style={[styles.button2, { backgroundColor: FoundReportTheme.colors.button2 }]}
-                        onPress={() =>
-                            //@ts-ignore
-                            navigation.navigate('Map', {collectPosition: collectReportPosition, collectRadius: collectReportRadius, reportType})
-                        } >
-                      <Ionicons name={'map'} style={styles.iconButton} testID={'collect'} />
-                    </TouchableOpacity>
-                  </View>
-                <Text style={{ textAlign: 'center'}}>
+                <View style={styles.positionButtonContainer}>
+                  <Text style={styles.textStyle}>Fundort des Gegenstands:</Text>
+                  <TouchableOpacity
+                    style={[styles.button2, { backgroundColor: FoundReportTheme.colors.button2 }]}
+                    onPress={() =>
+                      //@ts-ignore
+                      navigation.navigate('Map', {
+                        foundPosition: foundReportPosition,
+                        foundRadius: foundReportRadius,
+                        reportType,
+                        type: 'collect',
+                      })
+                    }>
+                    <Ionicons name={'map'} style={styles.iconButton} testID={'found'} />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.positionButtonContainer}>
+                  <Text style={styles.textStyle}>Ort der Abholung:</Text>
+                  <TouchableOpacity
+                    style={[styles.button2, { backgroundColor: FoundReportTheme.colors.button2 }]}
+                    onPress={() =>
+                      //@ts-ignore
+                      navigation.navigate('Map', {
+                        collectPosition: collectReportPosition,
+                        collectRadius: collectReportRadius,
+                        reportType,
+                      })
+                    }>
+                    <Ionicons name={'map'} style={styles.iconButton} testID={'collect'} />
+                  </TouchableOpacity>
+                </View>
+                <Text style={{ textAlign: 'center' }}>
                   Nur der Umkreis des Fundortes ist in der Anzeige sichtbar.
                   Abhol- und Fundort können im Chat mit einem anfragenden Nutzer
                   freigegeben werden.

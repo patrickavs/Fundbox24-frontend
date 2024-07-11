@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import MapView, { Circle, LatLng } from 'react-native-maps';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Slider } from '@miblanchard/react-native-slider';
@@ -16,7 +16,6 @@ export default function SetPerimeterScreen({ navigation }: { navigation: any }) 
     foundPosition,
     collectPosition,
     lostRadius,
-    foundRadius,
     collectRadius,
     reportType,
     type,
@@ -26,7 +25,7 @@ export default function SetPerimeterScreen({ navigation }: { navigation: any }) 
     lostPosition || foundPosition || collectPosition || mapConstants.initialMapPosition
   );
   const [radius, setRadius] = React.useState<number>(
-    lostRadius || foundRadius || collectRadius || mapConstants.minRadius
+    lostRadius || collectRadius || mapConstants.minRadius
   );
 
   useEffect(() => {
@@ -42,9 +41,6 @@ export default function SetPerimeterScreen({ navigation }: { navigation: any }) 
       }
       if (lostRadius) {
         setRadius(lostRadius);
-      }
-      if (foundRadius) {
-        setRadius(foundRadius);
       }
       if (collectRadius) {
         setRadius(collectRadius);
@@ -71,15 +67,20 @@ export default function SetPerimeterScreen({ navigation }: { navigation: any }) 
       navigation.navigate('NewReport', {
         lostLocation: location,
         lostRadius: radius,
+        reportType,
       });
     } else {
       if (type === 'found') {
         navigation.navigate('NewReport', {
           foundLocation: location,
+          reportType,
+          type,
         });
       } else {
         navigation.navigate('NewReport', {
           collectLocation: location,
+          reportType,
+          type,
         });
       }
     }

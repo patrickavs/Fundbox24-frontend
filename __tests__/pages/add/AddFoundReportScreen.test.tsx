@@ -72,7 +72,7 @@ jest.mock('@react-navigation/native', () => {
       navigate: mockedNavigate,
     }),
     useRoute: jest.fn(() => ({
-      params: { reportType: 'found', fetchedCategories: [] },
+      params: { reportType: 'found' },
       key: '',
       name: '',
     })),
@@ -112,7 +112,8 @@ describe('AddReportScreen found', () => {
 
     const view = render(<AddReportScreen />);
 
-    await act(async () => { });
+    await act(async () => {
+    });
 
     expect(view.getByText('Neue Fundanzeige')).toBeTruthy();
 
@@ -167,7 +168,12 @@ describe('AddReportScreen found', () => {
     });
 
     await waitFor(() => {
-      expect(mockedNavigate).toHaveBeenCalledWith('Map', {foundPosition: undefined, foundRadius: mapConstants.minRadius});
+      expect(mockedNavigate).toHaveBeenCalledWith('Map', {
+        foundPosition: {
+          latitude: 50.3254386,
+          longitude: 11.9384522,
+        }, reportType: 'found', type: 'collect',
+      });
     });
 
     await act(async () => {
@@ -175,7 +181,12 @@ describe('AddReportScreen found', () => {
     });
 
     await waitFor(() => {
-      expect(mockedNavigate).toHaveBeenCalledWith('Map', {collectPosition: undefined, collectRadius: mapConstants.minRadius});
+      expect(mockedNavigate).toHaveBeenCalledWith('Map', {
+        collectPosition: {
+          latitude: 50.3254386,
+          longitude: 11.9384522,
+        }, reportType: 'found', type: 'collect',
+      });
     });
   });
 });
