@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {
-  SafeAreaView,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  Alert,
+    SafeAreaView,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    Alert, StyleSheet, TextInput,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -55,51 +55,56 @@ function LoginScreen(): React.JSX.Element {
           />
         </View>
 
-        <Text
-          style={{
-            fontFamily: 'Roboto-Medium',
-            fontSize: 28,
-            fontWeight: '500',
-            color: '#333',
-            marginBottom: 30,
-          }}>
-          Login
-        </Text>
-
-        <InputField
-          placeholder={'E-Mail'}
-          icon={<Ionicons name="at-outline" size={20} color="#666" />}
-          keyboardType="email-address"
-          fieldButtonLabel={''}
-          value={email}
-          onChangeText={text => {
-            setEmail(text);
-          }}
-        />
-
-        <InputField
-          placeholder={'Passwort'}
-          icon={
-            <Icon
-              name="lock"
-              size={20}
-              color="#666"
-              style={{marginLeft: -5, marginRight: 8}}
-            />
-          }
-          inputType="password"
-          keyboardType={'visible-password'}
-          fieldButtonFunction={() => {}}
-          fieldButtonLabel={''}
-          value={password}
-          onChangeText={text => {
-            setPassword(text);
-          }}
-        />
+          <View style={styles.container}>
+              <View>
+                  <Text
+                      style={{
+                          fontSize: 28,
+                          textAlign: 'center',
+                          color: '#333',
+                          marginBottom: 70,
+                          marginTop: -30,
+                      }}>
+                      Login
+                  </Text>
+                  <View style={styles.containerIcon}>
+                      <Ionicons name="at-outline" size={20} color="#666" marginTop={10} marginRight={8}/>
+                      <TextInput
+                          style={styles.input}
+                          placeholder={'E-Mail                            '}
+                          keyboardType="email-address"
+                          fieldButtonLabel={''}
+                          value={email}
+                          onChangeText={text => {
+                              setEmail(text);
+                          }}
+                      />
+                  </View>
+                  <View style={styles.containerIcon}>
+                      <Icon
+                          name="lock"
+                          size={20}
+                          color="#666"
+                          style={{marginTop: 38, marginRight: 14}}
+                      />
+                      <TextInput
+                          style={styles.input2}
+                          placeholder={'Passwort'}
+                          inputType="password"
+                          keyboardType={'visible-password'}
+                          fieldButtonLabel={''}
+                          value={password}
+                          onChangeText={text => {
+                              setPassword(text);}}
+                          fieldButtonFunction={() => {}}
+                      />
+                  </View>
+              </View>
+          </View>
 
         <CustomButton
           testID="LoginButton"
-          label={'Login'}
+          label={'Einloggen'}
           onPress={onLogin}
           backgroundColor={AuthTheme.colors.secondaryBackground}
           fontSize={16}
@@ -113,7 +118,7 @@ function LoginScreen(): React.JSX.Element {
           }}>
           <Text>Noch keinen Account bei uns?</Text>
           <TouchableOpacity onPress={handleRegisterPress}>
-            <Text style={{color: '#AD40FF', fontWeight: '700'}}>
+            <Text style={{color: 'blue', fontWeight: '700'}}>
               {' '}
               Registriere dich hier
             </Text>
@@ -123,5 +128,55 @@ function LoginScreen(): React.JSX.Element {
     </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+    input: {
+        borderRadius: 8,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        paddingVertical: 4,
+        paddingLeft: 30,
+        paddingRight: 180,
+    },
+    input2: {
+        borderRadius: 8,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        paddingVertical: 4,
+        paddingLeft: 30,
+        paddingRight: 245,
+        marginTop: 30,
+    },
+    containerIcon:{
+        display: 'flex',
+        flexDirection: 'row',
+        marginLeft: -25,
+    },
+    label: {
+        color: 'black',
+            padding: 8,
+    },
+        container: {
+            paddingHorizontal: 25,
+            marginBottom: 20,
+            marginTop: 20,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+        },
+        heading: {
+            fontSize: 17,
+        },
+        buttonContainer: {
+            display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                marginTop: 15,
+                marginBottom: 10,
+        },
+        button: {
+            borderRadius: 8,
+                textAlign: 'left',
+        },
+    });
 
 export default LoginScreen;

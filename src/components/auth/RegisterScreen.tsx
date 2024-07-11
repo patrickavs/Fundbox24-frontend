@@ -1,11 +1,11 @@
 import React, {useCallback, useState} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
+    SafeAreaView,
+    ScrollView,
+    View,
+    Text,
+    TouchableOpacity,
+    Image, TextInput, StyleSheet,
 } from 'react-native';
 
 import DatePicker from 'react-native-date-picker';
@@ -20,6 +20,7 @@ import {useNavigation} from '@react-navigation/native';
 import {AuthTheme} from '../../constants/theme.ts';
 import {useUser} from '../../hooks/useUser.tsx';
 import {RegisterUserCredentials} from '../../types/user.ts';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const defaultRegisterCredentials: RegisterUserCredentials = {
   name: '',
@@ -87,6 +88,7 @@ function RegisterScreen() {
             fontWeight: '500',
             color: '#333',
             marginBottom: 30,
+            textAlign: 'center',
           }}>
           Registrieren
         </Text>
@@ -100,63 +102,91 @@ function RegisterScreen() {
           )}
         </View>
 
-        <InputField
-          placeholder={'Name'}
-          testID="input-name"
-          icon={<Ionicons name="person-outline" size={20} color="#666" />}
-          value={registerUserData.name}
-          onChangeText={name => setRegisterUserData(prev => ({...prev, name}))}
-        />
+          <View style={styles.containerIcon}>
+              <Ionicons
+                  name="person-outline"
+                  size={20}
+                  color="#666"
+                  style={{marginTop: 38, marginRight: 14}}
+              />
 
-        <InputField
-          testID="input-email"
-          placeholder={'E-Mail'}
-          icon={<Ionicons name="at-outline" size={20} color="#666" />}
-          keyboardType="email-address"
-          value={registerUserData.email}
-          onChangeText={email =>
-            setRegisterUserData(prev => ({...prev, email}))
-          }
-        />
+              <TextInput
+                  style={styles.input}
+                  testID="input-name"
+                  placeholder={'Name'}
+                  inputType="name"
+                  fieldButtonLabel={''}
+                  value={registerUserData.name}
+                  onChangeText={name => setRegisterUserData(prev => ({...prev, name}))}
+              />
+          </View>
+          <View style={styles.containerIcon}>
+              <Ionicons
+                  name="at-outline"
+                  size={20}
+                  color="#666"
+                  style={{marginTop: 38, marginRight: 14}}
+              />
 
-        <InputField
-          testID="input-password"
-          placeholder={'Passwort'}
-          icon={
-            <Ionicons
-              name="lock-closed-outline"
-              size={20}
-              color="#666"
-              style={{marginLeft: -5}}
-            />
-          }
-          inputType="password"
-          value={registerUserData.password}
-          onChangeText={password =>
-            setRegisterUserData(prev => ({...prev, password}))
-          }
-        />
+              <TextInput
+                  style={styles.input2}
+                  testID="input-email"
+                  placeholder={'E-Mail'}
+                  inputType="name"
+                  keyboardType="email-address"
+                  fieldButtonLabel={''}
+                  value={registerUserData.email}
+                  onChangeText={email =>
+                      setRegisterUserData(prev => ({...prev, email}))
+                  }
+              />
+          </View>
+          <View style={styles.containerIcon}>
+              <Ionicons
+                  name="lock-closed-outline"
+                  size={20}
+                  color="#666"
+                  style={{marginTop: 38, marginRight: 14}}
+              />
 
-        <InputField
-          placeholder={'Bestätige dein Passwort'}
-          icon={
-            <Ionicons
-              name="lock-closed-outline"
-              size={20}
-              color="#666"
-              style={{marginLeft: -5}}
-            />
-          }
-          testID="input-password-repeat"
-          inputType="password"
-          value={registerUserData.passwordRepeat}
-          onChangeText={passwordRepeat =>
-            setRegisterUserData(prev => ({...prev, passwordRepeat}))
-          }
-        />
+              <TextInput
+                  style={styles.input4}
+                  testID="input-password"
+                  placeholder={'Passwort'}
+                  inputType="password"
+                  keyboardType="email-address"
+                  fieldButtonLabel={''}
+                  value={registerUserData.password}
+                  onChangeText={password =>
+                      setRegisterUserData(prev => ({...prev, password}))
+                  }
+              />
+          </View>
+          <View style={styles.containerIcon}>
+              <Ionicons
+                  name="lock-closed-outline"
+                  size={20}
+                  color="#666"
+                  style={{marginTop: 38, marginRight: 14}}
+              />
+
+              <TextInput
+                  style={styles.input3}
+                  testID="input-password-repeat"
+                  placeholder={'Bestätige dein Passwort'}
+                  inputType="password"
+                  keyboardType="email-address"
+                  fieldButtonLabel={''}
+                  value={registerUserData.passwordRepeat}
+                  onChangeText={passwordRepeat =>
+                      setRegisterUserData(prev => ({...prev, passwordRepeat}))
+                  }
+              />
+          </View>
+
 
         <CustomButton
-          label={'Register'}
+          label={'Registrieren'}
           testID="button-register"
           onPress={() => registerCallback(registerUserData)}
           backgroundColor={AuthTheme.colors.secondaryBackground}
@@ -173,12 +203,57 @@ function RegisterScreen() {
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             testID="back-button">
-            <Text style={{color: '#AD40AF', fontWeight: '700'}}> Login</Text>
+            <Text style={{color: '#AD40AF', fontWeight: '700'}}> Einloggen </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-}
+}const styles = StyleSheet.create({
+    input: {
+        borderRadius: 8,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        paddingVertical: 4,
+        paddingLeft: 30,
+        paddingRight: 245,
+        marginTop: 30,
+        marginBottom: -10,
+    },
+    input2: {
+        borderRadius: 8,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        paddingVertical: 4,
+        paddingLeft: 30,
+        paddingRight: 245,
+        marginTop: 30,
+        marginBottom: -10,
+    },
+    input3: {
+        borderRadius: 8,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        paddingVertical: 4,
+        paddingLeft: 30,
+        paddingRight: 130,
+        marginTop: 30,
+        marginBottom: 30,
+    },
+    input4: {
+        borderRadius: 8,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        paddingVertical: 4,
+        paddingLeft: 30,
+        paddingRight: 225,
+        marginTop: 30,
+        marginBottom: -10,
+    },
+    containerIcon:{
+        display: 'flex',
+        flexDirection: 'row',
+    },
+});
 
 export default RegisterScreen;
