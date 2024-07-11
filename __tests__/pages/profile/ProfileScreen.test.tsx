@@ -84,7 +84,7 @@ describe('ProfileScreen', () => {
 
         expect(setSettingsMock).toHaveBeenCalledWith({
             ...defaultSettings,
-            sound: false,
+            sound: !defaultSettings.sound,
         });
     });
 
@@ -106,7 +106,7 @@ describe('ProfileScreen', () => {
         const vibrationSwitch = screen.getByTestId('switch-vibration');
 
         await act(async () => {
-            fireEvent(vibrationSwitch, 'valueChange', !defaultSettings.vibration);
+            fireEvent(vibrationSwitch, 'onValueChange', !defaultSettings.vibration);
         });
 
         expect(setSettingsMock).toHaveBeenCalledWith({
@@ -133,7 +133,7 @@ describe('ProfileScreen', () => {
         const locationSwitch = screen.getByTestId('switch-location');
 
         await act(() => {
-            fireEvent(locationSwitch, 'valueChange', !defaultSettings.location);
+            fireEvent(locationSwitch, 'onValueChange', !defaultSettings.location);
         });
 
         expect(setSettingsMock).toHaveBeenCalledWith({

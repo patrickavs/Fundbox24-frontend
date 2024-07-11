@@ -7,6 +7,8 @@ import { FoundReport } from '../../../src/types/report-found';
 import { LostReport } from '../../../src/types/report-lost';
 import AddReportScreen from '../../../src/pages/add/AddReportScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import lostReports from '../../../src/assets/dummyData/lostReports.ts';
+import mapConstants from '../../../src/constants/map.ts';
 
 const fakeFoundReport: FoundReport =
 {
@@ -39,15 +41,9 @@ const fakeLostReports: LostReport =
     title: 'Dampfschifffahrtskapitänsausgehuniformsmütze',
     description: 'Ein Schlüsselbund mit 3 Schlüsseln',
     lastSeenDate: new Date(Date.now()).toLocaleTimeString(),
-    lastSeenLocation: {
-        latitude: 53.551086,
-        longitude: 9.993682,
-    },
-    lostLocation: {
-        latitude: 53.551086,
-        longitude: 9.993682,
-    },
-    lostRadius: 100,
+    lastSeenLocation: mapConstants.initialMapPosition,
+    lostLocation: mapConstants.initialMapPosition,
+    lostRadius: mapConstants.minRadius,
     category: {
         id: 1,
         value: '',
@@ -165,7 +161,7 @@ describe('AddReportScreen lost', () => {
         });
 
         await waitFor(() => {
-            expect(mockedNavigate).toHaveBeenCalledWith('Map', {'type': 'lost'});
+            expect(mockedNavigate).toHaveBeenCalledWith('Map', {lostPosition: lostReports[0].lostLocation, lostRadius: lostReports[0].lostRadius});
         });
     });
 });

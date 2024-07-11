@@ -1,99 +1,118 @@
-import React from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import MapView, { Circle, LatLng } from 'react-native-maps';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Slider } from '@miblanchard/react-native-slider';
-import mapConstants from '../../constants/map.ts';
-import styles from './styles.ts';
-import eventEmitter from '../eventEmitter.ts';
+import mapConstants from '../../constants/map';
+import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRoute } from '@react-navigation/native';
 
 const numberFormat = Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
 
-export default function SetPerimeterScreen({navigation}): React.JSX.Element {
+export default function SetPerimeterScreen({ navigation }: { navigation: any }) {
   const route = useRoute<any>();
-  const { type } = route.params;
-  const [position, setPosition] = React.useState<LatLng>(
-    mapConstants.initialMapPosition,
+  const {
+    lostPosition,
+    foundPosition,
+    collectPosition,
+    lostRadius,
+    foundRadius,
+    collectRadius,
+    reportType,
+    type,
+  } = route.params;
+
+  const [location, setLocation] = React.useState<LatLng>(
+    lostPosition || foundPosition || collectPosition || mapConstants.initialMapPosition
+  );
+  const [radius, setRadius] = React.useState<number>(
+    lostRadius || foundRadius || collectRadius || mapConstants.minRadius
   );
 
-  const [radius, setRadius] = React.useState<number>(mapConstants.minRadius);
-  //const [locationName, setLocationName] = React.useState<string>('');
+  useEffect(() => {
+    if (route.params) {
+      if (lostPosition) {
+        setLocation(lostPosition);
+      }
+      if (foundPosition) {
+        setLocation(foundPosition);
+      }
+      if (collectPosition) {
+        setLocation(collectPosition);
+      }
+      if (lostRadius) {
+        setRadius(lostRadius);
+      }
+      if (foundRadius) {
+        setRadius(foundRadius);
+      }
+      if (collectRadius) {
+        setRadius(collectRadius);
+      }
+    }
+  }, [route.params]);
 
-  function getFormattedDiameter(): string {
+  const getFormattedDiameter = () => {
     const radiusInKM = radius / 1000;
     return `${numberFormat.format(radiusInKM)} km`;
-  }
+  };
 
-  function onChangeRadius(sliderValue: number) {
-    const newRadius =
-      mapConstants.minRadius +
-      sliderValue * (mapConstants.maxRadius - mapConstants.minRadius);
-
+  const onChangeRadius = useCallback((sliderValue: number) => {
+    const newRadius = mapConstants.minRadius + sliderValue * (mapConstants.maxRadius - mapConstants.minRadius);
     setRadius(newRadius);
-    eventEmitter.emit('reportRadiusChange', newRadius);
-  }
+  }, []);
 
-  async function onChangePosition(newPosition: LatLng) {
-    setPosition(newPosition);
-    if(type === 'found') {
-      eventEmitter.emit('foundReportPositionChange', newPosition);
-    } else if (type === 'collect') {
-      eventEmitter.emit('collectReportPositionChange', newPosition);
-    } else if (type === 'lost') {
-      eventEmitter.emit('lostReportPositionChange', newPosition);
-    }
+  const onChangePosition = useCallback((newPosition: LatLng) => {
+    setLocation(newPosition);
+  }, []);
 
-    /*try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${newPosition.latitude}&lon=${newPosition.longitude}&format=json`);
-      const data = await response.json();
-
-      if (data && data.address) {
-        const { city, town, village, hamlet, locality } = data.address;
-        const name = city || town || village || hamlet || locality || 'Kein Ort gefunden';
-        setLocationName(name);
-        eventEmitter.emit('reportLocationNameChange', locationName);
+  const handleSave = () => {
+    if (reportType === 'lost') {
+      navigation.navigate('NewReport', {
+        lostLocation: location,
+        lostRadius: radius,
+      });
+    } else {
+      if (type === 'found') {
+        navigation.navigate('NewReport', {
+          foundLocation: location,
+        });
       } else {
-        setLocationName('Kein Ort gefunden');
+        navigation.navigate('NewReport', {
+          collectLocation: location,
+        });
       }
-    } catch (error) {
-      console.error(error);
-      setLocationName('Fehler beim Abrufen des Ortsnamens');
-    }*/
-  }
+    }
+  };
 
   return (
-    // TODO: tap to change position of perimeter
     <View style={[styles.absoluteFill, styles.marginToTabBar]}>
       <MapView
         onPress={event => onChangePosition(event.nativeEvent.coordinate)}
         style={styles.absoluteFill}
         initialRegion={{
-          ...position,
+          ...location,
           latitudeDelta: 0.03,
           longitudeDelta: 0.03,
-        }}>
+        }}
+      >
         <Circle
-          center={position}
+          center={location}
           radius={radius}
           fillColor="rgba(245, 39, 145, 0.3)"
           strokeWidth={0}
         />
       </MapView>
       <View style={styles.controls}>
-        <View>
+        {reportType === 'lost' ? <View>
           <Text style={styles.diameterText}>{getFormattedDiameter()}</Text>
           <Text style={styles.diameterLabel}>Umkreis</Text>
-        </View>
-        <Slider value={0} onValueChange={value => onChangeRadius(value[0])} />
-          <TouchableOpacity
-              style={styles.iconButtonContainer}
-              onPress={() =>
-                  //@ts-ignore
-                  navigation.goBack()
-              } >
-              <Ionicons name={'checkmark-outline'} style={styles.iconButton} />
-          </TouchableOpacity>
+        </View> : null}
+        {reportType === 'lost' ? <Slider value={0} onValueChange={value => onChangeRadius(value[0])} /> :
+          <View style={{ paddingBottom: 50 }} />}
+        <TouchableOpacity style={styles.iconButtonContainer} onPress={handleSave}>
+          <Ionicons name={'checkmark-outline'} style={styles.iconButton} />
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -7,6 +7,7 @@ import { FoundReport } from '../../../src/types/report-found';
 import { LostReport } from '../../../src/types/report-lost';
 import AddReportScreen from '../../../src/pages/add/AddReportScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import mapConstants from '../../../src/constants/map.ts';
 
 const fakeFoundReport: FoundReport =
   {
@@ -87,6 +88,7 @@ describe('AddReportScreen found', () => {
   it('should add a found report correctly', async () => {
     const mockCreateLostReport = jest.fn();
     const mockCreateFoundReport = jest.fn();
+    const mockRadius = jest.fn();
 
     jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
       isPending: false,
@@ -165,7 +167,7 @@ describe('AddReportScreen found', () => {
     });
 
     await waitFor(() => {
-      expect(mockedNavigate).toHaveBeenCalledWith('Map', {'type': 'found'});
+      expect(mockedNavigate).toHaveBeenCalledWith('Map', {foundPosition: undefined, foundRadius: mapConstants.minRadius});
     });
 
     await act(async () => {
@@ -173,7 +175,7 @@ describe('AddReportScreen found', () => {
     });
 
     await waitFor(() => {
-      expect(mockedNavigate).toHaveBeenCalledWith('Map', {'type': 'collect'});
+      expect(mockedNavigate).toHaveBeenCalledWith('Map', {collectPosition: undefined, collectRadius: mapConstants.minRadius});
     });
   });
 });

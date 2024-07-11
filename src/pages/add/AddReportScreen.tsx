@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -23,7 +23,6 @@ import {
 } from '@react-navigation/native';
 import { LatLng } from 'react-native-maps';
 import mapConstants from '../../constants/map.ts';
-import eventEmitter from '../../components/eventEmitter.ts';
 import { category } from '../../data/categories.ts';
 import DatePicker from 'react-native-date-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -32,14 +31,16 @@ import { FoundReportRequest } from '../../types/report-found-request.ts';
 
 function AddReportScreen() {
   const route = useRoute<any>();
-  const navigation = useNavigation();
-  const { reportType, fetchedCategories } = route.params;
+  const navigation = useNavigation<any>();
+  const { reportType, lostLocation, foundLocation, collectLocation, lostRadius, type } = route.params;
   const { createLostReport } = useLostReports();
   const { createFoundReport } = useFoundReports();
   const [lostReportPosition, setLostReportPosition] = useState<LatLng>(mapConstants.initialMapPosition);
   const [foundReportPosition, setFoundReportPosition] = useState<LatLng>(mapConstants.initialMapPosition);
   const [collectReportPosition, setCollectReportPosition] = React.useState<LatLng>(mapConstants.initialMapPosition);
-  const [reportRadius, setReportRadius] = useState<number>(mapConstants.minRadius);
+  const [lostReportRadius, setLostReportRadius] = useState<number>(mapConstants.minRadius);
+  const [foundReportRadius, setFoundReportRadius] = useState<number>(mapConstants.minRadius);
+  const [collectReportRadius, setCollectReportRadius] = useState<number>(mapConstants.minRadius);
   //const [locationName, setLocationName] = React.useState<string>('');
   const [reportImage, setReportImage] = useState<string>(category[0].image);
   const [reportName, setReportName] = useState<string>('');
@@ -48,9 +49,9 @@ function AddReportScreen() {
   //const [error, setError] = useState<string | null>(null);
   const [reportCategory, setReportCategory] = useState<Category>(category[0]);
   //const [report, setReport] = useState<NewLostReport | NewFoundReport>();
-  const categories: any = fetchedCategories.map((c: Category) => ({ label: c.name, value: c.value }));
-
-  useEffect(() => {
+  const categories: any = category.map((c: Category) => ({ label: c.name, value: c.value }));
+  const today = useMemo(() => new Date(), []);
+  /*useEffect(() => {
     const foundPositionListener = eventEmitter.addListener('foundReportPositionChange', function (position: LatLng) {
       //console.log('Found Report position changed:', position);
       setFoundReportPosition(position);
@@ -74,7 +75,7 @@ function AddReportScreen() {
     /*const locationNameListener = eventEmitter.addListener('reportLocationNameChange', function(location: string) {
       console.log('Location changed:', location);
       setLocationName(location);
-    });*/
+    });
 
     return () => {
       lostPositionListener.remove();
@@ -83,33 +84,35 @@ function AddReportScreen() {
       radiusListener.remove();
       //locationNameListener.remove();
     };
-  }, []);
+  }, []);*/
+
+  React.useEffect(() => {
+    //const { lostLocation, foundLocation, collectLocation, radius } = route.params;
+    if (reportType === 'lost') {
+      setLostReportPosition(lostLocation || mapConstants.initialMapPosition);
+      setLostReportRadius(lostRadius || mapConstants.minRadius);
+    } else {
+      if (type === 'found') {
+        setFoundReportPosition(foundLocation || mapConstants.initialMapPosition);
+      } else {
+        setCollectReportPosition(collectLocation || mapConstants.initialMapPosition);
+      }
+    }
+  }, [reportType, route.params]);
 
   const getImage = (imagePath: number) => {
-    switch (imagePath) {
-      case 10:
-        return '../../assets/images/categories/schmuck.png';
-      case 11:
-        return '../../assets/images/categories/gerate.png';
-      case 12:
-        return '../../assets/images/categories/rucksack.png';
-      case 13:
-        return '../../assets/images/categories/pajamas.png';
-      case 14:
-        return '../../assets/images/categories/key-chain.png';
-      case 15:
-        return '../../assets/images/categories/wallet.png';
-      case 16:
-        return '../../assets/images/categories/teddy-bear.png';
-      case 17:
-        return '../../assets/images/categories/mystery.png';
-      default:
-        return null;
-    }
+    const images: any = {
+      9: '../../assets/images/categories/schmuck.png',
+      10: '../../assets/images/categories/gerate.png',
+      11: '../../assets/images/categories/rucksack.png',
+      12: '../../assets/images/categories/pajamas.png',
+      13: '../../assets/images/categories/key-chain.png',
+      14: '../../assets/images/categories/wallet.png',
+      15: '../../assets/images/categories/teddy-bear.png',
+      16: '../../assets/images/categories/mystery.png',
+    };
+    return images[imagePath] || images[9];
   };
-
-  // TODO: check if title and description are not empty
-  // TODO: limit date and time to current date-time
 
   const handleSubmit = async () => {
     const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
@@ -126,9 +129,9 @@ function AddReportScreen() {
       ...(reportType === 'lost'
         ? {
           lastSeenDate: isoDate,
-          lastSeenLocation: foundReportPosition,
+          lastSeenLocation: lostReportPosition,
           lostLocation: lostReportPosition,
-          lostRadius: reportRadius,
+          lostRadius: lostReportRadius,
         }
         : {
           foundDate: isoDate,
@@ -143,7 +146,8 @@ function AddReportScreen() {
       const token = await AsyncStorage.getItem('basicAuthCredentials');
       if (token) {
         if (!newReport.title || !newReport.description) {
-          return Toast.show('Ein Titel und eine Beschreibung für den Gegenstand wird benötigt', Toast.SHORT);
+          Toast.show('Ein Titel und eine Beschreibung für den Gegenstand wird benötigt', Toast.SHORT);
+          return;
         }
         reportType === 'lost'
           ? createLostReport(token, newReport as LostReportRequest)
@@ -188,16 +192,15 @@ function AddReportScreen() {
                 );
                 if (categoryDrop) {
                   setReportCategory({
-                    id: categoryDrop.id,
-                    image: categoryDrop.image,
-                    name: categoryDrop.name,
-                    value: categoryDrop.value,
+                    ...categoryDrop,
                   });
                   setReportImage(categoryDrop.image);
                 }
                 console.log(categoryDrop?.id);
                 console.log('Image: ', typeof categoryDrop?.image);
+                console.log('real Image: ', categoryDrop?.image);
                 console.log(`Category: ${reportCategory.name}`);
+                console.log(item.label);
               }}
               testID={'dropdown'}
             />
@@ -242,6 +245,7 @@ function AddReportScreen() {
                     date={date}
                     onDateChange={setDate}
                     mode="datetime"
+                    maximumDate={today}
                   />
                 </View>
               </View>
@@ -266,6 +270,7 @@ function AddReportScreen() {
                     date={date}
                     onDateChange={setDate}
                     mode="datetime"
+                    maximumDate={today}
                   />
                 </View>
               </View>
@@ -281,7 +286,7 @@ function AddReportScreen() {
                       style={styles.button2}
                       onPress={() =>
                       //@ts-ignore
-                      navigation.navigate('Map', {type: 'lost'})
+                      navigation.navigate('Map', {lostPosition: lostReportPosition, lostRadius: lostReportRadius, reportType, type: 'found'})
                   } >
                     <Ionicons name={'map'} style={styles.iconButton} testID={'map'} />
                   </TouchableOpacity>
@@ -303,7 +308,7 @@ function AddReportScreen() {
                         style={[styles.button2, { backgroundColor: FoundReportTheme.colors.button2 }]}
                         onPress={() =>
                             //@ts-ignore
-                            navigation.navigate('Map', {type: 'found'})
+                            navigation.navigate('Map', {foundPosition: foundReportPosition, foundRadius: foundReportRadius, reportType, type: 'collect'})
                         } >
                       <Ionicons name={'map'} style={styles.iconButton} testID={'found'} />
                     </TouchableOpacity>
@@ -314,7 +319,7 @@ function AddReportScreen() {
                         style={[styles.button2, { backgroundColor: FoundReportTheme.colors.button2 }]}
                         onPress={() =>
                             //@ts-ignore
-                            navigation.navigate('Map', {type: 'collect'})
+                            navigation.navigate('Map', {collectPosition: collectReportPosition, collectRadius: collectReportRadius, reportType})
                         } >
                       <Ionicons name={'map'} style={styles.iconButton} testID={'collect'} />
                     </TouchableOpacity>
