@@ -4,6 +4,7 @@ import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } 
 import { LostReport } from '../../types/report-lost.ts';
 import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import moment from 'moment';
+import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 
 type ReportCardProps = {
   report: LostReport;

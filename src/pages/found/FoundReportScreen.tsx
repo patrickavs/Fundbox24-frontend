@@ -5,7 +5,7 @@ import {FoundReportTheme} from '../../constants/theme.ts';
 import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import FoundReportCard from './FoundReportCard.tsx';
-import {category} from '../../data/categories';
+import {categoriesWithImage} from '../../data/categoriesWithImage.ts';
 import { useFocusEffect } from '@react-navigation/native';
 import {ALL_FOUND_REPORTS_URL} from '../../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -109,7 +109,7 @@ function FoundReportScreen({navigation}: {navigation: any}): React.JSX.Element {
               key={item.id}
               report={item}
               onPress={() => navigation.navigate('SingleFoundReportScreen', {item: item})}
-              image={category.find((it) => it.name === item.category.name)?.image ?? category[category.length - 1].image }
+              image={categoriesWithImage.find((it) => it.name === item.category.name)?.image ?? categoriesWithImage[categoriesWithImage.length - 1].image }
             />
           )}
           keyExtractor={item => item.id}

@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../components/CustomButton';
 import moment from 'moment';
 import SpacerVertical from '../found/SpacerVertical';
-import {category} from '../../data/categories';
+import {categoriesWithImage} from '../../data/categoriesWithImage.ts';
 import {useRoute} from '@react-navigation/native';
 import {LostReport} from '../../types/report-lost';
 import CustomHeader from '../../components/CustomHeader';
@@ -55,7 +55,7 @@ function SingleLostReportScreen({navigation}: {navigation: any}): React.JSX.Elem
             {Platform.OS === 'ios' ? <CustomHeader backgroundColor={'white'} title={''} isSmall /> : <></>}
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={category.find((it) => it.name === item.category?.name)?.image ?? category[category.length - 1].image} />
+                    <Image style={styles.image} source={categoriesWithImage.find((it) => it.name === item.category?.name)?.image ?? categoriesWithImage[categoriesWithImage.length - 1].image} />
                 </View>
                 <View style={styles.detailsContainer}>
                     <Text style={styles.title}>{item?.title ?? 'Titel'}</Text>

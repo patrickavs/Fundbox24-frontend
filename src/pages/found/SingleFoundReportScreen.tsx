@@ -6,7 +6,7 @@ import SpacerVertical from './SpacerVertical';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../components/CustomButton';
 import moment from 'moment';
-import { category } from '../../data/categories';
+import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 import { useRoute } from '@react-navigation/native';
 import {FoundReport} from '../../types/report-found';
 import CustomHeader from '../../components/CustomHeader';
@@ -31,6 +31,8 @@ function SingleFoundReportScreen({navigation}: {navigation: any}): React.JSX.Ele
     const route = useRoute();
     const { item } = route.params as { item: FoundReport };
 
+    const matchedCategory = categoriesWithImage.find(c => c.id === item.categoryId);
+
     const [position, setPosition] = React.useState<LatLng>({
         latitude: item.foundLocation.latitude,
         longitude: item.foundLocation.longitude,
@@ -53,7 +55,7 @@ function SingleFoundReportScreen({navigation}: {navigation: any}): React.JSX.Ele
             {Platform.OS === 'ios' ? <CustomHeader backgroundColor={'white'} title={''} isSmall/> : <></>}
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={category.find((it) => it.name === item.category?.name)?.image ?? category[category.length - 1].image} />
+                    <Image style={styles.image} source={categoriesWithImage.find((it) => it.id === matchedCategory?.id)?.image ?? categoriesWithImage[categoriesWithImage.length - 1].image} />
                 </View>
                 <View style={styles.detailsContainer}>
                     <Text style={styles.title}>{item?.title ?? 'Titel'}</Text>
