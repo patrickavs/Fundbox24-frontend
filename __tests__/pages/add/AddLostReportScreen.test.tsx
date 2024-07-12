@@ -163,8 +163,10 @@ describe('AddReportScreen lost', () => {
 
     await waitFor(() => {
       expect(mockedNavigate).toHaveBeenCalledWith('Map', {
-        lostPosition: lostReports[0].lostLocation,
-        lostRadius: lostReports[0].lostRadius,
+        lostPosition: mapConstants.initialMapPosition,
+        lostRadius: mapConstants.minRadius,
+        reportType: 'lost',
+        type: 'lost',
       });
     });
   });

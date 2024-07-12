@@ -275,7 +275,7 @@ function AddReportScreen() {
                         lostPosition: lostReportPosition,
                         lostRadius: lostReportRadius,
                         reportType,
-                        type: 'found',
+                        type: 'lost',
                       })
                     }>
                     <Ionicons name={'map'} style={styles.iconButton} testID={'map'} />
@@ -300,9 +300,8 @@ function AddReportScreen() {
                       //@ts-ignore
                       navigation.navigate('Map', {
                         foundPosition: foundReportPosition,
-                        foundRadius: foundReportRadius,
                         reportType,
-                        type: 'collect',
+                        type: 'found',
                       })
                     }>
                     <Ionicons name={'map'} style={styles.iconButton} testID={'found'} />
@@ -316,8 +315,8 @@ function AddReportScreen() {
                       //@ts-ignore
                       navigation.navigate('Map', {
                         collectPosition: collectReportPosition,
-                        collectRadius: collectReportRadius,
                         reportType,
+                        type: 'collect',
                       })
                     }>
                     <Ionicons name={'map'} style={styles.iconButton} testID={'collect'} />

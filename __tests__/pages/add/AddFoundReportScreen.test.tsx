@@ -172,7 +172,7 @@ describe('AddReportScreen found', () => {
         foundPosition: {
           latitude: 50.3254386,
           longitude: 11.9384522,
-        }, reportType: 'found', type: 'collect',
+        }, reportType: 'found', type: 'found',
       });
     });
 

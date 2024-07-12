@@ -25,7 +25,7 @@ export default function SetPerimeterScreen({ navigation }: { navigation: any }) 
     lostPosition || foundPosition || collectPosition || mapConstants.initialMapPosition
   );
   const [radius, setRadius] = React.useState<number>(
-    lostRadius || collectRadius || mapConstants.minRadius
+    lostRadius || mapConstants.minRadius
   );
 
   useEffect(() => {
