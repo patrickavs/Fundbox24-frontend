@@ -28,7 +28,6 @@ function Dropdown(props: DropdownProps) {
         inputSearchStyle={styles.inputSearchStyle}
         testID={props.testID}
         data={props.items}
-        search
         labelField="label"
         valueField="value"
         placeholder={props.placeholder}

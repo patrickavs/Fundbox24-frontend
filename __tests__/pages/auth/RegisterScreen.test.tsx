@@ -156,4 +156,16 @@ describe('RegisterScreen', () => {
 
     expect(view.queryByText('Fetch failed')).toBeTruthy();
   });
+
+  it('navigates back when the back button is pressed', () => {
+    const navigate = jest.fn();
+    (useNavigation as jest.Mock).mockReturnValue({goBack: navigate});
+
+    const {getByTestId} = render(<RegisterScreen />);
+
+    const backButton = getByTestId('back-button');
+    fireEvent.press(backButton);
+
+    expect(navigate).toHaveBeenCalled();
+  });
 });

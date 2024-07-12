@@ -10,9 +10,9 @@ import { Category } from '../../types/category.ts';
 
 const AddFoundOrLostReport = () => {
     const navigation = useNavigation();
-    const [allCategories, setAllCategories] = useState<Category[]>([]);
+    //const [allCategories, setAllCategories] = useState<Category[]>([]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchAllCategories = async () => {
             const token = await AsyncStorage.getItem('basicAuthCredentials');
             const response = await fetch(ALL_CATEGORIES_URL, {
@@ -32,7 +32,7 @@ const AddFoundOrLostReport = () => {
         };
 
         fetchAllCategories();
-    }, []);
+    }, []);*/
 
     return (
         <View style={styles.outerContainer}>
@@ -49,7 +49,6 @@ const AddFoundOrLostReport = () => {
                             // @ts-ignore
                             navigation.navigate('NewReport', {
                                 reportType: 'lost',
-                                fetchedCategories: allCategories,
                             })
                         }
                         fontSize={17}
@@ -61,7 +60,6 @@ const AddFoundOrLostReport = () => {
                             // @ts-ignore
                             navigation.navigate('NewReport', {
                                 reportType: 'found',
-                                fetchedCategories: allCategories,
                             })
                         }
                         fontSize={17}

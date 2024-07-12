@@ -12,7 +12,7 @@ import {LostReport} from '../../types/report-lost';
 import CustomHeader from '../../components/CustomHeader';
 
 
-function SingleLostReportScreen( {navigation} ): React.JSX.Element {
+function SingleLostReportScreen({navigation}: {navigation: any}): React.JSX.Element {
 
     useEffect(() => {
         navigation.setOptions({
@@ -29,8 +29,6 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
 
     const route = useRoute();
     const { item } = route.params as { item: LostReport };
-
-    const matchedCategory = categoriesWithImage.find(c => c.id === item.categoryId);
 
     const [position, setPosition] = React.useState<LatLng>({
         latitude: item.lostLocation.latitude,
@@ -57,7 +55,7 @@ function SingleLostReportScreen( {navigation} ): React.JSX.Element {
             {Platform.OS === 'ios' ? <CustomHeader backgroundColor={'white'} title={''} isSmall /> : <></>}
             <ScrollView>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={categoriesWithImage.find((it) => it.id === matchedCategory?.id)?.image ?? categoriesWithImage[categoriesWithImage.length - 1].image} />
+                    <Image style={styles.image} source={categoriesWithImage.find((it) => it.name === item.category?.name)?.image ?? categoriesWithImage[categoriesWithImage.length - 1].image} />
                 </View>
                 <View style={styles.detailsContainer}>
                     <Text style={styles.title}>{item?.title ?? 'Titel'}</Text>

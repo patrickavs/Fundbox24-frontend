@@ -10,19 +10,19 @@ type ReportCardProps = {
   report: LostReport;
   image: ImageSourcePropType;
   onPress: (id: string) => void;
+  isMasterViewCard?: boolean;
 };
 
 export default function LostReportCard(props: ReportCardProps) {
-  const matchedCategory = categoriesWithImage.find(c => c.id === props.report.categoryId);
   return (
-    <View key={props.report.id} style={styles.container}>
+    <View key={props.report.id} style={[styles.container, props.isMasterViewCard ? styles.masterViewCard : null]}>
       <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID="report-card-press">
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={props.image} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
-          <Text style={styles.text} numberOfLines={1}>{matchedCategory?.name || 'Default'}</Text>
+          <Text style={styles.text} numberOfLines={1}>{props.report.category?.name || 'Default'}</Text>
           <Text style={styles.text} numberOfLines={1}>{moment(props.report.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
         </View>
       </TouchableOpacity>
@@ -35,9 +35,11 @@ const styles = StyleSheet.create({
     flex: 1 / 2,
     padding: 10,
     width: 175,
-    marginLeft: 2,
     marginTop: 0,
     margin: 1,
+  },
+  masterViewCard: {
+      maxWidth: '50%',
   },
   imageContainer: {
     display: 'flex',

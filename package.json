@@ -53,6 +53,7 @@
     "jest": "^29.7.0",
     "jest-junit": "^16.0.0",
     "prettier": "2.8.8",
+    "react-native-simple-toast": "^3.3.1",
     "react-test-renderer": "18.2.0",
     "typescript": "5.0.4"
   },
