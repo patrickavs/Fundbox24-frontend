@@ -85,7 +85,7 @@ describe('FoundReportScreen', () => {
       isPending: false,
       foundReports: [fakeFoundReport],
       error: null,
-      refresh: () => Promise.resolve(),
+      refresh: () => null,
       createFoundReport: (userToken: string, report: FoundReportRequest) => null,
       editFoundReport: (userToken: string, report: FoundReport) => null,
     }));

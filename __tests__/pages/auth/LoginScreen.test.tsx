@@ -1,13 +1,11 @@
 import React from 'react';
-import { describe, it, expect, jest, beforeEach } from '@jest/globals';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { describe, it, expect, jest, beforeEach, beforeAll } from '@jest/globals';
+import { fireEvent, render, screen, waitFor, act } from '@testing-library/react-native';
 import LoginScreen from '../../../src/components/auth/LoginScreen.tsx';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { UserProvider, useUser } from '../../../src/hooks/useUser.tsx';
 import { Alert } from 'react-native';
-
-jest.setTimeout(100000);
 
 jest.mock('@react-navigation/native', () => {
   const actualNav = jest.requireActual('@react-navigation/native');
@@ -26,14 +24,16 @@ describe('LoginScreen', () => {
     jest.clearAllMocks();
   });
 
-  // Mock the fetch function
-  jest.spyOn(global, 'fetch').mockImplementation(() =>
-    Promise.resolve({
-      json: () => Promise.resolve({}),
-      status: 200,
-      ok: true,
-    } as Response)
-  );
+  beforeAll(() => {
+    // Mock the fetch function
+    jest.spyOn(global, 'fetch').mockImplementation(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({}),
+        status: 200,
+        ok: true,
+      } as Response)
+    );
+  });
 
   const AuthStackNavigator = createNativeStackNavigator();
 
@@ -52,7 +52,7 @@ describe('LoginScreen', () => {
   );
 
   it('calls login and resets email and password on successful login', async () => {
-    const login = jest.fn().mockResolvedValue(true);
+    const login = jest.fn(() => true);
     (useUser as jest.Mock).mockReturnValue({ login });
 
     const { getByTestId, getByPlaceholderText } = render(<LoginScreen />);
