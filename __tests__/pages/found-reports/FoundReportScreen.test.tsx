@@ -1,169 +1,172 @@
 import React from 'react';
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { describe, expect, it, jest } from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
 import { FoundReport } from '../../../src/types/report-found';
 import FoundReportCard from '../../../src/pages/found/FoundReportCard';
 import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
-import {User} from '../../../src/types/user';
+import { User } from '../../../src/types/user';
+
+jest.setTimeout(10000);
 
 const fakeFoundReport: FoundReport =
-{
+  {
     id: '1',
     title: 'Dampfschifffahrtskapitänsausgehuniformsmütze',
     description: 'Ein Schlüsselbund mit 3 Schlüsseln',
     foundLocation: {
-        latitude: 53.551086,
-        longitude: 9.993682,
+      latitude: 53.551086,
+      longitude: 9.993682,
     },
     currentLocation: {
-        latitude: 53.551086,
-        longitude: 9.993682,
+      latitude: 53.551086,
+      longitude: 9.993682,
     },
     foundDate: new Date(Date.now()).toLocaleTimeString(),
     category: {
-        id: 1,
-        value: '',
-        name: 'Schlüssel',
-        image: '',
+      id: 1,
+      value: '',
+      name: 'Schlüssel',
+      image: '',
     },
     isFinished: false,
     imagePath: '',
     myChats: [],
-};
+  };
 
 const userData: User = {
-    id: '1',
-    email: 'wal@test.de',
-    firstName: 'Walter',
-    lastName: 'White',
-    username: 'walterwhite',
+  id: '1',
+  email: 'wal@test.de',
+  firstName: 'Walter',
+  lastName: 'White',
+  username: 'walterwhite',
 };
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
-    getItem: jest.fn((key: string) => {
-        if (key === 'user-credentials') {
-            return Promise.resolve(JSON.stringify(userData));
-        } else if (key === 'basicAuthCredentials') {
-            return Promise.resolve('dXNlcjpwYXNz');
-        }
-        return Promise.resolve(null);
-    }),
-    setItem: jest.fn((key: string, value: string) => Promise.resolve()),
+  getItem: jest.fn((key: string) => {
+    if (key === 'user-credentials') {
+      return Promise.resolve(JSON.stringify(userData));
+    } else if (key === 'basicAuthCredentials') {
+      return Promise.resolve('dXNlcjpwYXNz');
+    }
+    return Promise.resolve(null);
+  }),
+  setItem: jest.fn((key: string, value: string) => Promise.resolve()),
 }));
 
 jest.mock('@react-navigation/native', () => ({
-    useNavigation: jest.fn(() => ({
-        goBack: jest.fn(),
-    }),),
-    useFocusEffect: jest.fn(() => ({
-        useCallback: jest.fn(),
-    })),
+  useNavigation: jest.fn(() => ({
+    goBack: jest.fn(),
+  })),
+  useFocusEffect: jest.fn(() => ({
+    useCallback: jest.fn(),
+  })),
 }));
 
 describe('FoundReportScreen', () => {
-    // it('should render the dropdowns', async () => {
-    //     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-    //         isPending: false,
-    //         lostReports: [fakeLostReports],
-    //         error: null,
-    //         createLostReport: (userToken: string, report: NewLostReport) => null,
-    //         editLostReport: (userToken: string, report: LostReport) => null
-    //     }));
+  // it('should render the dropdowns', async () => {
+  //     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
+  //         isPending: false,
+  //         lostReports: [fakeLostReports],
+  //         error: null,
+  //         createLostReport: (userToken: string, report: NewLostReport) => null,
+  //         editLostReport: (userToken: string, report: LostReport) => null
+  //     }));
 
-    //     const view = render(<LostReportScreen />);
+  //     const view = render(<LostReportScreen />);
 
-    //     expect(view.getByTestId('sort-dropdown')).toBeTruthy();
-    //     expect(view.getByTestId('filter-dropdown')).toBeTruthy();
-    // });
+  //     expect(view.getByTestId('sort-dropdown')).toBeTruthy();
+  //     expect(view.getByTestId('filter-dropdown')).toBeTruthy();
+  // });
 
-    it('should render the dropdowns', async () => {
-        jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
-            isPending: false,
-            foundReports: [fakeFoundReport],
-            error: null,
-            refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
-            editFoundReport: (userToken: string, report: FoundReport) => null,
-        }));
+  it('should render the dropdowns', async () => {
+    jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
+      isPending: false,
+      foundReports: [fakeFoundReport],
+      error: null,
+      refresh: () => Promise.resolve(),
+      createFoundReport: (userToken: string, report: FoundReportRequest) => null,
+      editFoundReport: (userToken: string, report: FoundReport) => null,
+    }));
 
-        const view = render(<FoundReportScreen navigation={null} />);
+    const view = render(<FoundReportScreen navigation={null} />);
 
-        expect(view.getByTestId('sort-dropdown-found')).toBeTruthy();
-        expect(view.getByTestId('filter-dropdown-found')).toBeTruthy();
-        expect(screen.getByText('Gefunden in deinem Umkreis')).toBeTruthy();
-        expect(screen.getByText('Sortieren')).toBeTruthy();
-        expect(screen.getByText('Kategorie')).toBeTruthy();
+    expect(view.getByTestId('sort-dropdown-found')).toBeTruthy();
+    expect(view.getByTestId('filter-dropdown-found')).toBeTruthy();
+    expect(screen.getByText('Gefunden in deinem Umkreis')).toBeTruthy();
+    expect(screen.getByText('Sortieren')).toBeTruthy();
+    expect(screen.getByText('Kategorie')).toBeTruthy();
+  });
+
+  it('should execute the sort dropdown onChange callback', async () => {
+
+    const view = render(<FoundReportScreen navigation={null} />);
+    const sortDropdown = view.getByTestId('sort-dropdown-found');
+
+    const logSpy = jest.spyOn(console, 'log');
+
+    act(() => {
+      fireEvent(sortDropdown, 'onChange', { value: 'alphabetical' });
     });
 
-    it('should execute the sort dropdown onChange callback', async () => {
+    expect(logSpy).toHaveBeenCalledWith('Benutzer hat sortiert nach: alphabetical');
 
-        const view = render(<FoundReportScreen navigation={null} />);
-        const sortDropdown = view.getByTestId('sort-dropdown-found');
+    logSpy.mockRestore();
+  });
 
-        const logSpy = jest.spyOn(console, 'log');
+  it('should execute the filter dropdown onChange callback', async () => {
 
-        act(() => {
-            fireEvent(sortDropdown, 'onChange', {value: 'alphabetical'});
-        });
+    const view = render(<FoundReportScreen navigation={null} />);
+    const filterDropdown = view.getByTestId('filter-dropdown-found');
 
-        expect(logSpy).toHaveBeenCalledWith('Benutzer hat sortiert nach: alphabetical');
+    const logSpy = jest.spyOn(console, 'log');
 
-        logSpy.mockRestore();
+    act(() => {
+      fireEvent(filterDropdown, 'onChange', { value: 'Geldbörse' });
     });
 
-    it('should execute the filter dropdown onChange callback', async () => {
+    expect(logSpy).toHaveBeenCalledWith('Benutzer hat gefiltert nach: Geldbörse');
 
-        const view = render(<FoundReportScreen navigation={null} />);
-        const filterDropdown = view.getByTestId('filter-dropdown-found');
+    logSpy.mockRestore();
+  });
 
-        const logSpy = jest.spyOn(console, 'log');
+  it('should render the SearchBar component', async () => {
 
-        act(() => {
-            fireEvent(filterDropdown, 'onChange', {value: 'Geldbörse'});
-        });
+    const view = render(<FoundReportScreen navigation={null} />);
 
-        expect(logSpy).toHaveBeenCalledWith('Benutzer hat gefiltert nach: Geldbörse');
+    expect(view.getByTestId('search-bar-found')).toBeTruthy();
+  });
 
-        logSpy.mockRestore();
+  it('should execute SearchBar onChangeText callback', async () => {
+
+    const searchText = 'Schlüssel';
+    const view = render(<FoundReportScreen navigation={null} />);
+    const searchBar = view.getByTestId('search-bar-found');
+
+    const logSpy = jest.spyOn(console, 'log');
+
+    act(() => {
+      fireEvent.changeText(searchBar, searchText);
     });
 
-    it('should render the SearchBar component', async () => {
+    expect(logSpy).toHaveBeenCalledWith('Benutzer sucht nach: ' + searchText);
 
-        const view = render(<FoundReportScreen navigation={null} />);
+    logSpy.mockRestore();
+  });
 
-        expect(view.getByTestId('search-bar-found')).toBeTruthy();
+  it('should execute the onPress callback function', async () => {
+    const pressCallback = jest.fn((id: string) => {
     });
 
-    it('should execute SearchBar onChangeText callback', async () => {
+    // @ts-ignore
+    const view = render(<FoundReportCard report={fakeFoundReport} onPress={pressCallback} image={0} />);
 
-        const searchText = 'Schlüssel';
-        const view = render(<FoundReportScreen navigation={null} />);
-        const searchBar = view.getByTestId('search-bar-found');
-
-        const logSpy = jest.spyOn(console, 'log');
-
-        act(() => {
-            fireEvent.changeText(searchBar, searchText);
-        });
-
-        expect(logSpy).toHaveBeenCalledWith('Benutzer sucht nach: ' + searchText);
-
-        logSpy.mockRestore();
+    await act(() => {
+      fireEvent.press(view.getByTestId('report-card-press'));
     });
 
-    it('should execute the onPress callback function', async () => {
-        const pressCallback = jest.fn((id: string) => { });
-
-        // @ts-ignore
-        const view = render(<FoundReportCard report={fakeFoundReport} onPress={pressCallback}  image={0}/>);
-
-        await act(() => {
-            fireEvent.press(view.getByTestId('report-card-press'));
-        });
-
-        expect(pressCallback).toBeCalled();
-    });
+    expect(pressCallback).toBeCalled();
+  });
 
 });

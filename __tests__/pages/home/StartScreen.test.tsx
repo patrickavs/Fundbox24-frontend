@@ -14,7 +14,7 @@ import { useLostReports } from '../../../src/hooks/useLostReports.tsx';
 import { useChat } from '../../../src/hooks/useChat.tsx';
 import { LostReportRequest } from '../../../src/types/report-lost-request.ts';
 
-jest.setTimeout(30000);
+jest.setTimeout(10000);
 
 const userData: User = {
   id: '1',
