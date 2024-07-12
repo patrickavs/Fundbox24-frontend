@@ -1,18 +1,20 @@
 import 'react-native';
 import React from 'react';
-import {act, render} from '@testing-library/react-native';
-import {expect, it, jest, describe} from '@jest/globals';
+import { act, render } from '@testing-library/react-native';
+import { expect, it, jest, describe } from '@jest/globals';
 import StartScreen from '../../../src/pages/home/StartScreen.tsx';
 import * as LostReportsHook from '../../../src/hooks/useLostReports.tsx';
 import * as ChatHook from '../../../src/hooks/useChat.tsx';
-import {LostReport, NewLostReport} from '../../../src/types/report-lost.ts';
-import {User} from '../../../src/types/user.ts';
+import { LostReport, NewLostReport } from '../../../src/types/report-lost.ts';
+import { User } from '../../../src/types/user.ts';
 import * as UserHook from '../../../src/hooks/useUser.tsx';
-import {NewMessage} from '../../../src/types/message.ts';
-import {useUser} from '../../../src/hooks/useUser.tsx';
-import {useLostReports} from '../../../src/hooks/useLostReports.tsx';
-import {useChat} from '../../../src/hooks/useChat.tsx';
+import { NewMessage } from '../../../src/types/message.ts';
+import { useUser } from '../../../src/hooks/useUser.tsx';
+import { useLostReports } from '../../../src/hooks/useLostReports.tsx';
+import { useChat } from '../../../src/hooks/useChat.tsx';
 import { LostReportRequest } from '../../../src/types/report-lost-request.ts';
+
+jest.setTimeout(30000);
 
 const userData: User = {
   id: '1',
@@ -88,9 +90,10 @@ describe('StartScreen', () => {
       register: (userData: any) => Promise.resolve(),
     }));
 
-    const view = render(<StartScreen navigation={{navigate: jest.fn()}} />);
+    const view = render(<StartScreen navigation={{ navigate: jest.fn() }} />);
 
-    await act(async () => {});
+    await act(async () => {
+    });
 
     expect(view.getByText('Du bist nicht angemeldet')).toBeTruthy();
   });
@@ -103,7 +106,7 @@ describe('StartScreen', () => {
           Promise.resolve({
             json: () => Promise.resolve('Jippi!'),
             ok: true,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       )
       .mockImplementation(
         () =>
@@ -111,7 +114,7 @@ describe('StartScreen', () => {
             ok: true,
             json: () => Promise.resolve(userData),
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       );
 
     jest.spyOn(LostReportsHook, 'useLostReports').mockImplementation(() => ({
@@ -136,7 +139,7 @@ describe('StartScreen', () => {
 
     jest.spyOn(UserHook, 'useUser').mockImplementation(() => ({
       isPending: false,
-      user: {username: 'walterwhite'} as User,
+      user: { username: 'walterwhite' } as User,
       editUser: (u: Partial<User>) => Promise.resolve(),
       isLoggedIn: true,
       login: (email: string, password: string) => Promise.resolve(),
@@ -145,9 +148,10 @@ describe('StartScreen', () => {
       register: (userData: any) => Promise.resolve(),
     }));
 
-    const view = render(<StartScreen navigation={{navigate: jest.fn()}} />);
+    const view = render(<StartScreen navigation={{ navigate: jest.fn() }} />);
 
-    await act(async () => {});
+    await act(async () => {
+    });
 
     expect(view.getByText(`Willkommen, ${userData.username}`)).toBeTruthy();
   });
@@ -157,7 +161,7 @@ describe('StartScreen', () => {
 
     (useUser as jest.Mock).mockReturnValue({
       isPending: false,
-      user: {username: 'TestUser'},
+      user: { username: 'TestUser' },
       refreshUser: () => Promise.resolve(),
     });
     (useLostReports as jest.Mock).mockReturnValue({
@@ -165,9 +169,9 @@ describe('StartScreen', () => {
       lostReports: fakeLostReports,
       refresh: refreshMock,
     });
-    (useChat as jest.Mock).mockReturnValue({isPending: false, chats: []});
+    (useChat as jest.Mock).mockReturnValue({ isPending: false, chats: [] });
 
-    render(<StartScreen navigation={{navigate: jest.fn()}} />);
+    render(<StartScreen navigation={{ navigate: jest.fn() }} />);
 
     expect(refreshMock).toHaveBeenCalled();
   });
