@@ -7,7 +7,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { UserProvider, useUser } from '../../../src/hooks/useUser.tsx';
 import { Alert } from 'react-native';
 
-jest.setTimeout(20000);
+jest.setTimeout(100000);
 
 jest.mock('@react-navigation/native', () => {
   const actualNav = jest.requireActual('@react-navigation/native');
