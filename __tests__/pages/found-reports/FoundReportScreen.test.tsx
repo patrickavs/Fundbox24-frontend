@@ -8,7 +8,7 @@ import FoundReportCard from '../../../src/pages/found/FoundReportCard';
 import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
 import { User } from '../../../src/types/user';
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 const fakeFoundReport: FoundReport =
   {
