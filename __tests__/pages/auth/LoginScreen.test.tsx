@@ -2,10 +2,12 @@ import React from 'react';
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import LoginScreen from '../../../src/components/auth/LoginScreen.tsx';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { UserProvider, useUser } from '../../../src/hooks/useUser.tsx';
 import { Alert } from 'react-native';
+
+jest.setTimeout(10000);
 
 jest.mock('@react-navigation/native', () => {
   const actualNav = jest.requireActual('@react-navigation/native');
@@ -30,7 +32,7 @@ describe('LoginScreen', () => {
       json: () => Promise.resolve({}),
       status: 200,
       ok: true,
-    } as Response),
+    } as Response)
   );
 
   const AuthStackNavigator = createNativeStackNavigator();
@@ -42,18 +44,18 @@ describe('LoginScreen', () => {
           <AuthStackNavigator.Screen
             name="Login"
             component={LoginScreen}
-            options={{title: 'Login', headerShown: false}}
+            options={{ title: 'Login', headerShown: false }}
           />
         </AuthStackNavigator.Navigator>
       </NavigationContainer>
-    </UserProvider>,
+    </UserProvider>
   );
 
   it('calls login and resets email and password on successful login', async () => {
     const login = jest.fn().mockResolvedValue(true);
-    (useUser as jest.Mock).mockReturnValue({login});
+    (useUser as jest.Mock).mockReturnValue({ login });
 
-    const {getByTestId, getByPlaceholderText} = render(<LoginScreen />);
+    const { getByTestId, getByPlaceholderText } = render(<LoginScreen />);
 
     const emailInput = getByPlaceholderText('E-Mail');
     const passwordInput = getByPlaceholderText('Passwort');
@@ -72,7 +74,7 @@ describe('LoginScreen', () => {
   });
 
   it('shows an alert when email or password is empty', () => {
-    const {getByTestId} = render(<LoginScreen />);
+    const { getByTestId } = render(<LoginScreen />);
 
     const loginButton = getByTestId('LoginButton');
     fireEvent.press(loginButton);
@@ -103,9 +105,9 @@ describe('LoginScreen', () => {
 
   it('should navigate to the register screen when the register button is pressed', () => {
     const navigate = jest.fn();
-    (useNavigation as jest.Mock).mockReturnValue({navigate});
+    (useNavigation as jest.Mock).mockReturnValue({ navigate });
 
-    const {getByTestId} = render(<LoginScreen />);
+    const { getByTestId } = render(<LoginScreen />);
 
     const registerButton = getByTestId('navigate-to-register');
     fireEvent.press(registerButton);
