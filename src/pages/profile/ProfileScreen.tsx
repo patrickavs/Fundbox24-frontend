@@ -8,6 +8,7 @@ import useStorage from '../../hooks/useStorage.ts';
 import { Settings } from '../../types/settings.ts';
 import CustomButton from '../../components/CustomButton.tsx';
 import { AuthTheme } from '../../constants/theme.ts';
+import { useNavigation } from '@react-navigation/native';
 
 const defaultSettings: Settings = {
   sound: true,
@@ -60,6 +61,8 @@ function ProfileScreen(): React.JSX.Element {
   const { user, isPending, logout } = useUser(); //TODO: Implement a edit user function
   const [settings, setSettings] = useStorage('settings', defaultSettings);
 
+  const navigation = useNavigation();
+
   const onLogout = async () => {
     await logout();
   };
@@ -90,7 +93,9 @@ function ProfileScreen(): React.JSX.Element {
           />
         </View>
         <View style={ProfileStyleSheet.buttonContainer}>
-          <IconButton title={'Meine Chats'} />
+          <IconButton title={'Meine Chats'} onPress={() => {
+            navigation.navigate('Chat');
+          }} />
           <IconButton title={'Meine Anzeigen'} />
         </View>
         <Text style={ProfileStyleSheet.heading}>Benachrichtigungen</Text>
