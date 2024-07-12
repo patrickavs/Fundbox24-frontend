@@ -14,7 +14,11 @@ export default function ProfileStack() {
         options={{headerShown: false}}
       />
 
-      <Stack.Screen name="Chat" component={ChatScreen} />
+      <Stack.Screen
+        name="Chat"
+        component={ChatScreen}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 }
