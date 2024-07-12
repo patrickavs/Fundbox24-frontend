@@ -1,21 +1,27 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {AuthTheme} from '../constants/theme.ts';
+import { StyleSheet, Text, View } from 'react-native';
+import { LostReportTheme } from '../constants/theme.ts';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-function CustomHeader({
-  title = 'dajsdhajds',
-  backgroundColor = AuthTheme.colors.accentSecondary,
-}: {
-  title: string;
+type Props = {
+  title?: string;
   backgroundColor?: string;
   isSmall?: boolean;
-}): React.JSX.Element {
+  onGoBack?: () => void;
+}
+
+export default function CustomHeader(props: Props): React.JSX.Element {
   return (
-    <>
-      <View style={[styles.container, {backgroundColor}]}>
-        <Text style={styles.title}>{title}</Text>
+      <View style={[
+        styles.container,
+        { backgroundColor: props.backgroundColor ?? LostReportTheme.colors.secondaryAccent },
+      ]}>
+        {props.onGoBack ?
+          <Icon name="arrow-left" size={30} style={styles.backButton} onPress={props.onGoBack}/>
+          : null
+        }
+        <Text style={styles.title}>{props.title ?? 'Ohne Titel'}</Text>
       </View>
-    </>
   );
 }
 
@@ -31,9 +37,13 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     elevation: 5,
   },
+  backButton: {
+    position: 'absolute',
+    top: 15,
+    left: 15,
+    color: LostReportTheme.colors.button,
+  },
   title: {
     fontSize: 20,
   },
 });
-
-export default CustomHeader;
