@@ -1,24 +1,29 @@
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import SetHomePerimeterScreen from '../../components/map/SetHomePerimeterScreen.tsx';
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileScreen from './ProfileScreen.tsx';
+import ProfileScreen from './ProfileScreen';
 import ChatScreen from '../chat/ChatScreen.tsx';
+const ProfileNavStack = createNativeStackNavigator();
 
-const Stack = createNativeStackNavigator();
-
-export default function ProfileStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{headerShown: false}}
-      />
-
-      <Stack.Screen
-        name="Chat"
-        component={ChatScreen}
-        options={{headerShown: false}}
-      />
-    </Stack.Navigator>
-  );
-}
+export const ProfileStack = () => (
+  <ProfileNavStack.Navigator>
+    <ProfileNavStack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{headerShown: false}}
+    />
+    <ProfileNavStack.Screen
+      name="Map"
+      component={SetHomePerimeterScreen}
+      options={{
+        headerTitle: '',
+        headerTransparent: true,
+      }}
+    />
+    <ProfileNavStack.Screen
+      name="Chat"
+      component={ChatScreen}
+      options={{headerShown: false}}
+    />
+  </ProfileNavStack.Navigator>
+);

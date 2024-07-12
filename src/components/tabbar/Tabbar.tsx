@@ -8,8 +8,8 @@ import { useUser } from '../../hooks/useUser.tsx';
 import StartScreen from '../../pages/home/StartScreen.tsx';
 import { AddReportStack } from '../../pages/add/AddReportStack.tsx';
 
-import { Platform } from 'react-native';
-import ProfileStack from '../../pages/profile/ProfileStack.tsx';
+import {Platform} from 'react-native';
+import {ProfileStack} from '../../pages/profile/ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
