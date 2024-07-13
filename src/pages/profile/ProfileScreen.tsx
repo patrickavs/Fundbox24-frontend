@@ -110,7 +110,7 @@ const ProfileStyleSheet = StyleSheet.create({
     },
 });
 
-function ProfileScreen({navigation}): React.JSX.Element {
+function ProfileScreen(): React.JSX.Element {
   const { user, isPending, logout } = useUser(); //TODO: Implement a edit user function
   const [settings, setSettings] = useStorage('settings', defaultSettings);
   const [homeLocation, setHomeLocation] = React.useState<LatLng | null>(settings.position);

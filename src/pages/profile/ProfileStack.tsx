@@ -21,9 +21,12 @@ export const ProfileStack = () => (
       }}
     />
     <ProfileNavStack.Screen
-      name="Chat"
+      name="MyChats"
       component={ChatScreen}
-      options={{headerShown: false}}
+      options={{
+          headerTitle: '',
+          headerTransparent: true,
+    }}
     />
   </ProfileNavStack.Navigator>
 );
