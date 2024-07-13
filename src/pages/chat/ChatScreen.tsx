@@ -45,7 +45,6 @@ export default function ChatScreen() {
     <View testID={'my-chats-screen'}>
       <CustomHeader
         title="Meine Chats"
-        onGoBack={() => navigation.goBack()}
       />
       <FlatList
         data={chats}

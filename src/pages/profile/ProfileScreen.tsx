@@ -176,9 +176,7 @@ function ProfileScreen(): React.JSX.Element {
           />
         </View>
         <View style={ProfileStyleSheet.buttonContainer}>
-          <IconButton title={'Meine Chats'} onPress={() => {
-            navigation.navigate('Chat');
-          }} />
+          <IconButton title={'Meine Chats'} onPress={() => navigation.navigate('MyChats')} />
           <IconButton title={'Meine Anzeigen'} />
         </View>
         <Text style={ProfileStyleSheet.heading}>Benachrichtigungen</Text>

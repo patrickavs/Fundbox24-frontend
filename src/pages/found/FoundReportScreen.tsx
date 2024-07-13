@@ -130,6 +130,8 @@ export default FoundReportScreen;
 const styles = StyleSheet.create({
   list: {
     marginBottom: 200,
+      paddingHorizontal: 5,
+
   },
   text: {
     color: '#152238',
@@ -139,12 +141,14 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   scrollContainer: {
-    padding: 20,
+    padding: 10,
+    paddingTop: 20,
   },
   dropdownContainer: {
     marginTop: 20,
     display: 'flex',
     flexDirection: 'row',
-    gap: 20,
+    gap: 15,
+    marginHorizontal: 10,
   },
 });

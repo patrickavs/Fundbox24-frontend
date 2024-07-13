@@ -24,6 +24,7 @@ function Dropdown(props: DropdownProps) {
       <ReactNativeDropdown
         style={[styles.dropdown, isFocus ? styles.focus : null]}
         placeholderStyle={styles.placeholderStyle}
+        dropDownDirection="bottom"
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         testID={props.testID}

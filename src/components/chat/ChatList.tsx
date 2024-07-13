@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import {FlatList, View, StyleSheet} from 'react-native';
+import {FlatList, View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import ChatListItem, {ChatItemProps} from './ChatListItem';
 
-function ChatList() {
+function ChatList({isStartPage}) {
   const [chats, setChats] = useState([
     {
       id: '1',
       name: 'Toby Matthews',
-      avatarUri: 'https://randomuser.me/api/portraits/men/36.jpg',
+      avatarUri: 'example.com/avatar2.jpg',
       lastMessage:
         'Super, vielen Dank! Ich bin so froh, dass er gefunden wurde.',
       timestamp: '10:00 AM',
@@ -15,7 +15,7 @@ function ChatList() {
     {
       id: '2',
       name: 'Beth Smith',
-      avatarUri: 'exame.com/avatar2.jpg',
+      avatarUri: 'example.com/avatar2.jpg',
       lastMessage: 'Die Farbe ist etwas ausgewaschen. Es sieht fast aus wie Pink.',
       timestamp: 'Yesterday',
     },
@@ -29,67 +29,67 @@ function ChatList() {
     {
       id: '4',
       name: 'John Doe',
-      avatarUri: 'https://randomuser.me/api/portraits/men/36.jpg',
+      avatarUri: '',
       lastMessage:
-        'Great! I will be there in 10 minutes. Can you please wait for me?',
+        'Bild',
       timestamp: '10:00 AM',
     },
     {
       id: '5',
-      name: 'Jane Smith',
+      name: 'Melissa Edwards',
       avatarUri: 'exame.com/avatar2.jpg',
-      lastMessage: 'Does the bag have a red stripe on the side?',
+      lastMessage: 'Hat die Tasche einen Reißverschluss?',
       timestamp: 'Yesterday',
     },
     {
       id: '6',
-      name: 'Group Chat',
+      name: 'Timothy Johnson',
       avatarUri: 'hiahe',
-      lastMessage: 'Yes, that is mine! Thank you so much for finding it!',
+      lastMessage: 'Wow, das ist großartig! Vielen Dank für deine Hilfe.',
       timestamp: '2 days ago',
     },
     {
       id: '7',
-      name: 'John Doe',
-      avatarUri: 'https://randomuser.me/api/portraits/men/36.jpg',
+      name: 'Rick Sanchez',
+      avatarUri: '',
       lastMessage:
-        'You can pick it up at the post office at this address. I will leave it there for you.',
+        'Du kannst es bei mir abholen. Ich wohne in der Nähe des Parks.',
       timestamp: '10:00 AM',
     },
     {
       id: '8',
-      name: 'Jane Smith',
+      name: 'Ursula Thompson',
       avatarUri: 'exame.com/avatar2.jpg',
-      lastMessage: 'Great! I will pick it up tomorrow. Thank you so much!',
+      lastMessage: 'Vielen Dank! Ich werde es morgen abholen.',
       timestamp: 'Yesterday',
     },
     {
       id: '9',
-      name: 'Group Chat',
+      name: 'Katie Johnson',
       avatarUri: 'hiahe',
-      lastMessage: 'My pleasure! Have a great day!',
+      lastMessage: 'Gern geschehen! Ich bin froh, dass ich helfen konnte.',
       timestamp: '2 days ago',
     },
     {
       id: '10',
-      name: 'John Doe',
-      avatarUri: 'https://randomuser.me/api/portraits/men/36.jpg',
+      name: 'John Jenkins',
+      avatarUri: 'example.com/avatar2.jpg',
       lastMessage:
-        'Can you tell me the name on the credit card inside the wallet?',
+        'Kannst du mir bitte sagen, welcher Name auf dem Ausweis steht?',
       timestamp: '10:00 AM',
     },
     {
       id: '11',
-      name: 'Jane Smith',
+      name: 'Thomas Smith',
       avatarUri: 'exame.com/avatar2.jpg',
-      lastMessage: 'Just checking in!',
+      lastMessage: 'Hey, ist das dein Schlüsselbund?',
       timestamp: 'Yesterday',
     },
     {
       id: '12',
-      name: 'Group Chat',
+      name: 'Alice James',
       avatarUri: 'hiahe',
-      lastMessage: 'New message from Alice!',
+      lastMessage: 'Ich bin froh, dass du sie gefunden hast!',
       timestamp: '2 days ago',
     },
   ]);
@@ -102,9 +102,9 @@ function ChatList() {
     <View style={styles.chatListContainer}>
       <FlatList
         style={styles.list}
-        data={chats.filter((_, index) => index < 3)}
+        data={isStartPage ? chats.filter((_, index) => index < 3) : chats}
         renderItem={renderItem}
-        keyExtractor={item => item.name}
+        keyExtractor={item => item.id}
         windowSize={10}
         showsVerticalScrollIndicator={false}
       />
@@ -114,10 +114,9 @@ function ChatList() {
 
 const styles = StyleSheet.create({
   list: {
-    gap: 10,
   },
   chatListContainer: {
-    marginHorizontal: 15,
+    marginHorizontal: 20,
     marginBottom: 100,
   },
 });
