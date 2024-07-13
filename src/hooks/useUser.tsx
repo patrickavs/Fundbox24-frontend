@@ -1,4 +1,4 @@
-import {RegisterUserCredentials, User} from '../types/user';
+import { RegisterUserCredentials, User } from '../types/user';
 import {
   createContext,
   ReactNode,
@@ -8,9 +8,17 @@ import {
   useState,
   useTransition,
 } from 'react';
-import {LOGIN_URL, REGISTER_URL, USER_URL} from '../routes';
+import {
+  LOGIN_URL,
+  REGISTER_URL,
+  USER_URL,
+  ALL_USER_LOST_REPORTS_URL,
+  ALL_USER_FOUND_REPORTS_URL, ALL_LOST_REPORTS_URL, ALL_FOUND_REPORTS_URL,
+} from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useStorage from './useStorage';
+import { LostReport } from '../types/report-lost.ts';
+import { FoundReport } from '../types/report-found.ts';
 
 type UserContextType = {
   isPending: boolean;
@@ -21,6 +29,8 @@ type UserContextType = {
   login: (email: string, password: string) => void;
   logout: () => Promise<void>;
   register: (userData: any) => Promise<void>;
+  getAllLostReports: () => Promise<LostReport[]>;
+  getAllFoundReports: () => Promise<FoundReport[]>;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -33,7 +43,7 @@ export function useUser() {
   return context;
 }
 
-export function UserProvider({children}: {children: ReactNode}) {
+export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useStorage<User | null>('user-crendentials', null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -78,7 +88,7 @@ export function UserProvider({children}: {children: ReactNode}) {
 
   async function checkSavedBasicAuthCredentials() {
     const basicAuthCredentials = await AsyncStorage?.getItem(
-      'basicAuthCredentials',
+      'basicAuthCredentials'
     );
 
     if (!basicAuthCredentials) {
@@ -102,11 +112,11 @@ export function UserProvider({children}: {children: ReactNode}) {
   }
 
   async function loginWithBasicAuth(
-    basicAuthCredentials: string,
+    basicAuthCredentials: string
   ): Promise<string> {
     const response = await fetch(LOGIN_URL, {
       method: 'POST',
-      headers: {Authorization: `Basic ${basicAuthCredentials}`},
+      headers: { Authorization: `Basic ${basicAuthCredentials}` },
     });
 
     if (response.ok) {
@@ -147,14 +157,80 @@ export function UserProvider({children}: {children: ReactNode}) {
           .then(response => response.json())
           .then(async response => {
             await login(response.email, userCredentials.password);
-            return {...response, password: userCredentials.password};
+            return { ...response, password: userCredentials.password };
           })
           .then(setUser)
           .catch(error => console.log(error));
       });
     },
-    [],
+    []
   );
+
+  async function getAllLostReports(): Promise<LostReport[]> {
+    let lostReports: LostReport[] = [];
+    startTransition(() => {
+      AsyncStorage?.getItem('basicAuthCredentials').then(
+        basicAuthCredentials => {
+          if (!basicAuthCredentials) {
+            throw 'No Basic Auth Credentials! Please login.';
+          }
+
+          fetch(ALL_LOST_REPORTS_URL, {
+            method: 'GET',
+            headers: {
+              Authorization: `Basic ${basicAuthCredentials}`,
+            },
+          })
+            .then(async response => {
+              const data = await response.json();
+              if (response.status === 200) {
+                lostReports = data;
+              } else {
+                throw Error('Error fetching lost reports!');
+              }
+            })
+            .catch(fetchError => {
+              console.log(fetchError);
+            });
+        }
+      );
+    });
+
+    return lostReports;
+  }
+
+  async function getAllFoundReports(): Promise<FoundReport[]> {
+    let foundReports: FoundReport[] = [];
+    startTransition(() => {
+      AsyncStorage?.getItem('basicAuthCredentials').then(
+        basicAuthCredentials => {
+          if (!basicAuthCredentials) {
+            throw 'No Basic Auth Credentials! Please login.';
+          }
+
+          fetch(ALL_FOUND_REPORTS_URL, {
+            method: 'GET',
+            headers: {
+              Authorization: `Basic ${basicAuthCredentials}`,
+            },
+          })
+            .then(async response => {
+              const data = await response.json();
+              if (response.status === 200) {
+                foundReports = data;
+              } else {
+                throw Error('Error fetching found reports!');
+              }
+            })
+            .catch(fetchError => {
+              console.log(fetchError);
+            });
+        }
+      );
+    });
+
+    return foundReports;
+  }
 
   return (
     <UserContext.Provider
@@ -167,6 +243,8 @@ export function UserProvider({children}: {children: ReactNode}) {
         login,
         logout,
         register,
+        getAllLostReports,
+        getAllFoundReports,
       }}>
       {children}
     </UserContext.Provider>

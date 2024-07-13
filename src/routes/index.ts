@@ -10,6 +10,9 @@ export const CREATE_FOUNDREPORT_URL = () => `${BASE_URL}/report/found`;
 export const ALL_LOST_REPORTS_URL = `${BASE_URL}/report/lost`;
 export const ALL_FOUND_REPORTS_URL = `${BASE_URL}/report/found`;
 
+export const ALL_USER_LOST_REPORTS_URL = `${BASE_URL}/user/report/lost`;
+export const ALL_USER_FOUND_REPORTS_URL = `${BASE_URL}/user/report/found`;
+
 export const ALL_CATEGORIES_URL = `${BASE_URL}/categories`;
 
 export const LOGIN_URL = `${BASE_URL}/login`;
