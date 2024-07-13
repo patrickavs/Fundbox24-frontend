@@ -1,6 +1,6 @@
 import {Category} from '../types/category.ts';
 
-export const category: Category[] = [
+export const categoriesWithImage: Category[] = [
   {
     id: 1007,
     value: 'HIGH',

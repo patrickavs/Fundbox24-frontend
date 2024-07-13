@@ -17,12 +17,14 @@ const LandingPage = () => {
         <CustomButton
           label="Anmelden"
           onPress={() => {
+            //@ts-ignore
             navigation.navigate('LoginScreen');
           }}
         />
         <CustomButton
           label="Registrieren"
           onPress={() => {
+            //@ts-ignore
             navigation.navigate('RegisterScreen');
           }}
         />

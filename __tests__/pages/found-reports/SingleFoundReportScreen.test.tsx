@@ -2,9 +2,10 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { describe, expect, it, jest } from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
-import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
+import { FoundReport } from '../../../src/types/report-found';
 import SingleFoundReportScreen from '../../../src/pages/found/SingleFoundReportScreen';
 import { Chat } from '../../../src/types/chat.ts';
+import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
 
 const fakeFoundReport: FoundReport =
 {
@@ -20,7 +21,12 @@ const fakeFoundReport: FoundReport =
         longitude: 9.993682,
     },
     foundDate: new Date(Date.now()).toLocaleTimeString(),
-    categoryId: 1,
+    category: {
+        id: 1,
+        value: '',
+        name: 'Schlüssel',
+        image: '',
+    },
     isFinished: false,
     imagePath: '',
     myChats: [],
@@ -43,7 +49,7 @@ jest.mock('@react-navigation/native', () => ({
                 },
                 foundDate: new Date(Date.now()).toLocaleTimeString(),
                 category: {
-                    id: '1',
+                    id: 1,
                     value: '',
                     name: 'Schlüssel',
                     image: '',
@@ -64,7 +70,7 @@ describe('FoundReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 
@@ -83,7 +89,7 @@ describe('FoundReportScreen', () => {
             foundReports: [fakeFoundReport],
             error: null,
             refresh: () => Promise.resolve(),
-            createFoundReport: (userToken: string, report: NewFoundReport) => null,
+            createFoundReport: (userToken: string, report: FoundReportRequest) => null,
             editFoundReport: (userToken: string, report: FoundReport) => null,
         }));
 

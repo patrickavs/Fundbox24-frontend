@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useUser } from '../../hooks/useUser';
 import { useLostReports } from '../../hooks/useLostReports';
 import { useChat } from '../../hooks/useChat';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import LostReportCard from '../lost/LostReportCard.tsx';
-import { category } from '../../data/categories.ts';
+import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
 
-export default function StartScreen({navigation}): React.JSX.Element {
+export default function StartScreen({navigation}: {navigation: any}): React.JSX.Element {
   const {isPending: isPendingUser, refreshUser, user} = useUser();
   const {
     isPending: isPendingLostReport,
@@ -49,6 +49,8 @@ export default function StartScreen({navigation}): React.JSX.Element {
   //       .slice(0, 4),
   //   [chats],
   // );
+
+
   if (isPending && !user) {
     return <Text>Lade ...</Text>;
   }
@@ -96,8 +98,8 @@ export default function StartScreen({navigation}): React.JSX.Element {
                         })
                       }
                       image={
-                        category.find(it => it.name === item.category.name)
-                          ?.image ?? category[category.length - 1].image
+                        categoriesWithImage.find(it => it.name === item.category.name)
+                          ?.image ?? categoriesWithImage[categoriesWithImage.length - 1].image
                       }
                     />
                   )}

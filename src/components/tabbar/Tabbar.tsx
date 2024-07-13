@@ -1,19 +1,16 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-// import AddReportScreen from '../../pages/add/AddReportScreen.tsx';
-import ProfileScreen from '../../pages/profile/ProfileScreen.tsx';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FoundReportNavStack from '../../pages/found/FoundReportNavStack';
 import LostReportNavStack from '../../pages/lost/LostReportNavStack';
 import AuthStack from '../auth/AuthStack.tsx';
-import {useUser} from '../../hooks/useUser.tsx';
+import { useUser } from '../../hooks/useUser.tsx';
 import StartScreen from '../../pages/home/StartScreen.tsx';
-// import {createNativeStackNavigator} from '@react-navigation/native-stack';
-// import SetPerimeterScreen from '../map/SetPerimeterScreen.tsx';
-import {AddReportStack} from '../../pages/add/AddReportStack.tsx';
+import { AddReportStack } from '../../pages/add/AddReportStack.tsx';
 
 import {Platform} from 'react-native';
 import {ProfileStack} from '../../pages/profile/ProfileStack';
+
 const Tab = createBottomTabNavigator();
 
 // defining tab bar options

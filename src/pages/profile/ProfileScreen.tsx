@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import IconButton from '../../components/IconButton.tsx';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import { Switch } from 'react-native';
@@ -7,12 +7,22 @@ import { useUser } from '../../hooks/useUser.tsx';
 import useStorage from '../../hooks/useStorage.ts';
 import { Settings } from '../../types/settings.ts';
 import CustomButton from '../../components/CustomButton.tsx';
-import { AuthTheme } from '../../constants/theme.ts';
+
+import { useNavigation } from '@react-navigation/native';
+
+import {AuthTheme, LostReportTheme} from '../../constants/theme.ts';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Slider} from '@miblanchard/react-native-slider';
+import mapConstants from '../../constants/map';
+import { useRoute } from '@react-navigation/native';
+import {LatLng} from 'react-native-maps';
 
 const defaultSettings: Settings = {
   sound: true,
   vibration: true,
   location: true,
+  radius: mapConstants.minRadius,
+  position: null,
 };
 
 const ProfileStyleSheet = StyleSheet.create({
@@ -75,14 +85,68 @@ const ProfileStyleSheet = StyleSheet.create({
   scrollView: {
     height: '100%',
   },
+  iconButton: {
+    margin: 5,
+    padding: 8,
+    color: 'white',
+    borderRadius: 10,
+    fontSize: 20,
+    alignSelf: 'center',
+  },
+  button2: {
+    backgroundColor: LostReportTheme.colors.button,
+    borderRadius: 10,
+    color: 'white',
+    width: 50,
+  },
+    gray: {
+        color: 'gray',
+    },
+    grayButton: {
+        backgroundColor: 'lightgray',
+    },
+    sliderDisabled: {
+        opacity: 0.5,
+    },
 });
 
 function ProfileScreen({navigation}): React.JSX.Element {
   const { user, isPending, logout } = useUser(); //TODO: Implement a edit user function
   const [settings, setSettings] = useStorage('settings', defaultSettings);
+  const [homeLocation, setHomeLocation] = React.useState<LatLng | null>(settings.position);
+  const [homeRadius, setHomeRadius] = React.useState<number | null>(settings.radius);
+
+  const route = useRoute<any>();
+
+  React.useEffect(() => {
+        if (route.params) {
+        const { position, radius } = route.params;
+        setHomeLocation(position);
+        setHomeRadius(radius);
+        setSettings({ ...settings, radius: radius, position: position });
+        }
+  }, [route.params]);
+
+  React.useEffect(() => {
+    if (settings.position) {
+      setHomeLocation(settings.position);
+    }
+    if (settings.radius) {
+      setHomeRadius(settings.radius);
+    }
+  }, [settings]);
+
+  const navigation = useNavigation();
 
   const onLogout = async () => {
     await logout();
+  };
+
+  const numberFormat = Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
+
+  const getFormattedDiameter = () => {
+    const radiusInKM = settings.radius / 1000;
+    return `${numberFormat.format(radiusInKM)} km`;
   };
 
   return (
@@ -138,16 +202,50 @@ function ProfileScreen({navigation}): React.JSX.Element {
             />
           </View>
         </View>
-        <View style={[ProfileStyleSheet.input, ProfileStyleSheet.horizontalContainer]}>
-          <Text style={ProfileStyleSheet.label}>Standort verwenden</Text>
-          <Switch
-            style={ProfileStyleSheet.switch}
-            testID="switch-location"
-            value={settings.location}
-            onValueChange={value =>
-              setSettings({ ...settings, location: value })
-            }
-          />
+        <Text style={ProfileStyleSheet.heading}>Heimatumkreis</Text>
+        <View style={ProfileStyleSheet.input}>
+          <View style={[ProfileStyleSheet.horizontalContainer]}>
+            <Text style={ProfileStyleSheet.label}>Standort verwenden</Text>
+            <Switch
+              style={ProfileStyleSheet.switch}
+              testID="switch-location"
+              value={settings.location}
+              onValueChange={value =>{
+                setSettings({ ...settings, location: value });}
+              }
+            />
+          </View>
+          <View style={[ProfileStyleSheet.horizontalContainer]}>
+            <Text style={[ProfileStyleSheet.label, !settings.location ? ProfileStyleSheet.gray : null]}>Standort-Radius:</Text>
+            <Text style={[ProfileStyleSheet.label, !settings.location ? ProfileStyleSheet.gray : null]}>{getFormattedDiameter()}</Text>
+          </View>
+          <Slider
+              minimumValue={mapConstants.minRadius}
+              maximumValue={mapConstants.maxRadius}
+              value={settings.radius}
+              step={1}
+              disabled={!settings.location}
+              thumbTintColor={settings.location ? '#000000' : '#9d9d9d'}
+              minimumTrackTintColor={settings.location ? '#000000' : '#9f9f9f'}
+              onValueChange={
+                  value =>
+                  {
+                    setSettings(
+                        { ...settings, radius: value[0] } );
+                    }
+              } />
+          <View style={[ProfileStyleSheet.horizontalContainer]}>
+            <Text style={[ProfileStyleSheet.label, settings.location ? ProfileStyleSheet.gray : null]}>Heimatumkreis einstellen:</Text>
+            <TouchableOpacity
+                style={[ProfileStyleSheet.button2, settings.location ? ProfileStyleSheet.grayButton : null]}
+                disabled={settings.location}
+                onPress={ !settings.location ? () =>
+                    //@ts-ignore
+                    navigation.navigate('Map', {homeRadius: homeRadius, homeLocation: homeLocation}) : () => {}
+                } >
+              <Ionicons name={'map'} style={ProfileStyleSheet.iconButton} testID={'map'} />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={{ paddingTop: 20 }}>
           <CustomButton
@@ -159,6 +257,7 @@ function ProfileScreen({navigation}): React.JSX.Element {
           />
         </View>
       </View>
+        <View style={{ height: 200 }} />
       </ScrollView>
     </View>
   );
