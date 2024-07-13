@@ -17,7 +17,6 @@ export type LostReport = {
   //placeOfDiscovery: string;
   //placeOfDelivery?: string;
   myChats: Chat[];
-  owner: User;
 };
 
 export type NewLostReport = Omit<LostReport, 'id'>;

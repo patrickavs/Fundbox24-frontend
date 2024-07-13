@@ -175,7 +175,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
             throw 'No Basic Auth Credentials! Please login.';
           }
 
-          fetch(ALL_LOST_REPORTS_URL, {
+          fetch(ALL_USER_LOST_REPORTS_URL, {
             method: 'GET',
             headers: {
               Authorization: `Basic ${basicAuthCredentials}`,
@@ -208,7 +208,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
             throw 'No Basic Auth Credentials! Please login.';
           }
 
-          fetch(ALL_FOUND_REPORTS_URL, {
+          fetch(ALL_USER_FOUND_REPORTS_URL, {
             method: 'GET',
             headers: {
               Authorization: `Basic ${basicAuthCredentials}`,

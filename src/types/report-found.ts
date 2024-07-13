@@ -14,7 +14,6 @@ export type FoundReport = {
   foundLocation: Location;
   currentLocation: Location;
   myChats: Chat[];
-  finder: User;
 };
 
 export type NewFoundReport = Omit<FoundReport, 'id'>;
