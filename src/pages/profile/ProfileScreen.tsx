@@ -7,11 +7,8 @@ import { useUser } from '../../hooks/useUser.tsx';
 import useStorage from '../../hooks/useStorage.ts';
 import { Settings } from '../../types/settings.ts';
 import CustomButton from '../../components/CustomButton.tsx';
-import { AuthTheme, LostReportTheme } from '../../constants/theme.ts';
-
 import { useNavigation } from '@react-navigation/native';
-
-import {AuthTheme, LostReportTheme} from '../../constants/theme.ts';
+import { AuthTheme, LostReportTheme } from '../../constants/theme.ts';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Slider } from '@miblanchard/react-native-slider';
 import mapConstants from '../../constants/map';
@@ -100,19 +97,19 @@ const ProfileStyleSheet = StyleSheet.create({
     color: 'white',
     width: 50,
   },
-    gray: {
-        color: 'gray',
-    },
-    grayButton: {
-        backgroundColor: 'lightgray',
-    },
-    sliderDisabled: {
-        opacity: 0.5,
-    },
+  gray: {
+    color: 'gray',
+  },
+  grayButton: {
+    backgroundColor: 'lightgray',
+  },
+  sliderDisabled: {
+    opacity: 0.5,
+  },
 });
 
 function ProfileScreen(): React.JSX.Element {
-  const { user, isPending, logout } = useUser(); //TODO: Implement a edit user function
+  const { user, logout } = useUser(); //TODO: Implement a edit user function
   const [settings, setSettings] = useStorage('settings', defaultSettings);
   const [homeLocation, setHomeLocation] = React.useState<LatLng | null>(settings.position);
   const [homeRadius, setHomeRadius] = React.useState<number | null>(settings.radius);
@@ -177,7 +174,9 @@ function ProfileScreen(): React.JSX.Element {
             />
           </View>
           <View style={ProfileStyleSheet.buttonContainer}>
+            {/*@ts-ignore*/}
             <IconButton title={'Meine Chats'} onPress={() => navigation.navigate('MyChats')} />
+            {/*@ts-ignore*/}
             <IconButton title={'Meine Anzeigen'} onPress={() => navigation.navigate('MyReports')} />
           </View>
           <Text style={ProfileStyleSheet.heading}>Benachrichtigungen</Text>

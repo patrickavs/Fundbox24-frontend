@@ -4,8 +4,6 @@ import CustomHeader from '../../components/CustomHeader';
 import { useNavigation } from '@react-navigation/native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { useUser } from '../../hooks/useUser.tsx';
-import { LostReport } from '../../types/report-lost.ts';
-import { FoundReport } from '../../types/report-found.ts';
 import FoundReportCard from '../found/FoundReportCard.tsx';
 import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 import LostReportCard from '../lost/LostReportCard.tsx';
@@ -14,12 +12,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const MyReports = () => {
   const navigation = useNavigation();
-  const { getAllLostReports, getAllFoundReports } = useUser();
+  const { getAllLostReports, getAllFoundReports, userLostReports, userFoundReports } = useUser();
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const segmentedValues = ['Suchanzeigen', 'Fundanzeigen'];
-  const [userLostReports, setUserLostReports] = useState<LostReport[]>([]);
-  const [userFoundReports, setUserFoundReports] = useState<FoundReport[]>([]);
 
   const handleSegmentChange = (event: any) => {
     console.log('SegmentIndex', event.nativeEvent.selectedSegmentIndex);
@@ -28,12 +24,10 @@ const MyReports = () => {
 
   useEffect(() => {
     const fetchLostReports = async () => {
-      const lostReports = await getAllLostReports();
-      setUserLostReports(lostReports);
+      await getAllLostReports();
     };
     const fetchFoundReports = async () => {
-      const foundReports = await getAllFoundReports();
-      setUserFoundReports(foundReports);
+      await getAllFoundReports();
     };
 
     fetchLostReports();
@@ -49,7 +43,7 @@ const MyReports = () => {
         selectedIndex={selectedIndex}
         onChange={handleSegmentChange}
         style={styles.switch}
-        activeFontStyle={{ color: selectedIndex === 1 ? LostReportTheme.colors.secondaryBackground : FoundReportTheme.colors.button2 }}
+        activeFontStyle={{ color: selectedIndex === 1 ? FoundReportTheme.colors.button2 : LostReportTheme.colors.secondaryBackground }}
       />
 
       <ScrollView>
@@ -82,10 +76,12 @@ const MyReports = () => {
             )} numColumns={2} keyExtractor={item => item.id} scrollEnabled={false} />}
         </View>
 
-        <TouchableOpacity style={styles.collapseHeader} onPress={() => setIsExpanded(!isExpanded)}>
-          <Text style={styles.headerText}>Erledigte Anzeigen</Text>
-          <FontAwesome name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} />
-        </TouchableOpacity>
+        <View style={!isExpanded ? styles.space : null}>
+          <TouchableOpacity style={styles.collapseHeader} onPress={() => setIsExpanded(!isExpanded)}>
+            <Text style={styles.headerText}>Erledigte Anzeigen</Text>
+            <FontAwesome name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} />
+          </TouchableOpacity>
+        </View>
         {isExpanded && (
           <View style={styles.dropdown}>
             {selectedIndex === 1 ? (
@@ -149,6 +145,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   dropdown: {
+    marginBottom: 200,
     marginTop: 10,
     marginHorizontal: 20,
   },
@@ -164,6 +161,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 16,
+  },
+  space: {
+    marginBottom: 200,
   },
 });
 

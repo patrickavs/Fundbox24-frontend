@@ -13,7 +13,7 @@ import {
   REGISTER_URL,
   USER_URL,
   ALL_USER_LOST_REPORTS_URL,
-  ALL_USER_FOUND_REPORTS_URL, ALL_LOST_REPORTS_URL, ALL_FOUND_REPORTS_URL,
+  ALL_USER_FOUND_REPORTS_URL,
 } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useStorage from './useStorage';
@@ -29,8 +29,10 @@ type UserContextType = {
   login: (email: string, password: string) => void;
   logout: () => Promise<void>;
   register: (userData: any) => Promise<void>;
-  getAllLostReports: () => Promise<LostReport[]>;
-  getAllFoundReports: () => Promise<FoundReport[]>;
+  getAllLostReports: () => void;
+  getAllFoundReports: () => void;
+  userLostReports: LostReport[];
+  userFoundReports: FoundReport[];
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -47,6 +49,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useStorage<User | null>('user-crendentials', null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [userLostReports, setUserLostReports] = useState<LostReport[]>([]);
+  const [userFoundReports, setUserFoundReports] = useState<FoundReport[]>([]);
 
   const refreshUser = () => {
     checkSavedBasicAuthCredentials().then(credentials => {
@@ -166,7 +170,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     []
   );
 
-  async function getAllLostReports(): Promise<LostReport[]> {
+  async function getAllLostReports() {
     let lostReports: LostReport[] = [];
     startTransition(() => {
       AsyncStorage?.getItem('basicAuthCredentials').then(
@@ -182,9 +186,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
             },
           })
             .then(async response => {
-              const data = await response.json();
               if (response.status === 200) {
-                lostReports = data;
+                lostReports = await response.json();
+                setUserLostReports(lostReports);
               } else {
                 throw Error('Error fetching lost reports!');
               }
@@ -195,11 +199,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
         }
       );
     });
-
-    return lostReports;
   }
 
-  async function getAllFoundReports(): Promise<FoundReport[]> {
+  async function getAllFoundReports() {
     let foundReports: FoundReport[] = [];
     startTransition(() => {
       AsyncStorage?.getItem('basicAuthCredentials').then(
@@ -215,9 +217,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
             },
           })
             .then(async response => {
-              const data = await response.json();
               if (response.status === 200) {
-                foundReports = data;
+                foundReports = await response.json();
+                setUserFoundReports(foundReports);
               } else {
                 throw Error('Error fetching found reports!');
               }
@@ -245,6 +247,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         register,
         getAllLostReports,
         getAllFoundReports,
+        userLostReports,
+        userFoundReports,
       }}>
       {children}
     </UserContext.Provider>
