@@ -1,6 +1,8 @@
 import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { describe, expect, it, jest } from '@jest/globals';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import {afterEach, beforeEach, describe, expect, it, jest} from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
 import { FoundReport } from '../../../src/types/report-found';
@@ -61,6 +63,16 @@ jest.mock('@react-navigation/native', () => ({
     useCallback: jest.fn(),
   })),
 }));
+
+beforeEach(() => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+        json: jest.fn().mockResolvedValue([fakeFoundReport]),
+    });
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
+});
 
 describe('FoundReportScreen', () => {
   // it('should render the dropdowns', async () => {
