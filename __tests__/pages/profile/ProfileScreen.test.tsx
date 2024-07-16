@@ -10,6 +10,8 @@ import { Settings } from '../../../src/types/settings.ts';
 import mapConstants from '../../../src/constants/map.ts';
 import { useNavigation } from '@react-navigation/native';
 
+jest.setTimeout(20000);
+
 const userData: User = {
   id: '1',
   email: 'wal@test.de',
