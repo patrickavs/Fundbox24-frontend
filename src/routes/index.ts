@@ -1,4 +1,6 @@
-export const BASE_URL = 'http://10.0.2.2:8080';
+import {Platform} from 'react-native';
+
+export const BASE_URL = Platform.OS === 'android' ? 'http://10.0.2.2:8080' : 'http://localhost:8080';
 export const CHAT_URL = `${BASE_URL}/chat`;
 export const MESSAGE_URL = (id: string) => `${CHAT_URL}/${id}/message`;
 export const FOUNDREPORT_URL = (id?: string) =>
