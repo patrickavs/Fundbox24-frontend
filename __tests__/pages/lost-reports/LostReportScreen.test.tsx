@@ -1,6 +1,6 @@
 import React from 'react';
 import {act, fireEvent, render, screen} from '@testing-library/react-native';
-import {describe, expect, it, jest} from '@jest/globals';
+import {afterEach, beforeEach, describe, expect, it, jest} from '@jest/globals';
 import * as LostReportHook from '../../../src/hooks/useLostReports';
 import {LostReport, NewLostReport} from '../../../src/types/report-lost';
 import LostReportScreen from '../../../src/pages/lost/LostReportScreen';
@@ -61,6 +61,16 @@ jest.mock('@react-navigation/native', () => ({
     useCallback: jest.fn(),
   })),
 }));
+
+beforeEach(() => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+        json: jest.fn().mockResolvedValue([fakeLostReports]),
+    });
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
+});
 
 describe('LostReportScreen', () => {
   it('renders correctly', () => {
