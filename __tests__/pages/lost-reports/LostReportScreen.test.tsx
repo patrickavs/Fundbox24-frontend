@@ -1,8 +1,6 @@
 import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import {act, fireEvent, render, screen} from '@testing-library/react-native';
-import {afterEach, beforeEach, describe, expect, it, jest} from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import * as LostReportHook from '../../../src/hooks/useLostReports';
 import { LostReport } from '../../../src/types/report-lost';
 import LostReportScreen from '../../../src/pages/lost/LostReportScreen';
@@ -64,25 +62,25 @@ jest.mock('@react-navigation/native', () => ({
   })),
 }));
 
-beforeEach(() => {
-  jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-    isPending: false,
-    lostReports: [fakeLostReports],
-    error: null,
-    refresh: () => Promise.resolve(),
-    createLostReport: (userToken: string, report: LostReportRequest) => Promise.resolve(),
-    editLostReport: (userToken: string, report: LostReport) => Promise.resolve(),
-  }));
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-        json: jest.fn().mockResolvedValue([fakeLostReports]),
-    });
-});
-
-afterEach(() => {
-    jest.restoreAllMocks();
-});
-
 describe('LostReportScreen', () => {
+  beforeEach(() => {
+    jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
+      isPending: false,
+      lostReports: [fakeLostReports],
+      error: null,
+      refresh: () => Promise.resolve(),
+      createLostReport: (userToken: string, report: LostReportRequest) => Promise.resolve(),
+      editLostReport: (userToken: string, report: LostReport) => Promise.resolve(),
+    }));
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue([fakeLostReports]),
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it('renders correctly', () => {
     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
       isPending: false,
