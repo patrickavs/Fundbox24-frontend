@@ -1,14 +1,12 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
-import {afterEach, beforeEach, describe, expect, it, jest} from '@jest/globals';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
 import { FoundReport } from '../../../src/types/report-found';
 import FoundReportCard from '../../../src/pages/found/FoundReportCard';
 import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
 import { User } from '../../../src/types/user';
-
-jest.setTimeout(100000);
 
 const fakeFoundReport: FoundReport =
   {
@@ -64,17 +62,16 @@ jest.mock('@react-navigation/native', () => ({
   })),
 }));
 
-beforeEach(() => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-        json: jest.fn().mockResolvedValue([fakeFoundReport]),
-    });
-});
-
-afterEach(() => {
-    jest.restoreAllMocks();
-});
-
 describe('FoundReportScreen', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue([fakeFoundReport]),
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
   // it('should render the dropdowns', async () => {
   //     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
   //         isPending: false,
