@@ -166,7 +166,10 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
                 .then(async response => {
                   const data = await response.json();
                   if (response.ok) {
-                    console.log('okay');
+                    setFoundReports(prev => [
+                      ...prev.filter(({ id }) => id !== report.id),
+                      data as FoundReport,
+                    ]);
                   } else {
                     setError(data);
                   }

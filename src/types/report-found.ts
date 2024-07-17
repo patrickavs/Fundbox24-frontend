@@ -1,7 +1,6 @@
 import { Category } from './category';
 import { Location } from './location';
 import { Chat } from './chat.ts';
-import { User } from './user.ts';
 
 export type FoundReport = {
   id: string;

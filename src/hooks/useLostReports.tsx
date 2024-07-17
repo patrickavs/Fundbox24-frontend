@@ -165,7 +165,10 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
                 .then(async response => {
                   const data = await response.json();
                   if (response.ok) {
-                    console.log('okay');
+                    setLostReports(prev => [
+                      ...prev.filter(({ id }) => id !== report.id),
+                      data as LostReport,
+                    ]);
                   } else {
                     setError(data);
                   }

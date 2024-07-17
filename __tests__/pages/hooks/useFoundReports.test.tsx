@@ -1,11 +1,11 @@
 import 'react-native';
-import {act, renderHook} from '@testing-library/react-native';
-import {expect, it, jest, describe} from '@jest/globals';
+import { act, renderHook } from '@testing-library/react-native';
+import { expect, it, jest, describe } from '@jest/globals';
 import {
   FoundReportProvider,
   useFoundReports,
 } from '../../../src/hooks/useFoundReports';
-import {FoundReport, NewFoundReport} from '../../../src/types/report-found';
+import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
 
 const foundReportMockupData: FoundReport = {
   id: '1',
@@ -63,15 +63,16 @@ describe('FoundReport-Hook', () => {
           json: () => Promise.resolve([foundReportMockupData]),
           ok: true,
           status: 200,
-        }) as Promise<Response>,
+        }) as Promise<Response>
     );
 
-    const {result} = renderHook(useFoundReports, {
+    const { result } = renderHook(useFoundReports, {
       wrapper: FoundReportProvider,
     });
 
     // TODO: Is this best practice to wait on useEffect?
-    await act(() => {});
+    await act(() => {
+    });
 
     expect(result.current.foundReports).toMatchObject([foundReportMockupData]);
   });
@@ -85,7 +86,7 @@ describe('FoundReport-Hook', () => {
             json: () => Promise.resolve([foundReportMockupData]),
             ok: true,
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       )
       .mockImplementationOnce(
         () =>
@@ -93,7 +94,7 @@ describe('FoundReport-Hook', () => {
             json: () => Promise.resolve(foundReportMockupData),
             ok: true,
             status: 201,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       )
       .mockImplementationOnce(
         () =>
@@ -102,20 +103,21 @@ describe('FoundReport-Hook', () => {
               Promise.resolve([foundReportMockupData, foundReportMockupData]),
             ok: true,
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       );
 
-    const {result} = renderHook(useFoundReports, {
+    const { result } = renderHook(useFoundReports, {
       wrapper: FoundReportProvider,
     });
 
     // TODO: Is this best practice to wait on useEffect?
-    await act(() => {});
+    await act(() => {
+    });
 
     await act(() => {
       result.current.createFoundReport(
         'dXNlcjpwYXNz',
-        newFoundReportMockupData,
+        newFoundReportMockupData
       );
     });
 
@@ -136,19 +138,20 @@ describe('FoundReport-Hook', () => {
           json: () => Promise.resolve('Error creating report'),
           ok: false,
           status: 400,
-        }) as Promise<Response>,
+        }) as Promise<Response>
     );
 
-    const {result} = renderHook(useFoundReports, {
+    const { result } = renderHook(useFoundReports, {
       wrapper: FoundReportProvider,
     });
 
-    await act(() => {});
+    await act(() => {
+    });
 
     await act(() => {
       result.current.createFoundReport(
         'dXNlcjpwYXNz',
-        newFoundReportMockupData,
+        newFoundReportMockupData
       );
     });
 
@@ -168,34 +171,35 @@ describe('FoundReport-Hook', () => {
             json: () => Promise.resolve([foundReportMockupData]),
             ok: true,
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       )
       .mockImplementationOnce(
         () =>
           Promise.resolve({
             json: () =>
-              Promise.resolve({...foundReportMockupData, title: titleChange}),
+              Promise.resolve({ ...foundReportMockupData, title: titleChange }),
             ok: true,
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       );
 
-    const {result} = renderHook(useFoundReports, {
+    const { result } = renderHook(useFoundReports, {
       wrapper: FoundReportProvider,
     });
 
     // TODO: Is this best practice to wait on useEffect?
-    await act(() => {});
+    await act(() => {
+    });
 
     await act(() => {
-      result.current.editFoundReport('dXNlcjpwYXNz', {
+      result.current.editFoundReport({
         ...foundReportMockupData,
         title: titleChange,
       });
     });
 
     expect(result.current.foundReports).toMatchObject([
-      {...foundReportMockupData, title: titleChange},
+      { ...foundReportMockupData, title: titleChange },
     ]);
   });
 
@@ -208,25 +212,26 @@ describe('FoundReport-Hook', () => {
             json: () => Promise.resolve([foundReportMockupData]),
             ok: true,
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       )
       .mockImplementationOnce(
         () =>
           Promise.resolve({
-            json: () => Promise.resolve({message: 'Error editing report'}),
+            json: () => Promise.resolve({ message: 'Error editing report' }),
             ok: false,
             status: 400,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       );
 
-    const {result} = renderHook(useFoundReports, {
+    const { result } = renderHook(useFoundReports, {
       wrapper: FoundReportProvider,
     });
 
-    await act(() => {});
+    await act(() => {
+    });
 
     await act(() => {
-      result.current.editFoundReport('dXNlcjpwYXNz', {
+      result.current.editFoundReport({
         ...foundReportMockupData,
         title: 'New Title',
       });

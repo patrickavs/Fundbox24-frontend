@@ -1,11 +1,11 @@
 import 'react-native';
-import {act, renderHook} from '@testing-library/react-native';
-import {expect, it, jest, describe} from '@jest/globals';
+import { act, renderHook } from '@testing-library/react-native';
+import { expect, it, jest, describe } from '@jest/globals';
 import {
   LostReportProvider,
   useLostReports,
 } from '../../../src/hooks/useLostReports';
-import {LostReport, NewLostReport} from '../../../src/types/report-lost';
+import { LostReport, NewLostReport } from '../../../src/types/report-lost';
 
 const lostReportMockupData: LostReport = {
   id: '1',
@@ -65,15 +65,16 @@ describe('LostReport-Hook', () => {
           json: () => Promise.resolve([lostReportMockupData]),
           ok: true,
           status: 200,
-        }) as Promise<Response>,
+        }) as Promise<Response>
     );
 
-    const {result} = renderHook(useLostReports, {
+    const { result } = renderHook(useLostReports, {
       wrapper: LostReportProvider,
     });
 
     // TODO: Is this best practice to wait on useEffect?
-    await act(() => {});
+    await act(() => {
+    });
 
     expect(result.current.lostReports).toMatchObject([lostReportMockupData]);
   });
@@ -87,7 +88,7 @@ describe('LostReport-Hook', () => {
             json: () => Promise.resolve([lostReportMockupData]),
             ok: true,
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       )
       .mockImplementationOnce(
         () =>
@@ -95,7 +96,7 @@ describe('LostReport-Hook', () => {
             json: () => Promise.resolve(lostReportMockupData),
             ok: true,
             status: 201,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       )
       .mockImplementationOnce(
         () =>
@@ -104,15 +105,16 @@ describe('LostReport-Hook', () => {
               Promise.resolve([lostReportMockupData, lostReportMockupData]),
             ok: true,
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       );
 
-    const {result} = renderHook(useLostReports, {
+    const { result } = renderHook(useLostReports, {
       wrapper: LostReportProvider,
     });
 
     // TODO: Is this best practice to wait on useEffect?
-    await act(() => {});
+    await act(() => {
+    });
 
     await act(() => {
       result.current.createLostReport('dXNlcjpwYXNz', newLostReportMockupData);
@@ -139,34 +141,35 @@ describe('LostReport-Hook', () => {
             json: () => Promise.resolve([lostReportMockupData]),
             ok: true,
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       )
       .mockImplementationOnce(
         () =>
           Promise.resolve({
             json: () =>
-              Promise.resolve({...lostReportMockupData, title: titleChange}),
+              Promise.resolve({ ...lostReportMockupData, title: titleChange }),
             ok: true,
             status: 201,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       );
 
-    const {result} = renderHook(useLostReports, {
+    const { result } = renderHook(useLostReports, {
       wrapper: LostReportProvider,
     });
 
     // TODO: Is this best practice to wait on useEffect?
-    await act(() => {});
+    await act(() => {
+    });
 
     await act(() => {
-      result.current.editLostReport('dXNlcjpwYXNz', {
+      result.current.editLostReport({
         ...lostReportMockupData,
         title: titleChange,
       });
     });
 
     expect(result.current.lostReports).toMatchObject([
-      {...lostReportMockupData, title: titleChange},
+      { ...lostReportMockupData, title: titleChange },
     ]);
   });
 
@@ -177,14 +180,15 @@ describe('LostReport-Hook', () => {
           json: () => Promise.resolve('Error creating report'),
           ok: false,
           status: 400,
-        }) as Promise<Response>,
+        }) as Promise<Response>
     );
 
-    const {result} = renderHook(useLostReports, {
+    const { result } = renderHook(useLostReports, {
       wrapper: LostReportProvider,
     });
 
-    await act(() => {});
+    await act(() => {
+    });
 
     await act(() => {
       result.current.createLostReport('dXNlcjpwYXNz', newLostReportMockupData);
@@ -206,25 +210,26 @@ describe('LostReport-Hook', () => {
             json: () => Promise.resolve([lostReportMockupData]),
             ok: true,
             status: 200,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       )
       .mockImplementationOnce(
         () =>
           Promise.resolve({
-            json: () => Promise.resolve({message: 'Error editing report'}),
+            json: () => Promise.resolve({ message: 'Error editing report' }),
             ok: false,
             status: 400,
-          }) as Promise<Response>,
+          }) as Promise<Response>
       );
 
-    const {result} = renderHook(useLostReports, {
+    const { result } = renderHook(useLostReports, {
       wrapper: LostReportProvider,
     });
 
-    await act(() => {});
+    await act(() => {
+    });
 
     await act(() => {
-      result.current.editLostReport('dXNlcjpwYXNz', {
+      result.current.editLostReport({
         ...lostReportMockupData,
         title: titleChange,
       });

@@ -33,7 +33,7 @@ function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX
     });
   });
 
-  const mapRefFound = React.useRef<any>(null);
+  const mapRefFound = React.useRef(null);
 
 
   const route = useRoute();
@@ -52,8 +52,8 @@ function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX
 
   const navigateToChat = () => {
     console.log('navigate to chat');
-    navigation.goBack();
     // TODO: navigate to chat
+    navigation.popToTop();
   };
 
   const navigateToEdit = () => {
