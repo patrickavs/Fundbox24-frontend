@@ -6,13 +6,13 @@ import SearchBar from '../../components/SearchBar.tsx';
 import Dropdown from '../../components/Dropdown.tsx';
 import FoundReportCard from './FoundReportCard.tsx';
 import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ALL_FOUND_REPORTS_URL } from '../../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FoundReport } from '../../types/report-found.ts';
 
-function FoundReportScreen({ navigation }: { navigation: any }): React.JSX.Element {
-
+function FoundReportScreen(): React.JSX.Element {
+  const navigation = useNavigation();
   const [foundReports, setFoundReports] = useState<FoundReport[]>([]);
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState('');
@@ -130,7 +130,7 @@ export default FoundReportScreen;
 const styles = StyleSheet.create({
   list: {
     marginBottom: 200,
-      paddingHorizontal: 5,
+    paddingHorizontal: 5,
 
   },
   text: {

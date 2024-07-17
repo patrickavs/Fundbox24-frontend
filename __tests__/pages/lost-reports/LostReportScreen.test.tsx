@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import * as LostReportHook from '../../../src/hooks/useLostReports';
 import { LostReport } from '../../../src/types/report-lost';
@@ -7,6 +7,7 @@ import LostReportScreen from '../../../src/pages/lost/LostReportScreen';
 import LostReportCard from '../../../src/pages/lost/LostReportCard';
 import { LostReportRequest } from '../../../src/types/report-lost-request.ts';
 import { User } from '../../../src/types/user';
+import { useNavigation } from '@react-navigation/native';
 
 const fakeLostReports: LostReport = {
   id: '1',
@@ -56,6 +57,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(() => ({
     goBack: jest.fn(),
+    navigate: jest.fn(),
   })),
   useFocusEffect: jest.fn(() => ({
     useCallback: jest.fn(),
@@ -63,7 +65,13 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 describe('LostReportScreen', () => {
+  const navigateMock = jest.fn();
+
   beforeEach(() => {
+    (useNavigation as jest.Mock).mockReturnValue({
+      navigate: navigateMock,
+    });
+
     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
       isPending: false,
       lostReports: [fakeLostReports],
@@ -73,6 +81,7 @@ describe('LostReportScreen', () => {
       editLostReport: (userToken: string, report: LostReport) => Promise.resolve(),
     }));
     jest.spyOn(global, 'fetch').mockResolvedValue({
+      status: 200,
       json: jest.fn().mockResolvedValue([fakeLostReports]),
     });
   });
@@ -174,5 +183,17 @@ describe('LostReportScreen', () => {
     });
 
     expect(pressCallback).toBeCalled();
+  });
+
+  it('should render LostReportCard in FlatList', async () => {
+    render(<LostReportScreen />);
+
+    await waitFor(() => screen.getByText(fakeLostReports.title));
+
+    const lostReportCard = screen.getByText(fakeLostReports.title);
+    expect(lostReportCard).toBeTruthy();
+
+    fireEvent.press(lostReportCard);
+    expect(navigateMock).toHaveBeenCalledWith('SingleLostReportScreen', { item: fakeLostReports });
   });
 });
