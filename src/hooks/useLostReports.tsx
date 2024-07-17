@@ -11,7 +11,7 @@ import {
   ALL_LOST_REPORTS_URL,
   CREATE_LOSTREPORT_URL,
   DELETE_LOSTREPORT_URL,
-  LOSTREPORT_URL,
+  EDIT_LOSTREPORT_URL,
 } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LostReportRequest } from '../types/report-lost-request.ts';
@@ -24,7 +24,7 @@ type LostReportContextType = {
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   createLostReport: (userToken: string, report: LostReportRequest) => void;
-  editLostReport: (userToken: string, report: LostReport) => void;
+  editLostReport: (report: LostReport) => void;
   deleteLostReport: (reportId: string) => void;
   startTransition: React.TransitionStartFunction;
 };
@@ -146,27 +146,35 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
   );
 
   const editLostReport = useCallback(
-    (userToken: string, report: LostReport) => {
-      fetch(LOSTREPORT_URL(), {
-        method: 'POST',
-        body: JSON.stringify(report),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Basic ${userToken}`,
-        },
-      })
-        .then(async response => {
-          const data = await response.json();
-          if (response.ok) {
-            setLostReports(prev => [
-              ...prev.filter(({ id }) => id !== report.id),
-              data as LostReport,
-            ]);
-          } else {
-            setError(data);
-          }
-        })
-        .catch(error => setError(JSON.stringify(error)));
+    (report: LostReport) => {
+      startTransition(() => {
+          AsyncStorage?.getItem('basicAuthCredentials').then(
+            basicAuthCredentials => {
+              if (!basicAuthCredentials) {
+                throw 'No Basic Auth Header! Please login.';
+              }
+
+              fetch(EDIT_LOSTREPORT_URL(report.id), {
+                method: 'PUT',
+                body: JSON.stringify(report),
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Basic ${basicAuthCredentials}`,
+                },
+              })
+                .then(async response => {
+                  const data = await response.json();
+                  if (response.ok) {
+                    console.log('okay');
+                  } else {
+                    setError(data);
+                  }
+                })
+                .catch(error => setError(JSON.stringify(error)));
+            }
+          );
+        }
+      );
     },
     []
   );
@@ -212,8 +220,8 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
         setError,
         startTransition,
         createLostReport,
-        editLostReport: editLostReport,
-        deleteLostReport: deleteLostReport,
+        editLostReport,
+        deleteLostReport,
       }}>
       {children}
     </LostReportContext.Provider>

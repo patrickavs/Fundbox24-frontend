@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FoundReportTheme } from '../../constants/theme';
 import MapView, { Circle, LatLng } from 'react-native-maps';
 import SpacerVertical from './SpacerVertical';
@@ -10,9 +10,12 @@ import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 import { useRoute } from '@react-navigation/native';
 import { FoundReport } from '../../types/report-found';
 import CustomHeader from '../../components/CustomHeader';
+import Toast from 'react-native-simple-toast';
+import { useFoundReports } from '../../hooks/useFoundReports.tsx';
 
 
 function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX.Element {
+  const { deleteFoundReport } = useFoundReports();
 
   useEffect(() => {
     navigation.setOptions({
@@ -51,6 +54,36 @@ function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX
     console.log('navigate to chat');
     navigation.goBack();
     // TODO: navigate to chat
+  };
+
+  const navigateToEdit = () => {
+    console.log('navigate to edit');
+    navigation.navigate('EditReportScreen', { item });
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this report?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: async () => {
+            try {
+              deleteFoundReport(item.id);
+              navigation.navigate('FoundReportScreen');
+            } catch (error) {
+              Toast.show('Error deleting found report', Toast.SHORT);
+            }
+          },
+          style: 'destructive',
+        },
+      ]
+    );
   };
 
   return (
@@ -113,7 +146,10 @@ function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX
                           testID="chat-button-2" />
           </View>
         </View>
-        <SpacerVertical size={80} />
+        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+          <Text style={styles.deleteButtonText}>Anzeige löschen</Text>
+        </TouchableOpacity>
+        <SpacerVertical size={150} />
       </ScrollView>
     </View>
   );
@@ -125,7 +161,8 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     display: 'flex',
     flexDirection: 'row',
-    margin: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
     justifyContent: 'space-between',
   },
   button: {
@@ -200,6 +237,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
   },
+  editButton: {
+    padding: 8,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginRight: 10,
+  },
   iconButton: {
     margin: 5,
     padding: 8,
@@ -207,5 +250,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     fontSize: 20,
     alignSelf: 'center',
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    padding: 15,
+    borderRadius: 10,
+    marginHorizontal: 20,
+    marginTop: -10,
+    alignItems: 'center',
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

@@ -11,7 +11,6 @@ import { useRoute } from '@react-navigation/native';
 import { LostReport } from '../../types/report-lost';
 import CustomHeader from '../../components/CustomHeader';
 import { useLostReports } from '../../hooks/useLostReports.tsx';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
 
 
@@ -149,7 +148,7 @@ function SingleLostReportScreen({ navigation }: { navigation: any }): React.JSX.
           </View>
         </View>
         <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-          <Text style={styles.deleteButtonText}>Delete Report</Text>
+          <Text style={styles.deleteButtonText}>Anzeige löschen</Text>
         </TouchableOpacity>
         <SpacerVertical size={150} />
       </ScrollView>
