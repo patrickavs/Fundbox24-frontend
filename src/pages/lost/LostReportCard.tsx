@@ -4,7 +4,6 @@ import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } 
 import { LostReport } from '../../types/report-lost.ts';
 import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import moment from 'moment';
-import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 
 type ReportCardProps = {
   report: LostReport;
@@ -23,7 +22,8 @@ export default function LostReportCard(props: ReportCardProps) {
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
           <Text style={styles.text} numberOfLines={1}>{props.report.category?.name || 'Default'}</Text>
-          <Text style={styles.text} numberOfLines={1}>{moment(props.report.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
+          <Text style={styles.text}
+                numberOfLines={1}>{moment(props.report.lastSeenDate).format('DD.MM.YYYY, HH:mm')}</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     margin: 1,
   },
   masterViewCard: {
-      maxWidth: '50%',
+    maxWidth: '50%',
   },
   imageContainer: {
     display: 'flex',

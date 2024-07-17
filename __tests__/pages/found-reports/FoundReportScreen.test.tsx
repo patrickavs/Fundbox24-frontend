@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import * as FoundReportHook from '../../../src/hooks/useFoundReports';
 import FoundReportScreen from '../../../src/pages/found/FoundReportScreen';
@@ -7,6 +7,7 @@ import { FoundReport } from '../../../src/types/report-found';
 import FoundReportCard from '../../../src/pages/found/FoundReportCard';
 import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
 import { User } from '../../../src/types/user';
+import { useNavigation } from '@react-navigation/native';
 
 const fakeFoundReport: FoundReport =
   {
@@ -56,6 +57,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(() => ({
     goBack: jest.fn(),
+    navigate: jest.fn(),
   })),
   useFocusEffect: jest.fn(() => ({
     useCallback: jest.fn(),
@@ -63,8 +65,24 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 describe('FoundReportScreen', () => {
+  const navigateMock = jest.fn();
+
   beforeEach(() => {
+    (useNavigation as jest.Mock).mockReturnValue({
+      navigate: navigateMock,
+    });
+
+    jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
+      isPending: false,
+      foundReports: [fakeFoundReport],
+      error: null,
+      refresh: () => null,
+      createFoundReport: (userToken: string, report: FoundReportRequest) => null,
+      editFoundReport: (userToken: string, report: FoundReport) => null,
+    }));
+
     jest.spyOn(global, 'fetch').mockResolvedValue({
+      status: 200,
       json: jest.fn().mockResolvedValue([fakeFoundReport]),
     });
   });
@@ -88,15 +106,6 @@ describe('FoundReportScreen', () => {
   // });
 
   it('should render the dropdowns', async () => {
-    jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
-      isPending: false,
-      foundReports: [fakeFoundReport],
-      error: null,
-      refresh: () => null,
-      createFoundReport: (userToken: string, report: FoundReportRequest) => null,
-      editFoundReport: (userToken: string, report: FoundReport) => null,
-    }));
-
     const view = render(<FoundReportScreen navigation={null} />);
 
     expect(view.getByTestId('sort-dropdown-found')).toBeTruthy();
@@ -176,4 +185,15 @@ describe('FoundReportScreen', () => {
     expect(pressCallback).toBeCalled();
   });
 
+  it('should render FoundReportCard in FlatList', async () => {
+    render(<FoundReportScreen />);
+
+    await waitFor(() => screen.getByText(fakeFoundReport.title));
+
+    const foundReportCard = screen.getByText(fakeFoundReport.title);
+    expect(foundReportCard).toBeTruthy();
+
+    fireEvent.press(foundReportCard);
+    expect(navigateMock).toHaveBeenCalledWith('SingleFoundReportScreen', { item: fakeFoundReport });
+  });
 });
