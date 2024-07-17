@@ -11,6 +11,8 @@ import { useRoute } from '@react-navigation/native';
 import { LostReport } from '../../types/report-lost';
 import CustomHeader from '../../components/CustomHeader';
 import { useLostReports } from '../../hooks/useLostReports.tsx';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 
 
 function SingleLostReportScreen({ navigation }: { navigation: any }): React.JSX.Element {
@@ -72,10 +74,13 @@ function SingleLostReportScreen({ navigation }: { navigation: any }): React.JSX.
         },
         {
           text: 'Delete',
-          onPress: () => {
-            const userToken = 'basicAuthCredentials';
-            deleteLostReport(userToken, item.id);
-            navigation.navigate('LostReportScreen');
+          onPress: async () => {
+            try {
+              deleteLostReport(item.id);
+              navigation.navigate('LostReportScreen');
+            } catch (error) {
+              Toast.show('Error deleting lost report', Toast.SHORT);
+            }
           },
           style: 'destructive',
         },

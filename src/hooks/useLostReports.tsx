@@ -7,7 +7,12 @@ import React, {
   useState,
   useTransition,
 } from 'react';
-import { ALL_LOST_REPORTS_URL, CREATE_LOSTREPORT_URL, DELETE_LOSTREPORT_URL, LOSTREPORT_URL } from '../routes';
+import {
+  ALL_LOST_REPORTS_URL,
+  CREATE_LOSTREPORT_URL,
+  DELETE_LOSTREPORT_URL,
+  LOSTREPORT_URL,
+} from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LostReportRequest } from '../types/report-lost-request.ts';
 
@@ -20,7 +25,7 @@ type LostReportContextType = {
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   createLostReport: (userToken: string, report: LostReportRequest) => void;
   editLostReport: (userToken: string, report: LostReport) => void;
-  deleteLostReport: (userToken: string, reportId: string) => void;
+  deleteLostReport: (reportId: string) => void;
   startTransition: React.TransitionStartFunction;
 };
 
@@ -140,7 +145,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
     []
   );
 
-  const editFoundReport = useCallback(
+  const editLostReport = useCallback(
     (userToken: string, report: LostReport) => {
       fetch(LOSTREPORT_URL(), {
         method: 'POST',
@@ -167,7 +172,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
   );
 
   const deleteLostReport = useCallback(
-    (userToken: string, reportId: string) => {
+    (reportId: string) => {
       startTransition(() => {
         AsyncStorage?.getItem('basicAuthCredentials').then(
           basicAuthCredentials => {
@@ -178,7 +183,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Basic ${userToken}`,
+                Authorization: `Basic ${basicAuthCredentials}`,
               },
             })
               .then(async response => {
@@ -189,7 +194,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
                   setError(data);
                 }
               })
-              .catch(error => setError(JSON.stringify(error)));
+              .catch(errorRes => setError(JSON.stringify(errorRes)));
           });
       });
     },
@@ -207,7 +212,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
         setError,
         startTransition,
         createLostReport,
-        editLostReport: editFoundReport,
+        editLostReport: editLostReport,
         deleteLostReport: deleteLostReport,
       }}>
       {children}
