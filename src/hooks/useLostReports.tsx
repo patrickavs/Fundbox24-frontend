@@ -1,4 +1,4 @@
-import { LostReport, NewLostReport } from '../types/report-lost.ts';
+import { LostReport } from '../types/report-lost.ts';
 import React, {
   createContext,
   useCallback,
@@ -7,7 +7,7 @@ import React, {
   useState,
   useTransition,
 } from 'react';
-import { ALL_LOST_REPORTS_URL, CREATE_LOSTREPORT_URL, LOSTREPORT_URL } from '../routes';
+import { ALL_LOST_REPORTS_URL, CREATE_LOSTREPORT_URL, DELETE_LOSTREPORT_URL, LOSTREPORT_URL } from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LostReportRequest } from '../types/report-lost-request.ts';
 
@@ -20,11 +20,12 @@ type LostReportContextType = {
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   createLostReport: (userToken: string, report: LostReportRequest) => void;
   editLostReport: (userToken: string, report: LostReport) => void;
+  deleteLostReport: (userToken: string, reportId: string) => void;
   startTransition: React.TransitionStartFunction;
 };
 
 const LostReportContext = createContext<LostReportContextType>(
-  {} as LostReportContextType,
+  {} as LostReportContextType
 );
 
 export function useLostReports() {
@@ -38,6 +39,7 @@ export function useLostReports() {
     setError,
     createLostReport,
     editLostReport,
+    deleteLostReport,
     error,
   } = context;
 
@@ -71,16 +73,16 @@ export function useLostReports() {
             .catch(fetchError => {
               console.log(fetchError);
             });
-        },
+        }
       );
     });
   }, [startTransition, setLostReports, setError]);
 
-  return { isPending, lostReports, error, createLostReport, editLostReport, refresh };
+  return { isPending, lostReports, error, createLostReport, editLostReport, deleteLostReport, refresh };
 }
 
 export function LostReportProvider({ children }: { children: React.ReactNode }) {
-  const [lostReports, setLostReports] = useState<Array<LostReport>>([]);
+  const [lostReports, setLostReports] = useState<LostReport[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -109,7 +111,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
               .catch(fetchError => {
                 console.log(fetchError);
               });
-          },
+          }
         );
       });
     }, []
@@ -135,7 +137,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
         })
         .catch(error => setError(JSON.stringify(error)));
     },
-    [],
+    []
   );
 
   const editFoundReport = useCallback(
@@ -161,7 +163,37 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
         })
         .catch(error => setError(JSON.stringify(error)));
     },
-    [],
+    []
+  );
+
+  const deleteLostReport = useCallback(
+    (userToken: string, reportId: string) => {
+      startTransition(() => {
+        AsyncStorage?.getItem('basicAuthCredentials').then(
+          basicAuthCredentials => {
+            if (!basicAuthCredentials) {
+              throw 'No Basic Auth Header! Please login.';
+            }
+            fetch(DELETE_LOSTREPORT_URL(reportId), {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Basic ${userToken}`,
+              },
+            })
+              .then(async response => {
+                if (response.ok) {
+                  setLostReports(prev => prev.filter(({ id }) => id !== reportId));
+                } else {
+                  const data = await response.json();
+                  setError(data);
+                }
+              })
+              .catch(error => setError(JSON.stringify(error)));
+          });
+      });
+    },
+    []
   );
 
   return (
@@ -176,6 +208,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
         startTransition,
         createLostReport,
         editLostReport: editFoundReport,
+        deleteLostReport: deleteLostReport,
       }}>
       {children}
     </LostReportContext.Provider>

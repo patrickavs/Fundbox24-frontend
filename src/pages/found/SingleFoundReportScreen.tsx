@@ -22,6 +22,11 @@ function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX
           <Ionicons name={'arrow-back'} size={30} color={'black'} />
         </TouchableOpacity>
       ),
+      headerRight: () => (
+        <TouchableOpacity onPress={navigateToEdit} style={styles.editButton}>
+          <Ionicons name={'pencil'} size={30} color={'black'} />
+        </TouchableOpacity>
+      ),
     });
   });
 

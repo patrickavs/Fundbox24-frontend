@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useUser } from '../../hooks/useUser';
 import { useLostReports } from '../../hooks/useLostReports';
@@ -8,14 +8,14 @@ import LostReportCard from '../lost/LostReportCard.tsx';
 import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
 
-export default function StartScreen({navigation}: {navigation: any}): React.JSX.Element {
-  const {isPending: isPendingUser, refreshUser, user} = useUser();
+export default function StartScreen({ navigation }: { navigation: any }): React.JSX.Element {
+  const { isPending: isPendingUser, refreshUser, user } = useUser();
   const {
     isPending: isPendingLostReport,
     lostReports,
     refresh,
   } = useLostReports();
-  const {isPending: isPendingChat, chats} = useChat(''); // TODO: Pass userToken here
+  const { isPending: isPendingChat, chats } = useChat(''); // TODO: Pass userToken here
 
   const isPending = isPendingUser || isPendingLostReport || isPendingChat;
 
@@ -25,7 +25,7 @@ export default function StartScreen({navigation}: {navigation: any}): React.JSX.
 
   if (!isPending && !user) {
     return (
-      <View style={{alignItems: 'center', marginTop: '50%'}}>
+      <View style={{ alignItems: 'center', marginTop: '50%' }}>
         <Text>Du bist nicht angemeldet</Text>
       </View>
     );
@@ -87,14 +87,14 @@ export default function StartScreen({navigation}: {navigation: any}): React.JSX.
                   horizontal
                   style={styles.list}
                   data={lostReports}
-                  renderItem={({item, index}) => (
+                  renderItem={({ item, index }) => (
                     <LostReportCard
                       key={index}
                       report={item}
                       onPress={() =>
                         navigation.navigate('Verloren', {
                           screen: 'SingleLostReportScreen',
-                          params: {item: item},
+                          params: { item: item },
                         })
                       }
                       image={
@@ -113,7 +113,7 @@ export default function StartScreen({navigation}: {navigation: any}): React.JSX.
               <Text style={styles.text}>Deine letzten Nachrichten</Text>
               <Text style={styles.text2}>mehr anzeigen</Text>
             </View>
-            <ChatList isStartPage={true}/>
+            <ChatList isStartPage={true} />
           </View>
         </>
       }
