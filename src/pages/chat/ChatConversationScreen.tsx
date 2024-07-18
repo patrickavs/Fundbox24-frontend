@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import { ChatConversation } from '../../types/chat-conversation.ts';
 import ChatMessage from './ChatMessage.tsx';
@@ -20,13 +20,21 @@ export default function ChatConversationScreen() {
       {
         id: '2',
         chatId: '1',
+        userId: '1',
+        content: 'Ich habe dir etwas wichtiges zu sagen!',
+        type: 'message',
+        createdAt: new Date('2023-07-18T10:01:00Z'),
+      },
+      {
+        id: '3',
+        chatId: '1',
         userId: '2',
         content: "Hi Bobo, was gibt's?",
         type: 'message',
         createdAt: new Date('2023-07-18T10:05:00Z'),
       },
       {
-        id: '3',
+        id: '4',
         chatId: '1',
         userId: '1',
         content: 'Ich habe deine Cola gefunden. Sie war bei mir im Kofferraum.',
@@ -34,7 +42,7 @@ export default function ChatConversationScreen() {
         createdAt: new Date('2023-07-18T10:07:30Z'),
       },
       {
-        id: '4',
+        id: '5',
         chatId: '1',
         userId: '2',
         content: 'Krass, du hast meine Cola gefunden! Wo kann ich sie holen?',
@@ -44,10 +52,34 @@ export default function ChatConversationScreen() {
       {
         id: '6',
         chatId: '1',
-        userId: '2',
+        userId: '1',
         content: 'Komm einfach morgen bei mir in der Königstraße vorbei',
         type: 'message',
         createdAt: new Date('2023-07-18T10:15:00Z'),
+      },
+      {
+        id: '7',
+        chatId: '1',
+        userId: '2',
+        content: 'Alles klar, ich komme morgen rum.',
+        type: 'message',
+        createdAt: new Date('2023-07-18T10:16:00Z'),
+      },
+      {
+        id: '8',
+        chatId: '1',
+        userId: '2',
+        content: 'Vielen Dank, dass du meine Cola gerettet hast!',
+        type: 'message',
+        createdAt: new Date('2023-07-18T10:17:00Z'),
+      },
+      {
+        id: '9',
+        chatId: '1',
+        userId: '1',
+        content: 'Kein Problem Rick, dafür bin ich doch da 😉',
+        type: 'message',
+        createdAt: new Date('2023-07-18T10:20:00Z'),
       },
     ],
   };
@@ -70,6 +102,7 @@ export default function ChatConversationScreen() {
 const styles = StyleSheet.create({
   list: {
     padding: 20,
-    gap: 10,
+    paddingBottom: 300,
+    gap: 20,
   },
 });
