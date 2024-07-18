@@ -5,6 +5,7 @@ import ProfileScreen from './ProfileScreen';
 import MyReports from './MyReports.tsx';
 
 import MyChatsScreen from '../chat/MyChatsScreen.tsx';
+import ChatConversationScreen from '../chat/ChatConversationScreen.tsx';
 const ProfileNavStack = createNativeStackNavigator();
 
 export const ProfileStack = () => (
@@ -37,6 +38,14 @@ export const ProfileStack = () => (
           headerTitle: '',
           headerTransparent: true,
     }}
+    />
+    <ProfileNavStack.Screen
+      name="ChatConversation"
+      component={ChatConversationScreen}
+      options={{
+        headerTitle: '',
+        headerTransparent: true,
+      }}
     />
   </ProfileNavStack.Navigator>
 );

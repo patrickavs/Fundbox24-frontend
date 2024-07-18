@@ -1,19 +1,23 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { ChatCardInfo } from '../../types/chat-card-info.ts';
 import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   info: ChatCardInfo;
 }
 
 export default function ChatCard(props: Props) {
+  const navigation = useNavigation();
+
   const category = categoriesWithImage.find(
     categoryWithImage => categoryWithImage.name === props.info.categoryName
   );
 
   return (
-    <View style={[styles.container, styles.shadow]}>
+    <Pressable style={[styles.container, styles.shadow]}
+               onPress={() => navigation.navigate('ChatConversation')}>
       <View style={styles.imageContainer}>
         {category ?
           // @ts-ignore
@@ -24,7 +28,7 @@ export default function ChatCard(props: Props) {
         <Text style={styles.title}>{props.info.nameOfObject}</Text>
         <Text style={styles.textWrap}>{props.info.lastMessage}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
