@@ -109,8 +109,14 @@ function EditReportScreen() {
           return;
         }
         reportType === 'lost'
-          ? editLostReport(updatedReport as LostReportRequest)
-          : editFoundReport(token, updatedReport as FoundReportRequest);
+          ? editLostReport(
+            item.id,
+            updatedReport as LostReportRequest
+          )
+          : editFoundReport(
+            item.id,
+            updatedReport as FoundReportRequest
+          );
         navigation.popToTop();
       }
     } catch (sendError) {

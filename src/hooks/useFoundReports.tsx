@@ -24,7 +24,7 @@ type FoundReportsContextType = {
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   createFoundReport: (userToken: string, report: FoundReportRequest) => void;
-  editFoundReport: (report: FoundReport) => void;
+  editFoundReport: (id: number, report: FoundReportRequest) => void;
   deleteFoundReport: (userToken: string) => void;
   startTransition: React.TransitionStartFunction;
 };
@@ -147,7 +147,7 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
   );
 
   const editFoundReport = useCallback(
-    (report: FoundReport) => {
+    (id: number, report: FoundReport) => {
       startTransition(() => {
           AsyncStorage?.getItem('basicAuthCredentials').then(
             basicAuthCredentials => {
@@ -155,7 +155,7 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
                 throw 'No Basic Auth Header! Please login.';
               }
 
-              fetch(EDIT_FOUNDREPORT_URL(report.id), {
+              fetch(EDIT_FOUNDREPORT_URL(id), {
                 method: 'PUT',
                 body: JSON.stringify(report),
                 headers: {

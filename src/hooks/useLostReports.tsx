@@ -24,7 +24,7 @@ type LostReportContextType = {
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   createLostReport: (userToken: string, report: LostReportRequest) => void;
-  editLostReport: (report: LostReport) => void;
+  editLostReport: (id: number, report: LostReportRequest) => void;
   deleteLostReport: (reportId: string) => void;
   startTransition: React.TransitionStartFunction;
 };
@@ -146,7 +146,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
   );
 
   const editLostReport = useCallback(
-    (report: LostReport) => {
+    (id: number, report: LostReport) => {
       startTransition(() => {
           AsyncStorage?.getItem('basicAuthCredentials').then(
             basicAuthCredentials => {
@@ -154,7 +154,10 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
                 throw 'No Basic Auth Header! Please login.';
               }
 
-              fetch(EDIT_LOSTREPORT_URL(report.id), {
+              const url = EDIT_LOSTREPORT_URL(id);
+              console.log(url);
+
+              fetch(url, {
                 method: 'PUT',
                 body: JSON.stringify(report),
                 headers: {
