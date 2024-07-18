@@ -146,7 +146,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
   );
 
   const editLostReport = useCallback(
-    (id: number, report: LostReport) => {
+    (editId: string, report: LostReportRequest) => {
       startTransition(() => {
           AsyncStorage?.getItem('basicAuthCredentials').then(
             basicAuthCredentials => {
@@ -154,7 +154,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
                 throw 'No Basic Auth Header! Please login.';
               }
 
-              const url = EDIT_LOSTREPORT_URL(id);
+              const url = EDIT_LOSTREPORT_URL(editId);
               console.log(url);
 
               fetch(url, {
@@ -167,9 +167,10 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
               })
                 .then(async response => {
                   const data = await response.json();
+                  console.log(data);
                   if (response.ok) {
                     setLostReports(prev => [
-                      ...prev.filter(({ id }) => id !== report.id),
+                      ...prev.filter(({ id }) => id !== editId),
                       data as LostReport,
                     ]);
                   } else {

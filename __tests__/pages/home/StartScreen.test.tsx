@@ -5,7 +5,7 @@ import { expect, it, jest, describe } from '@jest/globals';
 import StartScreen from '../../../src/pages/home/StartScreen.tsx';
 import * as LostReportsHook from '../../../src/hooks/useLostReports.tsx';
 import * as ChatHook from '../../../src/hooks/useChat.tsx';
-import { LostReport, NewLostReport } from '../../../src/types/report-lost.ts';
+import { LostReport } from '../../../src/types/report-lost.ts';
 import { User } from '../../../src/types/user.ts';
 import * as UserHook from '../../../src/hooks/useUser.tsx';
 import { NewMessage } from '../../../src/types/message.ts';
@@ -75,7 +75,8 @@ describe('StartScreen', () => {
       lostReports: fakeLostReports,
       error: null,
       createLostReport: (userToken: string, report: LostReportRequest) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
+      editLostReport: (report: LostReport) => null,
+      deleteLostReport: (reportId: string) => null,
       refresh: () => null,
     }));
 
@@ -122,7 +123,8 @@ describe('StartScreen', () => {
       lostReports: fakeLostReports,
       error: null,
       createLostReport: (userToken: string, report: LostReportRequest) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
+      editLostReport: (report: LostReport) => null,
+      deleteLostReport: (reportId: string) => null,
       refresh: () => null,
     }));
 
