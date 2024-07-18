@@ -101,7 +101,7 @@ export default function ChatConversationScreen() {
 
 const styles = StyleSheet.create({
   list: {
-    padding: 20,
+    paddingVertical: 20,
     paddingBottom: 300,
     gap: 20,
   },
