@@ -11,7 +11,7 @@ export default function Arrow(props: Props) {
     borderLeftColor: 'transparent',
     borderRightColor: props.color,
     transform: [
-      { translateX: 5 },
+      { translateX: 3 },
     ],
   };
 
@@ -19,7 +19,7 @@ export default function Arrow(props: Props) {
     borderRightColor: 'transparent',
     borderLeftColor: props.color,
     transform: [
-      { translateX: -5 },
+      { translateX: -3 },
     ],
   };
 
@@ -30,9 +30,10 @@ export default function Arrow(props: Props) {
 
 const styles = StyleSheet.create({
   arrow: {
+    marginTop: 20,
     width: 0,
     height: 0,
-    borderWidth: 15,
+    borderWidth: 12,
     borderTopColor: 'transparent',
     borderBottomColor: 'transparent',
   },
