@@ -4,7 +4,7 @@ import React from 'react';
 import ProfileScreen from './ProfileScreen';
 import MyReports from './MyReports.tsx';
 
-import ChatScreen from '../chat/ChatScreen.tsx';
+import MyChatsScreen from '../chat/MyChatsScreen.tsx';
 const ProfileNavStack = createNativeStackNavigator();
 
 export const ProfileStack = () => (
@@ -32,7 +32,7 @@ export const ProfileStack = () => (
     />
     <ProfileNavStack.Screen
       name="MyChats"
-      component={ChatScreen}
+      component={MyChatsScreen}
       options={{
           headerTitle: '',
           headerTransparent: true,
