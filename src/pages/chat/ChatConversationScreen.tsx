@@ -20,11 +20,11 @@ export default function ChatConversationScreen() {
   // TODO: reportId in params
   const {user} = useUser();
   const [basicAuthCredentials, setBasicAuthCredentials] = useState<string | null>();
-  const {chat, addMessage} = useChat(basicAuthCredentials ?? "do not do this", user, 1);
+  const {chat, addMessage} = useChat(basicAuthCredentials ?? 'do not do this', user, 1);
 
   useEffect(() => {
-    AsyncStorage.getItem("basicAuthCredentials").then(setBasicAuthCredentials);
-  })
+    AsyncStorage.getItem('basicAuthCredentials').then(setBasicAuthCredentials);
+  }, []);
 
   const [inputIsShown, setInputIsShown] = React.useState(false);
 
@@ -41,7 +41,7 @@ export default function ChatConversationScreen() {
   return (
     <View testID={'chat-conversation-screen'}>
       <CustomHeader
-        title={chat?.reportTitle ?? "Chat"}
+        title={chat?.reportTitle ?? 'Chat'}
       />
       <FlatList
         data={chat?.messages ?? []}
@@ -56,7 +56,7 @@ export default function ChatConversationScreen() {
           onSubmitEditing={onSendMessage}
           onEndEditing={() => setInputIsShown(false)}
           style={[styles.input, styles.shadow]}
-          placeholder='Deine Nachricht'
+          placeholder="Deine Nachricht"
           returnKeyType="send"
         /> : null}
       {inputIsShown ? null :
