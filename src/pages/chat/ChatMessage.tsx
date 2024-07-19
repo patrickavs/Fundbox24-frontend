@@ -11,7 +11,7 @@ type ChatMessageProps = {
 }
 
 export default function ChatMessage(props: ChatMessageProps) {
-  const messageIsFromLoggedInUser = props.message.sender.id === +(props.user?.id ?? "");
+  const messageIsFromLoggedInUser = true; //props.message.sender.id === +(props.user?.id ?? "");
 
   return (
     <View style={[styles.container, messageIsFromLoggedInUser ? styles.alignMessageRight : styles.alignMessageLeft]}>
@@ -19,7 +19,7 @@ export default function ChatMessage(props: ChatMessageProps) {
       <View
         style={[styles.message, messageIsFromLoggedInUser ? styles.messageFromLoggedInUser : styles.messageFromOtherUser]}>
         <Text
-          style={[styles.text, messageIsFromLoggedInUser ? styles.whiteText : styles.blackText]}>{props.message.content}</Text>
+          style={[styles.text, messageIsFromLoggedInUser ? styles.whiteText : styles.blackText]}>{props.message.message.content}</Text>
       </View>
       {messageIsFromLoggedInUser ? <Arrow color={LostReportTheme.colors.button} pointingLeft={false} /> : null}
     </View>

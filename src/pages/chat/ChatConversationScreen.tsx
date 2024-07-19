@@ -15,7 +15,7 @@ import { useChat } from '../../hooks/useChat.tsx';
 import { useUser } from '../../hooks/useUser.tsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LostReportTheme } from '../../constants/theme.ts';
-import { NewMessage } from '../../types/message.ts';
+import { Message } from '../../types/message.ts';
 
 export default function ChatConversationScreen() {
   // TODO: reportId in params
@@ -35,7 +35,8 @@ export default function ChatConversationScreen() {
     setInputIsShown(false);
     listRef.current?.scrollToEnd();
 
-    const message: NewMessage = {
+    const message: Message = {
+      id: 1,
       isImage: false,
       sender: {
         id: +(user?.id ?? ''),

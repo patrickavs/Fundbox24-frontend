@@ -42,6 +42,9 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
   }
 
   useEffect(() => {
+    socket.removeAllListeners();
+    console.log('initializing useChat hook');
+
     startTransition(() => {
       // TODO: Fetch the messages from the rest-api
       fetch(CHAT_USER_URL, {
@@ -70,12 +73,14 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
       }
     });
 
-    socket.on('chat message', (message: Message) => {
+    socket.on('other chat message', (message: Message) => {
       setChat(chat => {
         if (!chat) {
           throw new Error('No chat is loaded.');
         }
+
         chat.messages = [...chat.messages, message];
+
         return { ...chat }; // Force rerender
       });
     });
@@ -97,10 +102,10 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
     []
   );
 
-  const addMessage = useCallback(async (message: NewMessage) => {
-      socket.emit('chat message', { basicAuthCredentials, message });
+  const addMessage = useCallback(async (message: Message) => {
+      socket.emit('new chat message', { basicAuthCredentials, message });
     },
-    [basicAuthCredentials]
+    []
   );
 
   const removeChat = useCallback(async (userToken: string, chatId: string) => {
@@ -113,7 +118,16 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
 };
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
-  const [chat, setChat] = useState<Chat | undefined>();
+  const initialChat: Chat = {
+    id: '1',
+    messages: [],
+    reportId: 1,
+    reportCreator: { id: 1, username: 'Rüdiger' },
+    reportTitle: 'Ich hab meine Cola verloren',
+    reportVisitor: { id: 1, username: 'Wolfgang' },
+  };
+
+  const [chat, setChat] = useState<Chat | undefined>(initialChat);
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
 
