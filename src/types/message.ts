@@ -1,6 +1,6 @@
 export type Message = {
   id: 1,
-  isImage: true,
+  isImage: boolean,
   content: string,
   sentAt: string,
   sender: {

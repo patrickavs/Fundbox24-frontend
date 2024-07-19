@@ -15,6 +15,7 @@ import { useChat } from '../../hooks/useChat.tsx';
 import { useUser } from '../../hooks/useUser.tsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LostReportTheme } from '../../constants/theme.ts';
+import { NewMessage } from '../../types/message.ts';
 
 export default function ChatConversationScreen() {
   // TODO: reportId in params
@@ -36,6 +37,18 @@ export default function ChatConversationScreen() {
 
     // read the text from the input
     console.log(event.nativeEvent.text);
+
+    const message: NewMessage = {
+      isImage: false,
+      sender: {
+        id: +(user?.id ?? ""),
+        username: user?.username ?? "Rick"
+      },
+      content: event.nativeEvent.text,
+      sentAt: new Date().toLocaleDateString()
+    }
+
+    addMessage(message);
   }
 
   return (

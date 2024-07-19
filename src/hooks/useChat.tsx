@@ -93,8 +93,7 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
     [],
   );
 
-  const addMessage = useCallback(
-    async () => (message: NewMessage) => {
+  const addMessage = useCallback(async (message: NewMessage) => {
       socket.emit("channel message", { basicAuthCredentials, message })
     },
     [],
