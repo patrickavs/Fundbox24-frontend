@@ -5,7 +5,8 @@ import {
   FoundReportProvider,
   useFoundReports,
 } from '../../../src/hooks/useFoundReports';
-import { FoundReport, NewFoundReport } from '../../../src/types/report-found';
+import { FoundReport } from '../../../src/types/report-found';
+import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
 
 const foundReportMockupData: FoundReport = {
   id: '1',
@@ -21,12 +22,17 @@ const foundReportMockupData: FoundReport = {
     latitude: 34,
   },
   foundDate: new Date().toLocaleDateString(),
-  categoryId: 1,
+  category: {
+    id: 1,
+    value: '',
+    name: 'Schlüssel',
+    image: '',
+  },
   imagePath: '',
   myChats: [],
 };
 
-const newFoundReportMockupData: NewFoundReport = {
+const newFoundReportMockupData: FoundReportRequest = {
   title: 'du da',
   description: 'Super duper Sache',
   isFinished: false,
@@ -70,8 +76,7 @@ describe('FoundReport-Hook', () => {
       wrapper: FoundReportProvider,
     });
 
-    // TODO: Is this best practice to wait on useEffect?
-    await act(() => {
+    await act(async () => {
     });
 
     expect(result.current.foundReports).toMatchObject([foundReportMockupData]);
@@ -110,18 +115,17 @@ describe('FoundReport-Hook', () => {
       wrapper: FoundReportProvider,
     });
 
-    // TODO: Is this best practice to wait on useEffect?
-    await act(() => {
+    await act(async () => {
     });
 
-    await act(() => {
+    await act(async () => {
       result.current.createFoundReport(
         'dXNlcjpwYXNz',
         newFoundReportMockupData
       );
     });
 
-    await act(() => {
+    await act(async () => {
       result.current.refresh();
     });
 
@@ -145,10 +149,10 @@ describe('FoundReport-Hook', () => {
       wrapper: FoundReportProvider,
     });
 
-    await act(() => {
+    await act(async () => {
     });
 
-    await act(() => {
+    await act(async () => {
       result.current.createFoundReport(
         'dXNlcjpwYXNz',
         newFoundReportMockupData
@@ -187,13 +191,12 @@ describe('FoundReport-Hook', () => {
       wrapper: FoundReportProvider,
     });
 
-    // TODO: Is this best practice to wait on useEffect?
-    await act(() => {
+    await act(async () => {
     });
 
-    await act(() => {
-      result.current.editFoundReport({
-        ...foundReportMockupData,
+    await act(async () => {
+      result.current.editFoundReport(Number(foundReportMockupData.id), {
+        ...newFoundReportMockupData,
         title: titleChange,
       });
     });
@@ -227,18 +230,87 @@ describe('FoundReport-Hook', () => {
       wrapper: FoundReportProvider,
     });
 
-    await act(() => {
+    await act(async () => {
     });
 
-    await act(() => {
-      result.current.editFoundReport({
-        ...foundReportMockupData,
+    await act(async () => {
+      result.current.editFoundReport(Number(foundReportMockupData.id), {
+        ...newFoundReportMockupData,
         title: 'New Title',
       });
     });
 
     expect(result.current.error).toStrictEqual({
       message: 'Error editing report',
+    });
+  });
+
+  it('should delete an existing found report', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve([foundReportMockupData]),
+            ok: true,
+            status: 200,
+          }) as Promise<Response>
+      )
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            ok: true,
+            status: 204,
+          }) as Promise<Response>
+      );
+
+    const { result } = renderHook(useFoundReports, {
+      wrapper: FoundReportProvider,
+    });
+
+    await act(async () => {
+    });
+
+    await act(async () => {
+      result.current.deleteFoundReport(foundReportMockupData.id);
+    });
+
+    expect(result.current.foundReports).toHaveLength(0);
+  });
+
+  it('should handle error when deleting an existing found report', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve([foundReportMockupData]),
+            ok: true,
+            status: 200,
+          }) as Promise<Response>
+      )
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve({ message: 'Error deleting report' }),
+            ok: false,
+            status: 400,
+          }) as Promise<Response>
+      );
+
+    const { result } = renderHook(useFoundReports, {
+      wrapper: FoundReportProvider,
+    });
+
+    await act(async () => {
+    });
+
+    await act(async () => {
+      result.current.deleteFoundReport(foundReportMockupData.id);
+    });
+
+    expect(result.current.error).toStrictEqual({
+      message: 'Error deleting report',
     });
   });
 });

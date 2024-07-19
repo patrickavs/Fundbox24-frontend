@@ -75,7 +75,7 @@ describe('FoundReportScreen', () => {
       refresh: () => Promise.resolve(),
       createFoundReport: (userToken: string, report: FoundReportRequest) => null,
       deleteFoundReport: (id: string) => null,
-      editFoundReport: (report: FoundReport) => null,
+      editFoundReport: (id: number, report: FoundReportRequest) => null,
     }));
 
     const navigation = {
@@ -95,7 +95,7 @@ describe('FoundReportScreen', () => {
       refresh: () => Promise.resolve(),
       createFoundReport: (userToken: string, report: FoundReportRequest) => null,
       deleteFoundReport: (id: string) => null,
-      editFoundReport: (report: FoundReport) => null,
+      editFoundReport: (id: number, report: FoundReportRequest) => null,
     }));
 
     const navigation = {

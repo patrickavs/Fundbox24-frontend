@@ -46,7 +46,7 @@ describe('SingleLostReportScreen', () => {
       refresh: () => Promise.resolve(),
       createLostReport: (userToken: string, report: LostReportRequest) => null,
       deleteLostReport: (id: string) => null,
-      editLostReport: (report: LostReport) => null,
+      editLostReport: (id: number, report: LostReportRequest) => null,
     }));
 
     const navigation = {
@@ -66,7 +66,7 @@ describe('SingleLostReportScreen', () => {
       refresh: () => Promise.resolve(),
       createLostReport: (userToken: string, report: LostReportRequest) => null,
       deleteLostReport: (id: string) => null,
-      editLostReport: (report: LostReport) => null,
+      editLostReport: (id: number, report: LostReportRequest) => null,
     }));
 
     const navigation = {

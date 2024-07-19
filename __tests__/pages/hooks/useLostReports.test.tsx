@@ -5,7 +5,8 @@ import {
   LostReportProvider,
   useLostReports,
 } from '../../../src/hooks/useLostReports';
-import { LostReport, NewLostReport } from '../../../src/types/report-lost';
+import { LostReport } from '../../../src/types/report-lost';
+import { LostReportRequest } from '../../../src/types/report-lost-request.ts';
 
 const lostReportMockupData: LostReport = {
   id: '1',
@@ -21,13 +22,18 @@ const lostReportMockupData: LostReport = {
     latitude: 34,
   },
   lostRadius: 20,
-  categoryId: 1,
+  category: {
+    id: 1,
+    value: '',
+    name: 'Schlüssel',
+    image: '',
+  },
   myChats: [],
   isFinished: false,
   imagePath: '',
 };
 
-const newLostReportMockupData: NewLostReport = {
+const newLostReportMockupData: LostReportRequest = {
   title: 'Test',
   description: 'Super duper Sache',
   lastSeenDate: new Date().toLocaleDateString(),
@@ -73,7 +79,7 @@ describe('LostReport-Hook', () => {
     });
 
     // TODO: Is this best practice to wait on useEffect?
-    await act(() => {
+    await act(async () => {
     });
 
     expect(result.current.lostReports).toMatchObject([lostReportMockupData]);
@@ -113,14 +119,14 @@ describe('LostReport-Hook', () => {
     });
 
     // TODO: Is this best practice to wait on useEffect?
-    await act(() => {
+    await act(async () => {
     });
 
-    await act(() => {
+    await act(async () => {
       result.current.createLostReport('dXNlcjpwYXNz', newLostReportMockupData);
     });
 
-    await act(() => {
+    await act(async () => {
       result.current.refresh();
     });
 
@@ -158,12 +164,12 @@ describe('LostReport-Hook', () => {
     });
 
     // TODO: Is this best practice to wait on useEffect?
-    await act(() => {
+    await act(async () => {
     });
 
-    await act(() => {
-      result.current.editLostReport({
-        ...lostReportMockupData,
+    await act(async () => {
+      result.current.editLostReport(Number(lostReportMockupData.id), {
+        ...newLostReportMockupData,
         title: titleChange,
       });
     });
@@ -187,14 +193,13 @@ describe('LostReport-Hook', () => {
       wrapper: LostReportProvider,
     });
 
-    await act(() => {
+    await act(async () => {
     });
 
-    await act(() => {
+    await act(async () => {
       result.current.createLostReport('dXNlcjpwYXNz', newLostReportMockupData);
     });
 
-    // same as useFoundReports.test.tsx
     //expect(result.current.error).toBe('Error creating report');
     expect(result.current.lostReports).toHaveLength(0);
   });
@@ -225,18 +230,87 @@ describe('LostReport-Hook', () => {
       wrapper: LostReportProvider,
     });
 
-    await act(() => {
+    await act(async () => {
     });
 
-    await act(() => {
-      result.current.editLostReport({
-        ...lostReportMockupData,
+    await act(async () => {
+      result.current.editLostReport(Number(lostReportMockupData.id), {
+        ...newLostReportMockupData,
         title: titleChange,
       });
     });
 
     expect(result.current.error).toStrictEqual({
       message: 'Error editing report',
+    });
+    expect(result.current.lostReports).toMatchObject([lostReportMockupData]);
+  });
+
+  it('should delete an existing lost report', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve([lostReportMockupData]),
+            ok: true,
+            status: 200,
+          }) as Promise<Response>
+      )
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve(),
+            ok: true,
+            status: 200,
+          }) as Promise<Response>
+      );
+
+    const { result } = renderHook(useLostReports, {
+      wrapper: LostReportProvider,
+    });
+
+    await act(() => Promise.resolve());
+
+    await act(() => {
+      result.current.deleteLostReport(lostReportMockupData.id);
+    });
+
+    expect(result.current.lostReports).toHaveLength(0);
+  });
+
+  it('should handle error when deleting an existing lost report', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve([lostReportMockupData]),
+            ok: true,
+            status: 200,
+          }) as Promise<Response>
+      )
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve({ message: 'Error deleting report' }),
+            ok: false,
+            status: 400,
+          }) as Promise<Response>
+      );
+
+    const { result } = renderHook(useLostReports, {
+      wrapper: LostReportProvider,
+    });
+
+    await act(() => Promise.resolve());
+
+    await act(() => {
+      result.current.deleteLostReport(lostReportMockupData.id);
+    });
+
+    expect(result.current.error).toStrictEqual({
+      message: 'Error deleting report',
     });
     expect(result.current.lostReports).toMatchObject([lostReportMockupData]);
   });
