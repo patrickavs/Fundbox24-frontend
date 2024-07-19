@@ -35,18 +35,15 @@ export default function ChatConversationScreen() {
     setInputIsShown(false);
     listRef.current?.scrollToEnd();
 
-    // read the text from the input
-    console.log(event.nativeEvent.text);
-
     const message: NewMessage = {
       isImage: false,
       sender: {
-        id: +(user?.id ?? ""),
-        username: user?.username ?? "Rick"
+        id: +(user?.id ?? ''),
+        username: user?.username ?? 'Rick',
       },
       content: event.nativeEvent.text,
-      sentAt: new Date().toLocaleDateString()
-    }
+      sentAt: new Date().toLocaleDateString(),
+    };
 
     addMessage(message);
   }

@@ -45,35 +45,39 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
     startTransition(() => {
       // TODO: Fetch the messages from the rest-api
       fetch(CHAT_USER_URL, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          'Authorization': `Basic ${basicAuthCredentials}`
-        }
+          'Authorization': `Basic ${basicAuthCredentials}`,
+        },
       }).then(response => {
-        if (!response.ok) setError("Response failed");
+        if (!response.ok) {
+          setError('Response failed');
+        }
 
         return response.json();
-      })
+      });
       // TODO: Connect to the chatserver and join the chat
       if (reportId) {
-        socket.emit("chat status", { chatId: reportId, action: "join" });
+        socket.emit('chat status', { chatId: reportId, action: 'join' });
       }
     });
 
-    socket.on("chat status", (response) => {
-      if (response?.status === "approved") {
-        console.log(response?.message ?? "You joined the chat.")
-      } else if (response?.status === "denied") {
+    socket.on('chat status', (response) => {
+      if (response?.status === 'approved') {
+        console.log(response?.message ?? 'You joined the chat.');
+      } else if (response?.status === 'denied') {
         // TODO: Retry again
       }
-    })
+    });
 
-    socket.on("chat message", (message: Message) => {
+    socket.on('chat message', (message: Message) => {
       setChat(chat => {
-        if(!chat) throw new Error("No chat is loaded.");
+        if (!chat) {
+          throw new Error('No chat is loaded.');
+        }
         chat.messages = [...chat.messages, message];
-        return {...chat}; // Force rerender
-      })
+        return { ...chat }; // Force rerender
+      });
     });
   }, []);
 
@@ -84,24 +88,24 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
           method: 'POST',
           headers: {
             Authorization: `Bearer ${basicAuthCredentials}`,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({reportId})
-        })
+          body: JSON.stringify({ reportId }),
+        });
       });
     },
-    [],
+    []
   );
 
   const addMessage = useCallback(async (message: NewMessage) => {
-      socket.emit("channel message", { basicAuthCredentials, message })
+      socket.emit('chat message', { basicAuthCredentials, message });
     },
-    [],
+    [basicAuthCredentials]
   );
 
   const removeChat = useCallback(async (userToken: string, chatId: string) => {
     startTransition(() => {
-      // TODO: 
+      // TODO:
     });
   }, []);
 
