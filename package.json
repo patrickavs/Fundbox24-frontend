@@ -37,7 +37,8 @@
     "react-native-storage": "^0.2.4",
     "react-native-vector-icons": "^10.0.3",
     "react-native-vector-image": "^0.4.5",
-    "react-native-webview": "^13.8.4"
+    "react-native-webview": "^13.8.4",
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

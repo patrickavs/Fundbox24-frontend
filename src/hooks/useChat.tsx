@@ -1,5 +1,6 @@
+import { CHAT_SERVER, CHAT_URL } from '../routes';
 import { Chat } from '../types/chat';
-import { NewMessage } from '../types/message';
+import { Message, NewMessage } from '../types/message';
 import React, {
   useContext,
   createContext,
@@ -8,6 +9,8 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
+import { io } from 'socket.io-client';
+import { User } from '../types/user';
 
 type ChatContextType = {
   chats: Array<Chat>;
@@ -16,18 +19,14 @@ type ChatContextType = {
   setError: React.Dispatch<React.SetStateAction<string | undefined>>;
   startTransition: React.TransitionStartFunction;
   isPending: boolean;
-  createChat: (
-    userToken: string,
-    contactedUser: string,
-    message: NewMessage,
-  ) => void;
-  addMessage: (userToken: string, chatId: string, message: NewMessage) => void;
-  removeChat: (userToken: string, chatId: string) => void;
 };
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
 
-export const useChat = (userToken: string) => {
+const socket = io(CHAT_SERVER);
+
+// use it only for one chat or to create one chat
+export const useChat = (user: User, reportId: string | undefined) => {
   const context = useContext(ChatContext);
   const {
     startTransition,
@@ -36,9 +35,6 @@ export const useChat = (userToken: string) => {
     error,
     setError,
     chats,
-    createChat,
-    removeChat,
-    addMessage,
   } = context;
 
   if (!context) {
@@ -47,77 +43,55 @@ export const useChat = (userToken: string) => {
 
   useEffect(() => {
     startTransition(() => {
-      // fetch({ method: 'get', url: CHAT_URL }).then(response => {
-      //   if (response.success) {
-      //     setChats(response.data);
-      //   } else {
-      //     setError(response.error);
-      //   }
-      // });
+      // TODO: Fetch the messages from the rest-api
+      // TODO: Connect to the chatserver and join the chat
+      if (reportId) {
+        socket.emit("chat status", { chatId: reportId, action: "join" });
+      }
+    });
+
+    socket.on("chat status", (response) => {
+      if (response?.status === "approved") {
+        console.log(response?.message ?? "You joined the chat.")
+      } else if (response?.status === "denied") {
+        // TODO: Retry again
+      }
+    })
+
+    socket.on("chat message", (message: Message) => {
+      setChats(chats => {
+        const chat = chats.find(({id}) => id === message)
+        if(!chat) {
+          throw new Error("You received a message you shouldn't receive");
+        }
+        chat.messages = [...chat.messages, message];
+        return [...chats];
+      })
     });
   }, []);
 
-  return { isPending, error, chats, createChat, removeChat, addMessage }; // Der returned wichtige Daten und Funktionen
-};
-
-export function ChatProvider({ children }: { children: React.ReactNode }) {
-  const [chats, setChats] = useState<Array<Chat>>([]);
-  const [error, setError] = useState<string | undefined>();
-  const [isPending, startTransition] = useTransition();
-
   const createChat = useCallback(
     async (
-      userToken: string,
-      contactedUser: string,
-      initialMessage: NewMessage,
+      basicAuthCredentials: string,
+      reportId: string
     ) => {
       startTransition(() => {
-        // fetch({
-        //   method: 'post',
-        //   url: CHAT_URL,
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     Authorization: `Bearer ${userToken}`,
-        //   },
-        //   data: {
-        //     contactedUser,
-        //     initialMessage,
-        //   },
-        // }).then(response => {
-        //   if (response.success) {
-        //     setChats(prev => [...prev, response.data as Chat]);
-        //   } else {
-        //     setError(response.error);
-        //   }
-        // });
+        fetch(CHAT_SERVER, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${basicAuthCredentials}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({reportId})
+        })
       });
     },
     [],
   );
 
   const addMessage = useCallback(
-    async () => (userToken: string, chatId: string, message: NewMessage) => {
-      startTransition(() => {
-        // fetch({
-        //   method: 'post',
-        //   url: MESSAGE_URL(chatId),
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     Authorization: `Bearer ${userToken}`,
-        //   },
-        //   data: message,
-        // }).then(response => {
-        //   if (response.success) {
-        //     chats
-        //       .filter(chat => chat.id === chatId)[0]
-        //       ?.messages.push(response.data);
-        //     // Force reload
-        //     setChats(prev => [...prev]);
-        //   } else {
-        //     setError(response.error);
-        //   }
-        // });
-      });
+    async () => (basicAuthCredentials: string, message: NewMessage) => {
+      socket.emit("channel message", { basicAuthCredentials, message })
     },
     [],
   );
@@ -143,6 +117,14 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  return { isPending, error, chats, createChat, removeChat, addMessage }; // Der returned wichtige Daten und Funktionen
+};
+
+export function ChatProvider({ children }: { children: React.ReactNode }) {
+  const [chats, setChats] = useState<Array<Chat>>([]);
+  const [error, setError] = useState<string | undefined>();
+  const [isPending, startTransition] = useTransition();
+
   return (
     <ChatContext.Provider
       value={{
@@ -152,9 +134,6 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         setChats,
         startTransition,
         isPending,
-        createChat,
-        addMessage,
-        removeChat,
       }}>
       {children}
     </ChatContext.Provider>

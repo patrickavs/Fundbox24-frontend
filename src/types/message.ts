@@ -1,13 +1,15 @@
 export type Message = {
-  id: string;
-  type: string;
-  content: string;
-  createdAt: Date;
-  userId: string;
-  chatId: string;
+  id: 1,
+  isImage: true,
+  content: string,
+  sentAt: string,
+  sender: {
+    id: number,
+    username: string
+  }
 };
 
 export type NewMessage = Omit<
   Message,
-  'id' | 'createdAt' | 'userId' | 'chatId'
+  'id'
 >;

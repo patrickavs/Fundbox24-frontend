@@ -20,3 +20,5 @@ export const ALL_CATEGORIES_URL = `${BASE_URL}/categories`;
 export const LOGIN_URL = `${BASE_URL}/login`;
 export const USER_URL = `${BASE_URL}/user`;
 export const REGISTER_URL = `${BASE_URL}/register`;
+
+export const CHAT_SERVER = `localhost:3002`
