@@ -15,13 +15,20 @@ export default function ChatMessage(props: ChatMessageProps) {
 
   return (
     <View style={[styles.container, messageIsFromLoggedInUser ? styles.alignMessageRight : styles.alignMessageLeft]}>
-      {messageIsFromLoggedInUser ? null : <Arrow color={FoundReportTheme.colors.button2} pointingLeft={true} />}
+      {messageIsFromLoggedInUser ? null :
+        <Arrow color={FoundReportTheme.colors.button2} pointingLeft={true} />
+      }
       <View
-        style={[styles.message, messageIsFromLoggedInUser ? styles.messageFromLoggedInUser : styles.messageFromOtherUser]}>
+        style={[styles.message, messageIsFromLoggedInUser ?
+          styles.messageFromLoggedInUser : styles.messageFromOtherUser]}>
         <Text
-          style={[styles.text, messageIsFromLoggedInUser ? styles.whiteText : styles.blackText]}>{props.message.message.content}</Text>
+          style={[styles.text, messageIsFromLoggedInUser ? styles.whiteText : styles.blackText]}>
+          {props.message.message.content}
+        </Text>
       </View>
-      {messageIsFromLoggedInUser ? <Arrow color={LostReportTheme.colors.button} pointingLeft={false} /> : null}
+      {messageIsFromLoggedInUser ?
+        <Arrow color={LostReportTheme.colors.button} pointingLeft={false} />
+        : null}
     </View>
   );
 }
