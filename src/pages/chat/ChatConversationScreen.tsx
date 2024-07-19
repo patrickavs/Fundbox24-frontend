@@ -17,6 +17,8 @@ import { LostReportTheme } from '../../constants/theme.ts';
 export default function ChatConversationScreen() {
   const [inputIsShown, setInputIsShown] = React.useState(false);
 
+  const listRef = React.useRef<FlatList>(null);
+
   const dummyConversation: ChatConversation = {
     id: '2',
     otherUser: 'Rick',
@@ -98,6 +100,7 @@ export default function ChatConversationScreen() {
 
   function onSendMessage(event: NativeSyntheticEvent<TextInputSubmitEditingEventData>) {
     setInputIsShown(false);
+    listRef.current?.scrollToEnd();
 
     // read the text from the input
     console.log(event.nativeEvent.text);
@@ -109,6 +112,7 @@ export default function ChatConversationScreen() {
         title="Chat mit Rick"
       />
       <FlatList
+        ref={listRef}
         data={dummyConversation.messages}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => (
