@@ -1,10 +1,22 @@
 import React from 'react';
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  FlatList,
+  NativeSyntheticEvent,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputSubmitEditingEventData,
+  View,
+} from 'react-native';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import { ChatConversation } from '../../types/chat-conversation.ts';
 import ChatMessage from './ChatMessage.tsx';
+import { LostReportTheme } from '../../constants/theme.ts';
 
 export default function ChatConversationScreen() {
+  const [inputIsShown, setInputIsShown] = React.useState(false);
+
   const dummyConversation: ChatConversation = {
     id: '2',
     otherUser: 'Rick',
@@ -84,6 +96,13 @@ export default function ChatConversationScreen() {
     ],
   };
 
+  function onSendMessage(event: NativeSyntheticEvent<TextInputSubmitEditingEventData>) {
+    setInputIsShown(false);
+
+    // read the text from the input
+    console.log(event.nativeEvent.text);
+  }
+
   return (
     <View testID={'chat-conversation-screen'}>
       <CustomHeader
@@ -95,14 +114,68 @@ export default function ChatConversationScreen() {
         renderItem={({ item }) => (
           <ChatMessage message={item} />
         )} />
+      {inputIsShown ?
+        <TextInput
+          autoFocus={true}
+          onSubmitEditing={onSendMessage}
+          onEndEditing={() => setInputIsShown(false)}
+          style={[styles.input, styles.shadow]}
+          placeholder={`Deine Nachricht an ${dummyConversation.otherUser}`}
+          returnKeyType="send"
+        /> : null}
+      {inputIsShown ? null :
+      <View style={styles.sendButtonContainer}>
+        <Pressable style={[styles.sendButton, styles.shadow]} onPress={() => setInputIsShown(true)}>
+          <Text style={styles.sendButtonText}>Nachricht senden</Text>
+        </Pressable>
+      </View>
+      }
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  sendButtonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 220,
+  },
+  sendButtonText: {
+    fontWeight: 'bold',
+  },
+  sendButton: {
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: '#ffb77d',
+  },
+  shadow: {
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+  },
   list: {
     paddingVertical: 20,
     paddingBottom: 300,
     gap: 20,
+  },
+  input: {
+    bottom: 110,
+    left: 0,
+    right: 0,
+    position: 'absolute',
+    padding: 20,
+    margin: 20,
+    borderRadius: 10,
+    backgroundColor: LostReportTheme.colors.secondaryAccent,
   },
 });
