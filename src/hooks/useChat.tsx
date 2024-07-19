@@ -78,10 +78,7 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
   }, []);
 
   const createChat = useCallback(
-    async (
-      basicAuthCredentials: string,
-      reportId: string
-    ) => {
+    async (reportId: string) => {
       startTransition(() => {
         fetch(CHAT_URL(), {
           method: 'POST',
@@ -97,7 +94,7 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
   );
 
   const addMessage = useCallback(
-    async () => (basicAuthCredentials: string, message: NewMessage) => {
+    async () => (message: NewMessage) => {
       socket.emit("channel message", { basicAuthCredentials, message })
     },
     [],

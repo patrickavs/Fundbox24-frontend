@@ -7,11 +7,13 @@ import { useChat } from '../../hooks/useChat.tsx';
 import { useUser } from '../../hooks/useUser.tsx';
 import useStorage from '../../hooks/useStorage.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 export default function ChatConversationScreen() {
+  // TODO: reportId in params
   const {user} = useUser();
   const [basicAuthCredentials, setBasicAuthCredentials] = useState<string | null>();
-  const chat = useChat(basicAuthCredentials ?? "do not do this", user, 1);
+  const {chat, addMessage} = useChat(basicAuthCredentials ?? "do not do this", user, 1);
 
   useEffect(() => {
     AsyncStorage.getItem("basicAuthCredentials").then(setBasicAuthCredentials);
@@ -20,13 +22,13 @@ export default function ChatConversationScreen() {
   return (
     <View testID={'chat-conversation-screen'}>
       <CustomHeader
-        title="Chat mit Rick"
+        title={chat?.reportTitle ?? "Chat"}
       />
       <FlatList
-        data={[]}
+        data={chat?.messages ?? []}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => (
-          <ChatMessage message={item} />
+          <ChatMessage message={item} user={user}/>
         )} />
     </View>
   );

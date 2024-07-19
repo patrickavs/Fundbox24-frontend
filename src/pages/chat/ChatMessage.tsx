@@ -3,13 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Message } from '../../types/message.ts';
 import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import Arrow from './Arrow.tsx';
+import { User } from '../../types/user.ts';
 
-type Props = {
-  message: Message
+type ChatMessageProps = {
+  message: Message,
+  user: User | null
 }
 
-export default function ChatMessage(props: Props) {
-  const messageIsFromLoggedInUser = props.message.userId === '1';
+export default function ChatMessage(props: ChatMessageProps) {
+  const messageIsFromLoggedInUser = props.message.sender.id === +(props.user?.id ?? "");
 
   return (
     <View style={[styles.container, messageIsFromLoggedInUser ? styles.alignMessageRight : styles.alignMessageLeft]}>
