@@ -7,10 +7,10 @@ export const FOUNDREPORT_URL = (id?: string) =>
   `${BASE_URL}/report/found/${id}`;
 export const LOSTREPORT_URL = (id?: string) => `${BASE_URL}/report/lost/${id}`;
 export const CREATE_LOSTREPORT_URL = () => `${BASE_URL}/report/lost`;
-export const EDIT_LOSTREPORT_URL = (id: string) => `${BASE_URL}/report/lost/${id}`;
+export const EDIT_LOSTREPORT_URL = (id: number) => `${BASE_URL}/report/lost/${id}`;
 export const DELETE_LOSTREPORT_URL = (id: string) => `${BASE_URL}/report/lost/${id}`;
 export const CREATE_FOUNDREPORT_URL = () => `${BASE_URL}/report/found`;
-export const EDIT_FOUNDREPORT_URL = (id: string) => `${BASE_URL}/report/found/${id}`;
+export const EDIT_FOUNDREPORT_URL = (id: number) => `${BASE_URL}/report/found/${id}`;
 export const DELETE_FOUNDREPORT_URL = (id: string) => `${BASE_URL}/report/found/${id}`;
 
 export const ALL_LOST_REPORTS_URL = `${BASE_URL}/report/lost`;

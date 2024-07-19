@@ -57,7 +57,6 @@ function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX
   };
 
   const navigateToEdit = () => {
-    console.log('navigate to edit');
     navigation.navigate('EditReportScreen', { item });
   };
 

@@ -21,7 +21,7 @@ function SingleLostReportScreen({ navigation }: { navigation: any }): React.JSX.
     navigation.setOptions({
       ...navigation.options,
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('LostReportScreen')} style={styles.backButton}>
+        <TouchableOpacity testID={'back-button'} onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name={'arrow-back'} size={30} color={'black'} />
         </TouchableOpacity>
       ),

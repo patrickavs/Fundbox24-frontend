@@ -147,7 +147,7 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
   );
 
   const editFoundReport = useCallback(
-    (id: number, report: FoundReport) => {
+    (editId: number, report: FoundReportRequest) => {
       startTransition(() => {
           AsyncStorage?.getItem('basicAuthCredentials').then(
             basicAuthCredentials => {
@@ -155,7 +155,7 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
                 throw 'No Basic Auth Header! Please login.';
               }
 
-              fetch(EDIT_FOUNDREPORT_URL(id), {
+              fetch(EDIT_FOUNDREPORT_URL(editId), {
                 method: 'PUT',
                 body: JSON.stringify(report),
                 headers: {
@@ -167,7 +167,7 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
                   const data = await response.json();
                   if (response.ok) {
                     setFoundReports(prev => [
-                      ...prev.filter(({ id }) => id !== report.id),
+                      ...prev.filter(({ id }) => id !== editId.toString()),
                       data as FoundReport,
                     ]);
                   } else {

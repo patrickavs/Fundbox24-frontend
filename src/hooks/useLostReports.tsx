@@ -87,7 +87,7 @@ export function useLostReports() {
 }
 
 export function LostReportProvider({ children }: { children: React.ReactNode }) {
-  const [lostReports, setLostReports] = useState<LostReport[]>([]);
+  const [lostReports, setLostReports] = useState<Array<LostReport>>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -146,7 +146,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
   );
 
   const editLostReport = useCallback(
-    (editId: string, report: LostReportRequest) => {
+    (editId: number, report: LostReportRequest) => {
       startTransition(() => {
           AsyncStorage?.getItem('basicAuthCredentials').then(
             basicAuthCredentials => {
@@ -154,10 +154,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
                 throw 'No Basic Auth Header! Please login.';
               }
 
-              const url = EDIT_LOSTREPORT_URL(editId);
-              console.log(url);
-
-              fetch(url, {
+              fetch(EDIT_LOSTREPORT_URL(editId), {
                 method: 'PUT',
                 body: JSON.stringify(report),
                 headers: {
@@ -170,7 +167,7 @@ export function LostReportProvider({ children }: { children: React.ReactNode }) 
                   console.log(data);
                   if (response.ok) {
                     setLostReports(prev => [
-                      ...prev.filter(({ id }) => id !== editId),
+                      ...prev.filter(({ id }) => id !== editId.toString()),
                       data as LostReport,
                     ]);
                   } else {

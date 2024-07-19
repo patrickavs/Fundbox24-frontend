@@ -43,10 +43,6 @@ function EditReportScreen() {
   const today = useMemo(() => new Date(), []);
   const reportType = item.hasOwnProperty('foundDate') ? 'found' : 'lost';
 
-  useEffect(() => {
-    console.log(item.imagePath);
-  }, []);
-
   const getImage = (imagePath: number) => {
     const images: any = {
       9: categoriesWithImage[0].image,
@@ -91,7 +87,8 @@ function EditReportScreen() {
         ? {
           lastSeenDate: isoDate,
           lastSeenLocation: position,
-          lostLocation: position,
+          //TODO: vorerst auf initialMapPosition gesetzt, da sonst wieder multiple entity error im backend
+          lostLocation: mapConstants.initialMapPosition || position,
           lostRadius: radius,
         }
         : {
@@ -101,6 +98,8 @@ function EditReportScreen() {
         }),
     };
 
+    console.log(updatedReport);
+
     try {
       const token = await AsyncStorage.getItem('basicAuthCredentials');
       if (token) {
@@ -108,6 +107,7 @@ function EditReportScreen() {
           Toast.show('Ein Titel und eine Beschreibung für den Gegenstand wird benötigt', Toast.SHORT);
           return;
         }
+        console.log(reportType);
         reportType === 'lost'
           ? editLostReport(
             item.id,
