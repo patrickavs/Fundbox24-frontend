@@ -20,6 +20,6 @@ export const LOGIN_URL = `${BASE_URL}/login`;
 export const USER_URL = `${BASE_URL}/user`;
 export const REGISTER_URL = `${BASE_URL}/register`;
 
-export const CHAT_SERVER = `localhost:3002`
+export const CHAT_SERVER = 'http://10.0.2.2:3002';
 export const CHAT_USER_URL = `${BASE_URL}/user/chat`;
 export const CHAT_URL = (id?: string) => `${BASE_URL}/chat/${id}`;
