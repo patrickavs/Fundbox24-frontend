@@ -24,7 +24,7 @@ const getTabBarOptions = () =>
         tabBarStyle: {
           backgroundColor: 'white',
           position: 'absolute',
-          height: '10%',
+          height: 85,
           elevation: 3,
           borderRadius: 20,
           borderStyle: 'solid',
@@ -41,7 +41,7 @@ const getTabBarOptions = () =>
         tabBarStyle: {
           backgroundColor: 'white',
           position: 'absolute',
-          height: '12%',
+          height: 85,
           elevation: 3,
           borderRadius: 20,
           borderStyle: 'solid',
