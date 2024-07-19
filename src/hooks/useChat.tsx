@@ -42,7 +42,9 @@ export const useChat = (basicAuthCredentials: string, user: User | null, reportI
   }
 
   useEffect(() => {
+    // ensure that there are no multiple socket listeners for one channel
     socket.removeAllListeners();
+
     console.log('initializing useChat hook');
 
     startTransition(() => {
