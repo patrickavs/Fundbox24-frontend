@@ -38,6 +38,7 @@ jest.mock('react-native-simple-toast', () => {
 
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(),
+  navigate: jest.fn(),
   useRoute: jest.fn(() => ({
     params: {
       item: {
@@ -101,6 +102,7 @@ describe('FoundReportScreen', () => {
     const navigation = {
       setOptions: jest.fn(),
       popToTop: jest.fn(),
+      navigate: jest.fn(),
     };
 
     const view = render(<SingleFoundReportScreen navigation={navigation} />);
@@ -110,13 +112,13 @@ describe('FoundReportScreen', () => {
     });
 
     // TODO: change after implementing navigate to chat
-    expect(navigation.popToTop).toBeCalled();
+    expect(navigation.navigate).toBeCalled();
 
     await act(async () => {
       fireEvent.press(view.getByTestId('chat-button-2'));
     });
 
     // TODO: change after implementing navigate to chat
-    expect(navigation.popToTop).toBeCalledTimes(2);
+    expect(navigation.navigate).toBeCalledTimes(2);
   });
 });

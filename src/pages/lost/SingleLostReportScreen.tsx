@@ -56,8 +56,7 @@ function SingleLostReportScreen({ navigation }: { navigation: any }): React.JSX.
 
   const navigateToChat = () => {
     console.log('navigate to chat');
-    // TODO: navigate to chat
-    navigation.popToTop();
+    navigation.navigate('ChatConversation');
   };
 
   const navigateToEdit = () => {

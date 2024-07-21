@@ -72,6 +72,7 @@ describe('SingleLostReportScreen', () => {
     const navigation = {
       setOptions: jest.fn(),
       popToTop: jest.fn(),
+      navigate: jest.fn(),
     };
 
     const view = render(<SingleLostReportScreen navigation={navigation} />);
@@ -81,14 +82,14 @@ describe('SingleLostReportScreen', () => {
     });
 
     // TODO: change after implementing navigate to chat
-    expect(navigation.popToTop).toBeCalled();
+    expect(navigation.navigate).toBeCalled();
 
     await act(async () => {
       fireEvent.press(view.getByTestId('chat-button-2'));
     });
 
     // TODO: change after implementing navigate to chat
-    expect(navigation.popToTop).toBeCalledTimes(2);
+    expect(navigation.navigate).toBeCalledTimes(2);
   });
 });
 
