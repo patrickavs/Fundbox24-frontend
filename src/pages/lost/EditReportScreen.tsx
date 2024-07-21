@@ -45,6 +45,10 @@ function EditReportScreen() {
   const today = useMemo(() => new Date(), []);
   const reportType = item.hasOwnProperty('foundDate') ? 'found' : 'lost';
 
+  useEffect(() => {
+    reportType === 'lost' ? getAllLostReports() : getAllFoundReports();
+  }, []);
+
   const getImage = (imagePath: number) => {
     const images: any = {
       9: categoriesWithImage[0].image,
@@ -112,8 +116,7 @@ function EditReportScreen() {
         console.log(reportType);
 
         if (reportType === 'lost') {
-          getAllLostReports();
-          const found = userLostReports.filter(i => i.id === item.id);
+          const found = userLostReports.find(i => i.id === item.id);
           if (found) {
             editLostReport(
               item.id,
@@ -124,8 +127,7 @@ function EditReportScreen() {
             return;
           }
         } else if (reportType === 'found') {
-          getAllFoundReports();
-          const found = userFoundReports.filter(i => i.id === item.id);
+          const found = userFoundReports.find(i => i.id === item.id);
           if (found) {
             editFoundReport(
               item.id,
