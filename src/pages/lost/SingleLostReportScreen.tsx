@@ -52,7 +52,6 @@ function SingleLostReportScreen({navigation}: {navigation: any}): React.JSX.Elem
 
     return (
         <View style={styles.screenContainer} testID="single-lost-report-screen">
-            {Platform.OS === 'ios' ? <CustomHeader backgroundColor={'white'} title={''} isSmall /> : <></>}
             <ScrollView>
                 <View style={styles.imageContainer}>
                     <Image style={styles.image} source={categoriesWithImage.find((it) => it.name === item.category?.name)?.image ?? categoriesWithImage[categoriesWithImage.length - 1].image} />

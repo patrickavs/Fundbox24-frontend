@@ -18,7 +18,7 @@ const LostReportNavStack = () => {
                     name="SingleLostReportScreen"
                     component={SingleLostReportScreen}
                     options={{ headerTitle: '',
-                        headerTransparent: true}}
+                       maxHeaderSize: 20, headerTransparent: true, headerShadowVisible: false, headerLargeTitle: false, headerLargeTitleShadowVisible: false, headerLargeTitleHideShadow: true, headerLargeTitleStyle: {fontSize: 2}}}
                 />
             </Stack.Navigator>
 );
