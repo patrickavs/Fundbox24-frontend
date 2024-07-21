@@ -137,7 +137,7 @@ export default LostReportScreen;
 const styles = StyleSheet.create({
   list: {
     marginBottom: 200,
-      paddingHorizontal: 5,
+    paddingHorizontal: 5,
   },
   text: {
     color: '#152238',
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 10,
-      paddingTop: 20,
+    paddingTop: 20,
   },
   dropdownContainer: {
     marginHorizontal: 10,

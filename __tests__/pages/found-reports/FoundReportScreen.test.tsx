@@ -106,7 +106,7 @@ describe('FoundReportScreen', () => {
   // });
 
   it('should render the dropdowns', async () => {
-    const view = render(<FoundReportScreen navigation={null} />);
+    const view = render(<FoundReportScreen />);
 
     expect(view.getByTestId('sort-dropdown-found')).toBeTruthy();
     expect(view.getByTestId('filter-dropdown-found')).toBeTruthy();
@@ -117,7 +117,7 @@ describe('FoundReportScreen', () => {
 
   it('should execute the sort dropdown onChange callback', async () => {
 
-    const view = render(<FoundReportScreen navigation={null} />);
+    const view = render(<FoundReportScreen />);
     const sortDropdown = view.getByTestId('sort-dropdown-found');
 
     const logSpy = jest.spyOn(console, 'log');
@@ -133,7 +133,7 @@ describe('FoundReportScreen', () => {
 
   it('should execute the filter dropdown onChange callback', async () => {
 
-    const view = render(<FoundReportScreen navigation={null} />);
+    const view = render(<FoundReportScreen />);
     const filterDropdown = view.getByTestId('filter-dropdown-found');
 
     const logSpy = jest.spyOn(console, 'log');
@@ -149,7 +149,7 @@ describe('FoundReportScreen', () => {
 
   it('should render the SearchBar component', async () => {
 
-    const view = render(<FoundReportScreen navigation={null} />);
+    const view = render(<FoundReportScreen />);
 
     expect(view.getByTestId('search-bar-found')).toBeTruthy();
   });
@@ -157,7 +157,7 @@ describe('FoundReportScreen', () => {
   it('should execute SearchBar onChangeText callback', async () => {
 
     const searchText = 'Schlüssel';
-    const view = render(<FoundReportScreen navigation={null} />);
+    const view = render(<FoundReportScreen />);
     const searchBar = view.getByTestId('search-bar-found');
 
     const logSpy = jest.spyOn(console, 'log');

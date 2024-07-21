@@ -11,7 +11,7 @@ const ProfileNavStack = createNativeStackNavigator();
 export const ProfileStack = () => (
   <ProfileNavStack.Navigator>
     <ProfileNavStack.Screen
-      name="Profile"
+      name="Mein Konto"
       component={ProfileScreen}
       options={{ headerShown: false }}
     />
