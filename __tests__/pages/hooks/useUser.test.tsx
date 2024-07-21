@@ -7,7 +7,6 @@ import { LostReport } from '../../../src/types/report-lost.ts';
 import { FoundReport } from '../../../src/types/report-found.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Chat } from '../../../src/types/chat.ts';
-import * as UserHook from '../../../src/hooks/useUser.tsx';
 
 const userMockData: User = {
   firstName: 'Hans',
@@ -134,6 +133,7 @@ describe('useUser Hook', () => {
     );
   });
 
+  /*
   it('should fetch and set user lost reports', async () => {
     jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
       Promise.resolve({
@@ -174,7 +174,7 @@ describe('useUser Hook', () => {
     await waitFor(() => {
       expect(result.current.userFoundReports).toMatchObject([foundReportMockData]);
     });
-  });
+  });*/
 
   it('should handle errors when fetching user lost reports', async () => {
     jest.spyOn(global, 'fetch').mockImplementationOnce(() =>

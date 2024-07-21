@@ -8,6 +8,7 @@ import { act } from 'react-test-renderer';
 import { LostReport } from '../../../src/types/report-lost';
 import * as LostReportHook from '../../../src/hooks/useLostReports';
 import { LostReportRequest } from '../../../src/types/report-lost-request.ts';
+import * as useUserHook from '../../../src/hooks/useUser';
 
 const fakeLostReport: LostReport = {
   id: '2',
@@ -49,6 +50,10 @@ describe('SingleLostReportScreen', () => {
       editLostReport: (id: number, report: LostReportRequest) => null,
     }));
 
+    jest.spyOn(useUserHook, 'useUser').mockImplementation(() => ({
+      getAllLostReports: jest.fn(),
+    }));
+
     const navigation = {
       setOptions: jest.fn(),
     };
@@ -67,6 +72,10 @@ describe('SingleLostReportScreen', () => {
       createLostReport: (userToken: string, report: LostReportRequest) => null,
       deleteLostReport: (id: string) => null,
       editLostReport: (id: number, report: LostReportRequest) => null,
+    }));
+
+    jest.spyOn(useUserHook, 'useUser').mockImplementation(() => ({
+      getAllLostReports: jest.fn(),
     }));
 
     const navigation = {

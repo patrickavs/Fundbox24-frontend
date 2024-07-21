@@ -6,6 +6,7 @@ import { FoundReport } from '../../../src/types/report-found';
 import SingleFoundReportScreen from '../../../src/pages/found/SingleFoundReportScreen';
 import { FoundReportRequest } from '../../../src/types/report-found-request.ts';
 import { Chat } from '../../../src/types/chat.ts';
+import * as useUserHook from '../../../src/hooks/useUser.tsx';
 
 const fakeFoundReport: FoundReport =
   {
@@ -79,6 +80,10 @@ describe('FoundReportScreen', () => {
       editFoundReport: (id: number, report: FoundReportRequest) => null,
     }));
 
+    jest.spyOn(useUserHook, 'useUser').mockImplementation(() => ({
+      getAllFoundReports: jest.fn(),
+    }));
+
     const navigation = {
       setOptions: jest.fn(),
     };
@@ -97,6 +102,10 @@ describe('FoundReportScreen', () => {
       createFoundReport: (userToken: string, report: FoundReportRequest) => null,
       deleteFoundReport: (id: string) => null,
       editFoundReport: (id: number, report: FoundReportRequest) => null,
+    }));
+
+    jest.spyOn(useUserHook, 'useUser').mockImplementation(() => ({
+      getAllFoundReports: jest.fn(),
     }));
 
     const navigation = {

@@ -12,10 +12,12 @@ import { FoundReport } from '../../types/report-found';
 import CustomHeader from '../../components/CustomHeader';
 import Toast from 'react-native-simple-toast';
 import { useFoundReports } from '../../hooks/useFoundReports.tsx';
+import { useUser } from '../../hooks/useUser.tsx';
 
 
 function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX.Element {
   const { deleteFoundReport } = useFoundReports();
+  const { userFoundReports, getAllFoundReports } = useUser();
 
   useEffect(() => {
     navigation.setOptions({
@@ -32,6 +34,10 @@ function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX
       ),
     });
   });
+
+  useEffect(() => {
+    getAllFoundReports();
+  }, []);
 
   const mapRefFound = React.useRef(null);
 
@@ -72,8 +78,13 @@ function SingleFoundReportScreen({ navigation }: { navigation: any }): React.JSX
           text: 'Löschen',
           onPress: async () => {
             try {
-              deleteFoundReport(item.id);
-              navigation.navigate('FoundReportScreen');
+              const found = userFoundReports.find((i) => i.id === item.id);
+              if (found) {
+                deleteFoundReport(item.id);
+                navigation.navigate('FoundReportScreen');
+              } else {
+                Toast.show('Es dürfen nur eigene erstellte Anzeigen gelöscht werden!', Toast.SHORT);
+              }
             } catch (error) {
               Toast.show('Error deleting found report', Toast.SHORT);
             }

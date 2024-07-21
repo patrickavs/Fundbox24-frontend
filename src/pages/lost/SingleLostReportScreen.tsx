@@ -12,18 +12,18 @@ import { LostReport } from '../../types/report-lost';
 import CustomHeader from '../../components/CustomHeader';
 import { useLostReports } from '../../hooks/useLostReports.tsx';
 import Toast from 'react-native-simple-toast';
+import { useUser } from '../../hooks/useUser.tsx';
 
 
 function SingleLostReportScreen({ navigation }: { navigation: any }): React.JSX.Element {
   const { deleteLostReport } = useLostReports();
+  const { userLostReports, getAllLostReports } = useUser();
 
   useEffect(() => {
     navigation.setOptions({
       ...navigation.options,
       headerLeft: () => (
-        <TouchableOpacity testID={'back-button'}
-                          onPress={() => navigation.goBack()}
-                          style={styles.backButton}>
+        <TouchableOpacity testID={'back-button'} onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name={'arrow-back'} size={30} color={'black'} />
         </TouchableOpacity>
       ),
@@ -53,6 +53,10 @@ function SingleLostReportScreen({ navigation }: { navigation: any }): React.JSX.
     setRadius(item.lostRadius);
   }, [item, position, radius]);
 
+  useEffect(() => {
+    getAllLostReports();
+  }, []);
+
 
   const navigateToChat = () => {
     console.log('navigate to chat');
@@ -76,8 +80,13 @@ function SingleLostReportScreen({ navigation }: { navigation: any }): React.JSX.
           text: 'Löschen',
           onPress: async () => {
             try {
-              deleteLostReport(item.id);
-              navigation.navigate('LostReportScreen');
+              const found = userLostReports.find((i) => i.id === item.id);
+              if (found) {
+                deleteLostReport(item.id);
+                navigation.navigate('LostReportScreen');
+              } else {
+                Toast.show('Es dürfen nur eigene erstellte Anzeigen gelöscht werden!', Toast.SHORT);
+              }
             } catch (error) {
               Toast.show('Error deleting lost report', Toast.SHORT);
             }

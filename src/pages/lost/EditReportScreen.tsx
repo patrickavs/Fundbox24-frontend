@@ -25,6 +25,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LostReportRequest } from '../../types/report-lost-request.ts';
 import { FoundReportRequest } from '../../types/report-found-request.ts';
 import CategoryDropdown from '../add/CategoryDropdown.tsx';
+import { useUser } from '../../hooks/useUser.tsx';
 
 function EditReportScreen() {
   const route = useRoute<any>();
@@ -32,6 +33,7 @@ function EditReportScreen() {
   const { item } = route.params;
   const { editLostReport } = useLostReports();
   const { editFoundReport } = useFoundReports();
+  const { userLostReports, userFoundReports, getAllFoundReports, getAllLostReports } = useUser();
 
   const [reportImage, setReportImage] = useState<string>(item.imagePath || categoriesWithImage[0].image);
   const [reportName, setReportName] = useState<string>(item.title);
@@ -108,15 +110,32 @@ function EditReportScreen() {
           return;
         }
         console.log(reportType);
-        reportType === 'lost'
-          ? editLostReport(
-            item.id,
-            updatedReport as LostReportRequest
-          )
-          : editFoundReport(
-            item.id,
-            updatedReport as FoundReportRequest
-          );
+
+        if (reportType === 'lost') {
+          getAllLostReports();
+          const found = userLostReports.filter(i => i.id === item.id);
+          if (found) {
+            editLostReport(
+              item.id,
+              updatedReport as LostReportRequest
+            );
+          } else {
+            Toast.show('Es dürfen nur eigene erstellte Anzeigen bearbeitet werden!', Toast.SHORT);
+            return;
+          }
+        } else if (reportType === 'found') {
+          getAllFoundReports();
+          const found = userFoundReports.filter(i => i.id === item.id);
+          if (found) {
+            editFoundReport(
+              item.id,
+              updatedReport as FoundReportRequest
+            );
+          } else {
+            Toast.show('Es dürfen nur eigene erstellte Anzeigen bearbeitet werden!', Toast.SHORT);
+            return;
+          }
+        }
         navigation.popToTop();
       }
     } catch (sendError) {

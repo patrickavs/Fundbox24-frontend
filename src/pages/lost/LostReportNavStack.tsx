@@ -16,8 +16,16 @@ const LostReportNavStack = () => {
       <Stack.Screen
         name="SingleLostReportScreen"
         component={SingleLostReportScreen}
-        options={{ headerTitle: '',
-          maxHeaderSize: 20, headerTransparent: true, headerShadowVisible: false, headerLargeTitle: false, headerLargeTitleShadowVisible: false, headerLargeTitleHideShadow: true, headerLargeTitleStyle: {fontSize: 2}}}
+        options={{
+          headerTitle: '',
+          maxHeaderSize: 20,
+          headerTransparent: true,
+          headerShadowVisible: false,
+          headerLargeTitle: false,
+          headerLargeTitleShadowVisible: false,
+          headerLargeTitleHideShadow: true,
+          headerLargeTitleStyle: { fontSize: 2 },
+        }}
       />
       <Stack.Screen
         name="EditReportScreen"
@@ -28,7 +36,7 @@ const LostReportNavStack = () => {
         }}
       />
     </Stack.Navigator>
-);
+  );
 };
 
 export default LostReportNavStack;
