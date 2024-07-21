@@ -15,6 +15,8 @@ export default function CustomHeader(props: Props): React.JSX.Element {
       <View style={[
         styles.container,
         { backgroundColor: props.backgroundColor ?? LostReportTheme.colors.secondaryAccent },
+        props.isSmall ? { height: 70, paddingBottom: 5, borderRadius: 0 } : {borderBottomEndRadius: 30,
+          borderBottomStartRadius: 30},
       ]}>
         {props.onGoBack ?
           <Icon name="arrow-left" size={30} style={styles.backButton} onPress={props.onGoBack}/>
@@ -28,8 +30,6 @@ export default function CustomHeader(props: Props): React.JSX.Element {
 const styles = StyleSheet.create({
   container: {
     zIndex: 2,
-    borderBottomEndRadius: 30,
-    borderBottomStartRadius: 30,
     height: 100,
     display: 'flex',
     justifyContent: 'flex-end',
@@ -45,5 +45,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
+    marginBottom: 10,
   },
 });

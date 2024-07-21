@@ -1,7 +1,6 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
 import ChatCard from './ChatCard.tsx';
 import { ChatCardInfo } from '../../types/chat-card-info.ts';
 
@@ -38,9 +37,7 @@ const chats: ChatCardInfo[] = [
   },
 ];
 
-export default function ChatScreen() {
-  const navigation = useNavigation();
-
+export default function MyChatsScreen() {
   return (
     <View testID={'my-chats-screen'}>
       <CustomHeader

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {Image, ImageSourcePropType, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import { FoundReport } from '../../types/report-found.ts';
 import moment from 'moment';
@@ -15,7 +15,7 @@ export default function FoundReportCard(props: ReportCardProps): React.JSX.Eleme
   return (
     <View key={props.report.id} style={styles.container} testID={'found-report-card'}>
       <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID="report-card-press">
-        <View style={styles.imageContainer}>
+        <View style={[styles.imageContainer, Platform.OS === 'ios' ? styles.ios : null]}>
           <Image style={styles.image} source={props.image} />
         </View>
         <View style={styles.textContainer}>
@@ -33,6 +33,11 @@ const styles = StyleSheet.create({
     flex: 1 / 2,
     maxWidth: '50%',
     padding: 10,
+  },
+  ios: {
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0)',
   },
   imageContainer: {
     display: 'flex',
