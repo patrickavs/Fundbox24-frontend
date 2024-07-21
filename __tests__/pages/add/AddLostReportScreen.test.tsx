@@ -7,7 +7,6 @@ import { FoundReport } from '../../../src/types/report-found';
 import { LostReport } from '../../../src/types/report-lost';
 import AddReportScreen from '../../../src/pages/add/AddReportScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import lostReports from '../../../src/assets/dummyData/lostReports.ts';
 import mapConstants from '../../../src/constants/map.ts';
 
 const fakeFoundReport: FoundReport =
