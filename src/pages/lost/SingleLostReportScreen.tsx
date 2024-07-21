@@ -66,15 +66,15 @@ function SingleLostReportScreen({ navigation }: { navigation: any }): React.JSX.
 
   const handleDelete = () => {
     Alert.alert(
-      'Confirm Delete',
-      'Are you sure you want to delete this report?',
+      'Anzeige löschen',
+      'Bist Du sicher, dass Du diese Anzeige löschen möchtest?',
       [
         {
-          text: 'Cancel',
+          text: 'Abbrechen',
           style: 'cancel',
         },
         {
-          text: 'Delete',
+          text: 'Löschen',
           onPress: async () => {
             try {
               deleteLostReport(item.id);

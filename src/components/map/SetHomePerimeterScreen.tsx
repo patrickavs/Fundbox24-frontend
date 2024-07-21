@@ -56,6 +56,7 @@ export default function SetHomePerimeterScreen({navigation}: {navigation: any}):
           radius={radius}
           fillColor="rgba(245, 39, 145, 0.3)"
           strokeWidth={0}
+          strokeColor="rgba(0, 0, 0, 0)"
         />
       </MapView>
       <View style={styles.controls}>
@@ -73,7 +74,7 @@ export default function SetHomePerimeterScreen({navigation}: {navigation: any}):
               style={styles.iconButtonContainer}
               onPress={() =>
                   //@ts-ignore
-                  navigation.navigate('Profile', { radius: radius, position: position })
+                  navigation.navigate('Mein Konto', { radius: radius, position: position })
               } >
               <Ionicons name={'checkmark-outline'} style={styles.iconButton} />
           </TouchableOpacity>
