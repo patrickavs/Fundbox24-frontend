@@ -24,11 +24,11 @@ function Dropdown(props: DropdownProps) {
       <ReactNativeDropdown
         style={[styles.dropdown, isFocus ? styles.focus : null]}
         placeholderStyle={styles.placeholderStyle}
+        dropDownDirection="bottom"
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         testID={props.testID}
         data={props.items}
-        search
         labelField="label"
         valueField="value"
         placeholder={props.placeholder}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {StyleSheet, TextInput, View} from 'react-native';
+import {Platform, StyleSheet, TextInput, View} from 'react-native';
 import {AuthTheme} from '../constants/theme.ts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -13,8 +13,8 @@ type SearchBarProps = {
 export default function SearchBar(props: SearchBarProps) {
   return (
     <View style={[props.style, styles.container]} testID={props.testID}>
-      <TextInput style={styles.textInput} onChangeText={props.onChangeText} />
-      <Icon name="search" size={20} />
+      <TextInput style={[styles.textInput, Platform.OS === 'ios' ? styles.ios : null]} onChangeText={props.onChangeText} />
+      <Icon name="search" size={20} color={'gray'}/>
     </View>
   );
 }
@@ -22,6 +22,9 @@ export default function SearchBar(props: SearchBarProps) {
 export const styles = StyleSheet.create({
   textInput: {
     flex: 1,
+  },
+  ios: {
+      paddingVertical: 12,
   },
   container: {
     display: 'flex',
@@ -35,5 +38,6 @@ export const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderWidth: 2,
     elevation: 5,
+    marginHorizontal: 10,
   },
 });

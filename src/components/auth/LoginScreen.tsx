@@ -113,7 +113,7 @@ function LoginScreen(): React.JSX.Element {
           }}>
           <Text>Noch keinen Account bei uns?</Text>
           <TouchableOpacity onPress={handleRegisterPress}>
-            <Text style={{color: '#AD40FF', fontWeight: '700'}}>
+            <Text style={{color: '#AD40FF', fontWeight: '700'}} testID={'navigate-to-register'}>
               {' '}
               Registriere dich hier
             </Text>

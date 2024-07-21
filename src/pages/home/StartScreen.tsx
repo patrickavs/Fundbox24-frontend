@@ -1,21 +1,21 @@
-import React, {useEffect} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
-import {useUser} from '../../hooks/useUser';
-import {useLostReports} from '../../hooks/useLostReports';
-import {useChat} from '../../hooks/useChat';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { useUser } from '../../hooks/useUser';
+import { useLostReports } from '../../hooks/useLostReports';
+import { useChat } from '../../hooks/useChat';
 import CustomHeader from '../../components/CustomHeader.tsx';
 import LostReportCard from '../lost/LostReportCard.tsx';
-import {category} from '../../data/categories.ts';
+import { categoriesWithImage } from '../../data/categoriesWithImage.ts';
 import ChatList from '../../components/chat/ChatList.tsx';
 
-export default function StartScreen({navigation}): React.JSX.Element {
-  const {isPending: isPendingUser, refreshUser, user} = useUser();
+export default function StartScreen({ navigation }: { navigation: any }): React.JSX.Element {
+  const { isPending: isPendingUser, refreshUser, user } = useUser();
   const {
     isPending: isPendingLostReport,
     lostReports,
     refresh,
   } = useLostReports();
-  const {isPending: isPendingChat, chats} = useChat(''); // TODO: Pass userToken here
+  const { isPending: isPendingChat, chats } = useChat(''); // TODO: Pass userToken here
 
   const isPending = isPendingUser || isPendingLostReport || isPendingChat;
 
@@ -25,7 +25,7 @@ export default function StartScreen({navigation}): React.JSX.Element {
 
   if (!isPending && !user) {
     return (
-      <View style={{alignItems: 'center', marginTop: '50%'}}>
+      <View style={{ alignItems: 'center', marginTop: '50%' }}>
         <Text>Du bist nicht angemeldet</Text>
       </View>
     );
@@ -49,6 +49,8 @@ export default function StartScreen({navigation}): React.JSX.Element {
   //       .slice(0, 4),
   //   [chats],
   // );
+
+
   if (isPending && !user) {
     return <Text>Lade ...</Text>;
   }
@@ -85,19 +87,19 @@ export default function StartScreen({navigation}): React.JSX.Element {
                   horizontal
                   style={styles.list}
                   data={lostReports}
-                  renderItem={({item, index}) => (
+                  renderItem={({ item, index }) => (
                     <LostReportCard
                       key={index}
                       report={item}
                       onPress={() =>
                         navigation.navigate('Verloren', {
                           screen: 'SingleLostReportScreen',
-                          params: {item: item},
+                          params: { item: item },
                         })
                       }
                       image={
-                        category.find(it => it.id === item.categoryId)
-                          ?.image ?? category[category.length - 1].image
+                        categoriesWithImage.find(it => it.name === item.category.name)
+                          ?.image ?? categoriesWithImage[categoriesWithImage.length - 1].image
                       }
                     />
                   )}
@@ -111,7 +113,7 @@ export default function StartScreen({navigation}): React.JSX.Element {
               <Text style={styles.text}>Deine letzten Nachrichten</Text>
               <Text style={styles.text2}>mehr anzeigen</Text>
             </View>
-            <ChatList />
+            <ChatList isStartPage={true} />
           </View>
         </>
       }

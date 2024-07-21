@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {Image, ImageSourcePropType, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { FoundReportTheme, LostReportTheme } from '../../constants/theme.ts';
 import { FoundReport } from '../../types/report-found.ts';
 import moment from 'moment';
@@ -13,13 +13,13 @@ type ReportCardProps = {
 
 export default function FoundReportCard(props: ReportCardProps): React.JSX.Element {
   return (
-    <View key={props.report.id} style={styles.container}>
-      <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID='report-card-press'>
-        <View style={styles.imageContainer}>
+    <View key={props.report.id} style={styles.container} testID={'found-report-card'}>
+      <TouchableOpacity onPress={() => props.onPress(props.report.id)} testID="report-card-press">
+        <View style={[styles.imageContainer, Platform.OS === 'ios' ? styles.ios : null]}>
           <Image style={styles.image} source={props.image} />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.title} numberOfLines={2}>{props.report.title}</Text>
+          <Text style={styles.title} numberOfLines={1}>{props.report.title}</Text>
           <Text style={styles.text} numberOfLines={1}>{props.report.category.name}</Text>
           <Text style={styles.text}>{moment(props.report.foundDate).format('DD.MM.YYYY, HH:mm')}</Text>
         </View>
@@ -31,7 +31,13 @@ export default function FoundReportCard(props: ReportCardProps): React.JSX.Eleme
 const styles = StyleSheet.create({
   container: {
     flex: 1 / 2,
+    maxWidth: '50%',
     padding: 10,
+  },
+  ios: {
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0)',
   },
   imageContainer: {
     display: 'flex',

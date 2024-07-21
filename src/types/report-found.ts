@@ -1,6 +1,6 @@
-import {Category} from './category';
-import {Location} from './location';
-import {Chat} from './chat.ts';
+import { Category } from './category';
+import { Location } from './location';
+import { Chat } from './chat.ts';
 
 export type FoundReport = {
   id: string;
@@ -8,7 +8,7 @@ export type FoundReport = {
   description: string;
   isFinished: boolean;
   imagePath: string;
-  categoryId: number;
+  category: Category;
   foundDate: string;
   foundLocation: Location;
   currentLocation: Location;

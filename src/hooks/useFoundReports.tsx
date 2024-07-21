@@ -1,4 +1,4 @@
-import { FoundReport, NewFoundReport } from '../types/report-found';
+import { FoundReport } from '../types/report-found';
 import React, {
   createContext,
   useCallback,
@@ -7,8 +7,14 @@ import React, {
   useState,
   useTransition,
 } from 'react';
-import { ALL_FOUND_REPORTS_URL, CREATE_FOUNDREPORT_URL, FOUNDREPORT_URL } from '../routes';
+import {
+  ALL_FOUND_REPORTS_URL,
+  CREATE_FOUNDREPORT_URL,
+  DELETE_FOUNDREPORT_URL,
+  EDIT_FOUNDREPORT_URL,
+} from '../routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FoundReportRequest } from '../types/report-found-request.ts';
 
 type FoundReportsContextType = {
   isPending: boolean;
@@ -17,13 +23,14 @@ type FoundReportsContextType = {
   refresh: () => void,
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
-  createFoundReport: (userToken: string, report: NewFoundReport) => void;
-  editFoundReport: (userToken: string, report: FoundReport) => void;
+  createFoundReport: (userToken: string, report: FoundReportRequest) => void;
+  editFoundReport: (id: number, report: FoundReportRequest) => void;
+  deleteFoundReport: (userToken: string) => void;
   startTransition: React.TransitionStartFunction;
 };
 
 const FoundReportsContext = createContext<FoundReportsContextType>(
-  {} as FoundReportsContextType,
+  {} as FoundReportsContextType
 );
 
 export function useFoundReports() {
@@ -37,12 +44,13 @@ export function useFoundReports() {
     setError,
     foundReports,
     error,
+    deleteFoundReport,
     editFoundReport,
   } = context;
 
   if (!context) {
     throw new Error(
-      'useFoundReports must be used within a FoundReportProvider',
+      'useFoundReports must be used within a FoundReportProvider'
     );
   }
 
@@ -72,12 +80,12 @@ export function useFoundReports() {
             .catch(fetchError => {
               console.log(fetchError);
             });
-        },
+        }
       );
     });
   }, [startTransition, setFoundReports, setError]);
 
-  return { isPending, error, foundReports, createFoundReport, editFoundReport, refresh };
+  return { isPending, error, foundReports, createFoundReport, editFoundReport, deleteFoundReport, refresh };
 }
 
 export function FoundReportProvider({ children }: { children: React.ReactNode }) {
@@ -110,13 +118,13 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
             .catch(fetchError => {
               console.log(fetchError);
             });
-        },
+        }
       );
     });
   }, []);
 
   const createFoundReport = useCallback(
-    (userToken: string, report: NewFoundReport) => {
+    (userToken: string, report: FoundReportRequest) => {
       fetch(CREATE_FOUNDREPORT_URL(), {
         method: 'POST',
         body: JSON.stringify(report),
@@ -135,33 +143,74 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
         })
         .catch(error => setError(JSON.stringify(error)));
     },
-    [],
+    []
   );
 
   const editFoundReport = useCallback(
-    (userToken: string, report: FoundReport) => {
-      fetch(FOUNDREPORT_URL(report.id), {
-        method: 'PUT',
-        body: JSON.stringify(report),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Basic ${userToken}`,
-        },
-      })
-        .then(async response => {
-          const data = await response.json();
-          if (response.status === 200) {
-            setFoundReports(prev => [
-              ...prev.filter(({ id }) => id !== report.id),
-              data as FoundReport,
-            ]);
-          } else {
-            setError(data);
-          }
-        })
-        .catch(error => setError(JSON.stringify(error)));
+    (editId: number, report: FoundReportRequest) => {
+      startTransition(() => {
+          AsyncStorage?.getItem('basicAuthCredentials').then(
+            basicAuthCredentials => {
+              if (!basicAuthCredentials) {
+                throw 'No Basic Auth Header! Please login.';
+              }
+
+              fetch(EDIT_FOUNDREPORT_URL(editId), {
+                method: 'PUT',
+                body: JSON.stringify(report),
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Basic ${basicAuthCredentials}`,
+                },
+              })
+                .then(async response => {
+                  const data = await response.json();
+                  if (response.ok) {
+                    setFoundReports(prev => [
+                      ...prev.filter(({ id }) => id !== editId.toString()),
+                      data as FoundReport,
+                    ]);
+                  } else {
+                    setError(data);
+                  }
+                })
+                .catch(error => setError(JSON.stringify(error)));
+            }
+          );
+        }
+      );
     },
-    [],
+    []
+  );
+
+  const deleteFoundReport = useCallback(
+    (reportId: string) => {
+      startTransition(() => {
+        AsyncStorage?.getItem('basicAuthCredentials').then(
+          basicAuthCredentials => {
+            if (!basicAuthCredentials) {
+              throw 'No Basic Auth Header! Please login.';
+            }
+            fetch(DELETE_FOUNDREPORT_URL(reportId), {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Basic ${basicAuthCredentials}`,
+              },
+            })
+              .then(async response => {
+                if (response.ok) {
+                  setFoundReports(prev => prev.filter(({ id }) => id !== reportId));
+                } else {
+                  const data = await response.json();
+                  setError(data);
+                }
+              })
+              .catch(errorRes => setError(JSON.stringify(errorRes)));
+          });
+      });
+    },
+    []
   );
 
   return (
@@ -176,6 +225,7 @@ export function FoundReportProvider({ children }: { children: React.ReactNode })
         startTransition,
         createFoundReport,
         editFoundReport,
+        deleteFoundReport,
       }}>
       {children}
     </FoundReportsContext.Provider>

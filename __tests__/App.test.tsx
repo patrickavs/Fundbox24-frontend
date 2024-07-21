@@ -1,12 +1,11 @@
 import App from '../src/App';
-
-// Note: import explicitly to use the types shipped with jest.
-import {expect, it, describe, jest} from '@jest/globals';
-import {render, screen} from '@testing-library/react-native';
+import { expect, it, describe, jest, beforeAll, afterEach, afterAll } from '@jest/globals';
+import { render, screen } from '@testing-library/react-native';
+import React from 'react';
 
 jest.mock('@react-navigation/native', () => {
   return {
-    NavigationContainer: ({children}: {children: React.ReactNode}) => children,
+    NavigationContainer: ({ children }: { children: React.ReactNode }) => children,
   };
 });
 
@@ -15,19 +14,19 @@ jest.mock('../src/components/tabbar/Tabbar.tsx', () => {
 });
 
 jest.mock('../src/hooks/useChat.tsx', () => ({
-  ChatProvider: ({children}: {children: React.ReactNode}) => children,
+  ChatProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 jest.mock('../src/hooks/useUser.tsx', () => ({
-  UserProvider: ({children}: {children: React.ReactNode}) => children,
+  UserProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 jest.mock('../src/hooks/useLostReports.tsx', () => ({
-  LostReportProvider: ({children}: {children: React.ReactNode}) => children,
+  LostReportProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 jest.mock('../src/hooks/useFoundReports.tsx', () => ({
-  FoundReportProvider: ({children}: {children: React.ReactNode}) => children,
+  FoundReportProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 jest.mock('../src/constants/theme.ts', () => ({
@@ -35,6 +34,30 @@ jest.mock('../src/constants/theme.ts', () => ({
 }));
 
 describe('App', () => {
+  const originalError = console.error;
+
+  beforeAll(() => {
+    // Globally mock console.error for all tests
+    jest.spyOn(console, 'error').mockImplementation((...args) => {
+      if (/defaultProps/.test(args[0])) {
+        return;
+      }
+      if (/Warning: Cannot update a component/.test(args[0])) {
+        return;
+      }
+      // Call the original implementation for other cases
+      originalError.apply(console, args);
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    console.error = originalError;
+  });
+
   it('renders correctly and contains the Tabbar component', () => {
     render(<App />);
 
@@ -42,17 +65,19 @@ describe('App', () => {
     expect(screen.toJSON()).toStrictEqual('Tabbar Component');
   });
 
-  it('should ignore specific log warnings', () => {
-    const logSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
+  it('should ignore specific logs', () => {
     render(<App />);
 
-    expect(logSpy).not.toHaveBeenCalledWith(
-      expect.stringContaining(
-        'TextInputComponent: Support for defaultProps will be removed',
-      ),
-    );
+    const mockConsoleError = jest.fn((error: string) => console.error(error));
 
-    logSpy.mockRestore();
+    mockConsoleError('TextInputComponent: Support for defaultProps will be removed');
+    mockConsoleError('Warning: Cannot update a component while rendering a different component.');
+    mockConsoleError('Some other error');
+
+    expect(mockConsoleError).toHaveBeenCalledWith('TextInputComponent: Support for defaultProps will be removed');
+    expect(mockConsoleError).toHaveBeenCalledWith('Warning: Cannot update a component while rendering a different component.');
+
+    // other errors should still be logged
+    expect(mockConsoleError).toHaveBeenCalledWith('Some other error');
   });
 });

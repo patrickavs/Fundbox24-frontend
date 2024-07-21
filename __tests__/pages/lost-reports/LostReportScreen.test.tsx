@@ -1,10 +1,13 @@
 import React from 'react';
-import {act, fireEvent, render, screen} from '@testing-library/react-native';
-import {describe, expect, it, jest} from '@jest/globals';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import * as LostReportHook from '../../../src/hooks/useLostReports';
-import {LostReport, NewLostReport} from '../../../src/types/report-lost';
+import { LostReport } from '../../../src/types/report-lost';
 import LostReportScreen from '../../../src/pages/lost/LostReportScreen';
 import LostReportCard from '../../../src/pages/lost/LostReportCard';
+import { LostReportRequest } from '../../../src/types/report-lost-request.ts';
+import { User } from '../../../src/types/user';
+import { useNavigation } from '@react-navigation/native';
 
 const fakeLostReports: LostReport = {
   id: '1',
@@ -20,15 +23,41 @@ const fakeLostReports: LostReport = {
     longitude: 9.993682,
   },
   lostRadius: 100,
-  categoryId: 1,
+  category: {
+    id: 1,
+    value: '',
+    name: 'Schlüssel',
+    image: '',
+  },
   isFinished: false,
   imagePath: '',
   myChats: [],
 };
 
+const userData: User = {
+  id: '1',
+  email: 'wal@test.de',
+  firstName: 'Walter',
+  lastName: 'White',
+  username: 'walterwhite',
+};
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  getItem: jest.fn((key: string) => {
+    if (key === 'user-credentials') {
+      return Promise.resolve(JSON.stringify(userData));
+    } else if (key === 'basicAuthCredentials') {
+      return Promise.resolve('dXNlcjpwYXNz');
+    }
+    return Promise.resolve(null);
+  }),
+  setItem: jest.fn((key: string, value: string) => Promise.resolve()),
+}));
+
 jest.mock('@react-navigation/native', () => ({
   useNavigation: jest.fn(() => ({
     goBack: jest.fn(),
+    navigate: jest.fn(),
   })),
   useFocusEffect: jest.fn(() => ({
     useCallback: jest.fn(),
@@ -36,138 +65,63 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 describe('LostReportScreen', () => {
+  const navigateMock = jest.fn();
+
+  beforeEach(() => {
+    (useNavigation as jest.Mock).mockReturnValue({
+      navigate: navigateMock,
+    });
+
+    jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
+      isPending: false,
+      lostReports: [fakeLostReports],
+      error: null,
+      refresh: () => Promise.resolve(),
+      createLostReport: (userToken: string, report: LostReportRequest) => Promise.resolve(),
+      editLostReport: (userToken: string, report: LostReport) => Promise.resolve(),
+    }));
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      status: 200,
+      json: jest.fn().mockResolvedValue([fakeLostReports]),
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it('renders correctly', () => {
     jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
       isPending: false,
       lostReports: [fakeLostReports],
       error: null,
       refresh: () => Promise.resolve(),
-      createLostReport: (userToken: string, report: NewLostReport) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
+      createLostReport: (userToken: string, report: LostReportRequest) => Promise.resolve(),
+      editLostReport: (userToken: string, report: LostReport) => Promise.resolve(),
     }));
+  });
 
-    const {getByTestId} = render(<LostReportScreen />);
+  it('renders correctly', () => {
+    const { getByTestId } = render(<LostReportScreen />);
 
     expect(getByTestId('lost-report-screen')).toBeTruthy();
-
-    // check if the text is rendered correctly
     expect(screen.getByText('Gesucht in deinem Umkreis')).toBeTruthy();
-  });
-
-  it('should renders single LostReportCards', async () => {
-    jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-      isPending: false,
-      lostReports: [fakeLostReports],
-      error: null,
-      refresh: () => Promise.resolve(),
-      createLostReport: (userToken: string, report: NewLostReport) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
-    }));
-
-    const view = render(<LostReportScreen />);
-
-    expect(view.getByText(fakeLostReports.title)).toBeTruthy();
-  });
-
-  it('should render the dropdowns', async () => {
-    jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-      isPending: false,
-      lostReports: [fakeLostReports],
-      error: null,
-      refresh: () => Promise.resolve(),
-      createLostReport: (userToken: string, report: NewLostReport) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
-    }));
-
-    const view = render(<LostReportScreen />);
-
-    expect(view.getByTestId('sort-dropdown')).toBeTruthy();
-    expect(view.getByTestId('filter-dropdown')).toBeTruthy();
-    expect(screen.getByText('Gesucht in deinem Umkreis')).toBeTruthy();
-    expect(screen.getByText('Sortieren')).toBeTruthy();
-    expect(screen.getByText('Filtern')).toBeTruthy();
-  });
-
-  it('should execute the sort dropdown onChange callback', async () => {
-    jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-      isPending: false,
-      lostReports: [fakeLostReports],
-      error: null,
-      refresh: () => Promise.resolve(),
-      createLostReport: (userToken: string, report: NewLostReport) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
-    }));
-
-    const view = render(<LostReportScreen />);
-    const sortDropdown = view.getByTestId('sort-dropdown');
-
-    const logSpy = jest.spyOn(console, 'log');
-
-    act(() => {
-      fireEvent(sortDropdown, 'onChange', {value: 'alphabetical'});
-    });
-
-    expect(logSpy).toHaveBeenCalledWith('Benutzer hat sortiert nach: alphabetical');
-
-    logSpy.mockRestore();
-  });
-
-  it('should execute the filter dropdown onChange callback', async () => {
-    jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-      isPending: false,
-      lostReports: [fakeLostReports],
-      error: null,
-      refresh: () => Promise.resolve(),
-      createLostReport: (userToken: string, report: NewLostReport) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
-    }));
-
-    const view = render(<LostReportScreen />);
-    const filterDropdown = view.getByTestId('filter-dropdown');
-
-    const logSpy = jest.spyOn(console, 'log');
-
-    act(() => {
-      fireEvent(filterDropdown, 'onChange', {value: 'in my region'});
-    });
-
-    expect(logSpy).toHaveBeenCalledWith('Benutzer hat gefiltert nach: in my region');
-
-    logSpy.mockRestore();
   });
 
   it('should render the SearchBar component', async () => {
-    jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-      isPending: false,
-      lostReports: [fakeLostReports],
-      error: null,
-      refresh: () => Promise.resolve(),
-      createLostReport: (userToken: string, report: NewLostReport) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
-    }));
-
     const view = render(<LostReportScreen />);
 
     expect(view.getByTestId('search-bar')).toBeTruthy();
   });
 
   it('should execute SearchBar onChangeText callback', async () => {
-    jest.spyOn(LostReportHook, 'useLostReports').mockImplementation(() => ({
-      isPending: false,
-      lostReports: [fakeLostReports],
-      error: null,
-      refresh: () => Promise.resolve(),
-      createLostReport: (userToken: string, report: NewLostReport) => null,
-      editLostReport: (userToken: string, report: LostReport) => null,
-    }));
-
     const searchText = 'Schlüssel';
     const view = render(<LostReportScreen />);
     const searchBar = view.getByTestId('search-bar');
 
     const logSpy = jest.spyOn(console, 'log');
 
-    act(() => {
+    await act(async () => {
       fireEvent.changeText(searchBar, searchText);
     });
 
@@ -176,19 +130,70 @@ describe('LostReportScreen', () => {
     logSpy.mockRestore();
   });
 
+  it('should render the dropdowns', async () => {
+    const view = render(<LostReportScreen />);
+
+    expect(view.getByTestId('sort-dropdown')).toBeTruthy();
+    expect(view.getByTestId('filter-dropdown')).toBeTruthy();
+    expect(screen.getByText('Gesucht in deinem Umkreis')).toBeTruthy();
+    expect(screen.getByText('Sortieren')).toBeTruthy();
+    expect(screen.getByText('Kategorie')).toBeTruthy();
+  });
+
+  it('should execute the sort dropdown onChange callback', async () => {
+    const view = render(<LostReportScreen />);
+    const sortDropdown = view.getByTestId('sort-dropdown');
+
+    const logSpy = jest.spyOn(console, 'log');
+
+    act(() => {
+      fireEvent(sortDropdown, 'onChange', { value: 'alphabetical' });
+    });
+
+    expect(logSpy).toHaveBeenCalledWith('Benutzer hat sortiert nach: alphabetical');
+
+    logSpy.mockRestore();
+  });
+
+  it('should execute the filter dropdown onChange callback', async () => {
+    const view = render(<LostReportScreen />);
+    const filterDropdown = view.getByTestId('filter-dropdown');
+
+    const logSpy = jest.spyOn(console, 'log');
+
+    await act(async () => {
+      fireEvent(filterDropdown, 'onChange', { value: 'Geldbörse' });
+    });
+
+    expect(logSpy).toHaveBeenCalledWith('Benutzer hat gefiltert nach: Geldbörse');
+
+    logSpy.mockRestore();
+  });
 
   it('should execute the onPress callback function', async () => {
-    const pressCallback = jest.fn((id: string) => {});
+    const pressCallback = jest.fn();
 
     // @ts-ignore
     const view = render(
-      <LostReportCard report={fakeLostReports} onPress={pressCallback} image={0}/>,
+      <LostReportCard report={fakeLostReports} onPress={pressCallback} image={0} />
     );
 
-    await act(() => {
+    await act(async () => {
       fireEvent.press(view.getByTestId('report-card-press'));
     });
 
     expect(pressCallback).toBeCalled();
+  });
+
+  it('should render LostReportCard in FlatList', async () => {
+    render(<LostReportScreen />);
+
+    await waitFor(() => screen.getByText(fakeLostReports.title));
+
+    const lostReportCard = screen.getByText(fakeLostReports.title);
+    expect(lostReportCard).toBeTruthy();
+
+    fireEvent.press(lostReportCard);
+    expect(navigateMock).toHaveBeenCalledWith('SingleLostReportScreen', { item: fakeLostReports });
   });
 });

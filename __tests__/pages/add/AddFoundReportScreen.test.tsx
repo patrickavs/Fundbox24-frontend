@@ -7,11 +7,6 @@ import { FoundReport } from '../../../src/types/report-found';
 import { LostReport } from '../../../src/types/report-lost';
 import AddReportScreen from '../../../src/pages/add/AddReportScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SetPerimeterScreen from '../../../src/components/map/SetPerimeterScreen.tsx';
-import CustomButton from '../../../src/components/CustomButton.tsx';
-import { FoundReportTheme } from '../../../src/constants/theme.ts';
-import * as test from 'node:test';
-import { NavigationContainer } from '@react-navigation/native';
 
 const fakeFoundReport: FoundReport =
   {
@@ -27,7 +22,12 @@ const fakeFoundReport: FoundReport =
       longitude: 9.993682,
     },
     foundDate: new Date(Date.now()).toLocaleTimeString(),
-    categoryId: 1,
+    category: {
+      id: 1,
+      value: '',
+      name: 'Schlüssel',
+      image: '',
+    },
     imagePath: '',
     isFinished: false,
     myChats: [],
@@ -48,11 +48,20 @@ const fakeLostReports: LostReport =
       longitude: 9.993682,
     },
     lostRadius: 100,
-    categoryId: 1,
+    category: {
+      id: 1,
+      value: '',
+      name: 'Schlüssel',
+      image: '',
+    },
     imagePath: '',
     myChats: [],
     isFinished: false,
   };
+
+jest.mock('react-native-simple-toast', () => ({
+  Toast: jest.fn(),
+}));
 
 const mockedNavigate = jest.fn();
 
@@ -62,7 +71,7 @@ jest.mock('@react-navigation/native', () => {
       navigate: mockedNavigate,
     }),
     useRoute: jest.fn(() => ({
-      params: { reportType: 'found', fetchedCategories: [] },
+      params: { reportType: 'found' },
       key: '',
       name: '',
     })),
@@ -78,6 +87,7 @@ describe('AddReportScreen found', () => {
   it('should add a found report correctly', async () => {
     const mockCreateLostReport = jest.fn();
     const mockCreateFoundReport = jest.fn();
+    const mockRadius = jest.fn();
 
     jest.spyOn(FoundReportHook, 'useFoundReports').mockImplementation(() => ({
       isPending: false,
@@ -101,7 +111,8 @@ describe('AddReportScreen found', () => {
 
     const view = render(<AddReportScreen />);
 
-    await act(async () => { });
+    await act(async () => {
+    });
 
     expect(view.getByText('Neue Fundanzeige')).toBeTruthy();
 
@@ -156,7 +167,12 @@ describe('AddReportScreen found', () => {
     });
 
     await waitFor(() => {
-      expect(mockedNavigate).toHaveBeenCalledWith('Map');
+      expect(mockedNavigate).toHaveBeenCalledWith('Map', {
+        foundPosition: {
+          latitude: 50.3254386,
+          longitude: 11.9384522,
+        }, reportType: 'found', type: 'found',
+      });
     });
 
     await act(async () => {
@@ -164,7 +180,12 @@ describe('AddReportScreen found', () => {
     });
 
     await waitFor(() => {
-      expect(mockedNavigate).toHaveBeenCalledWith('Map');
+      expect(mockedNavigate).toHaveBeenCalledWith('Map', {
+        collectPosition: {
+          latitude: 50.3254386,
+          longitude: 11.9384522,
+        }, reportType: 'found', type: 'collect',
+      });
     });
   });
 });

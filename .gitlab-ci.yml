@@ -4,20 +4,16 @@ default:
     - typescript
 
 stages: # List of stages for jobs, and their order of execution
-stages: # List of stages for jobs, and their order of execution
   - build
   - test
   - deploy
 
-build-job: # This job runs in every branch.
 build-job: # This job runs in every branch.
   stage: build
   image: node:22-alpine3.19
   script:
     - npm i
 
-ui-test-job: # This job runs only on main and develop branch.
-  stage: test # It only starts when the job in the build stage completes successfully.
 ui-test-job: # This job runs only on main and develop branch.
   stage: test # It only starts when the job in the build stage completes successfully.
   image: node:22-alpine3.19
@@ -28,7 +24,6 @@ ui-test-job: # This job runs only on main and develop branch.
     - npm i
   script:
     - npm run test:ci
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     paths:
@@ -41,18 +36,27 @@ ui-test-job: # This job runs only on main and develop branch.
 
 deploy-job: # This job runs only on main branch.
   stage: deploy
-  image: node:22-alpine3.19
+  image: reactnativecommunity/react-native-android:v12.0
   only:
-    - main
+    - release
   before_script:
-    - wget https://download.java.net/java/GA/jdk21.0.1/713526d4f6f34c618f48c5e85c3e2324/9/GPL/openjdk-21.0.1_linux-x64_bin.tar.gz
-    - tar -xvf openjdk-21.0.1_linux-x64_bin.tar.gz
-    - export JAVA_HOME=$PWD/jdk-21.0.1
-    - npm i
+    - npm install -g react-native-cli
+    - npm install --legacy-peer-deps
   script:
+    - apt update -y && apt install -y curl
+    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    - mv .secure_files android/app/
+    - chmod -R 777 android/app/src/main/assets/
+    - cd android && ./gradlew clean && cd ..
+    - rm -rf android/app/src/main/assets/index.android.bundle
+    - touch android/app/src/main/assets/index.android.bundle
+    - chmod -R 777 android/app/src/main/assets/index.android.bundle
+    - npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+    - rm -rf android/app/src/main/res/drawable-hdpi android/app/src/main/res/drawable-mdpi android/app/src/main/res/drawable-xhdpi android/app/src/main/res/drawable-xxhdpi android/app/src/main/res/drawable-xxxhdpi
     - cd android
-    - ./gradlew assembleDebug
+    - ./gradlew assembleRelease
+    - cd ..
   artifacts:
     paths:
-      - android/app/build/outputs/apk/debug/app-debug.apk
+      - android/app/build/outputs/apk/release/app-universal-release.apk
     expire_in: 1 week

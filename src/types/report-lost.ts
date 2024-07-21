@@ -1,6 +1,7 @@
-import {Category} from './category';
-import {Location} from './location.ts';
-import {Chat} from './chat.ts';
+import { Category } from './category';
+import { Location } from './location.ts';
+import { Chat } from './chat.ts';
+import { User } from './user.ts';
 
 export type LostReport = {
   id: string;
@@ -12,7 +13,7 @@ export type LostReport = {
   lastSeenLocation: Location;
   lostLocation: Location;
   lostRadius: number;
-  categoryId: number;
+  category: Category;
   //placeOfDiscovery: string;
   //placeOfDelivery?: string;
   myChats: Chat[];
